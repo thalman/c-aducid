@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libaducid", "libaducid\libaducid.vcxproj", "{75070C4B-D273-4C7F-99D7-0B243970BBC1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libaducid_test", "libaducid_test\libaducid_test.vcxproj", "{AC612AF9-9612-4F13-A3EA-209BCF8D9CED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Debug|Win32.Build.0 = Debug|Win32
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Release|Win32.ActiveCfg = Release|Win32
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Release|Win32.Build.0 = Release|Win32
+		{AC612AF9-9612-4F13-A3EA-209BCF8D9CED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AC612AF9-9612-4F13-A3EA-209BCF8D9CED}.Debug|Win32.Build.0 = Debug|Win32
+		{AC612AF9-9612-4F13-A3EA-209BCF8D9CED}.Release|Win32.ActiveCfg = Release|Win32
+		{AC612AF9-9612-4F13-A3EA-209BCF8D9CED}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

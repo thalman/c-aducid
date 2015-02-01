@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib64
+includedir=/usr/include
+
+Name: libaducid
+URL: http://www.aducid.com/
+Description: Library for aducid authentication
+Version: 3.0.0
+Libs: -L${libdir} -laducid
+Cflags: -I${includedir}
