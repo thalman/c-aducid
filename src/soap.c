@@ -13,7 +13,7 @@
 #include <windows.h>
 #include <winhttp.h>
 
-char *soap_request_raw(char *URL,char *action, char *request)
+char *soap_request_raw(const char *URL,const char *action, const char *request)
 {
     HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL;
     char *host,*location,*result;
@@ -139,7 +139,7 @@ char *soap_request_raw(char *URL,char *action, char *request)
     return result;
 }
 /* windows soap request - end*/
-char *soap_request(char *URL,char *action, char *request) {
+char *soap_request(const char *URL, const char *action, const char *request) {
     char *result = NULL;
     int retry = 3;
     while( result == NULL && retry ) {
@@ -172,7 +172,7 @@ write_memory_callback(void *contents, size_t size, size_t nmemb, void *userp)
     return realsize;
 }
  
-char *soap_request(char *URL,char *action, char *request)
+char *soap_request(const char *URL, const char *action, const char *request)
 {
     CURL *curl_handle;
     CURLcode res;

@@ -15,6 +15,6 @@ typedef struct {
 
 /* size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp); */
 
-char *soap_request(char *URL,char *action, char *request);
+char *soap_request(const char *URL, const char *action, const char *request);
 
 #endif

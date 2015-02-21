@@ -53,8 +53,17 @@ char *create_xml_attribute(const char *name,const char *value) {
     return attr;
 }
 
-char *create_aim_request_operation_xml(const char *operationName, char *AIMName, char *authId, char *bindingKey, char *methodName, char *methodParameter,
-				       char *personalObject,char *AAIM2, char *ilData, char *peigReturnName)
+char *create_aim_request_operation_xml(
+    const char *operationName,
+    const char *AIMName,
+    const char *authId,
+    const char *bindingKey,
+    const char *methodName,
+    const char *methodParameter,
+    const char *personalObject,
+    const char *AAIM2,
+    const char *ilData,
+    const char *peigReturnName)
 {
     char *XML = NULL;
     char *XMLC;
@@ -295,7 +304,7 @@ AducidAttributeList *parse_personal_object(xmlDocPtr doc) {
     */
 }
 
-char *create_aim_close_session_xml(char *authId, char *AIMName, char *authKey)
+char *create_aim_close_session_xml(const char *authId, const char *AIMName, const char *authKey)
 {
     char *XML = NULL;
     char *XMLC;
