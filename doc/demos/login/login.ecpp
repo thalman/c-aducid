@@ -1,0 +1,36 @@
+<%pre>
+// put your includes here
+#include "defs.h"
+#include <aducid++.h>
+</%pre>
+<%args>
+std::string action;
+</%args>
+<%session>
+// define your session scope variables here
+// std::string mySessionState;
+   // AducidHandle handle = NULL;
+aducid::AducidClient aducid(AIMSERVER);
+</%session>
+<%cpp>
+    if( action == "login" ) {
+        //aducid_free(handle);
+    }
+</%cpp>
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
+<html>
+   <head>
+    <title>ADUCID login demo</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+  </head>
+  <body>
+    <div id="content">
+    <h1>Welcome</h1>
+    action <$ action $>
+    <p>Every user has its unique identifier in ADUCID, called user databese index 
+    It is unique per AIM and it is persistent, so the application can distinguish particular user.</p>
+    <p>You are loggen in.</p>
+    <a href="?action=logout">LOGOUT</a>
+    </div>
+  </body>
+</html>
