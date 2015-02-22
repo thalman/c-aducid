@@ -3,6 +3,7 @@
 
 #include <aducid.h>
 #include <string>
+#include <map>
 
 namespace aducid
 {
@@ -35,7 +36,12 @@ namespace aducid
         bool change(const string peigReturnName);
         bool rechange(const string peigReturnName);
         bool erase(const string peigReturnName);
+        bool close();
 
+        bool verify();
+        map<string,string> getPSLAtributes( AducidAttributeSet set, bool useCache );
+        string getPSLAtribute( const std::string &attr );
+        string userDatabaseIndex();
         string AIMProxyURL() const;
         ~AducidClient();
     private:

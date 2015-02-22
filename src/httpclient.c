@@ -174,8 +174,10 @@ HttpDataMemory *http_get(char *url,bool useProxy) {
     memset(chunk,0,sizeof(HttpDataMemory));
 
     handle = curl_easy_init();
-    if(!handle) return NULL;
-
+    if(!handle) {
+        free(chunk);
+        return NULL;
+    }
     curl_easy_setopt(handle, CURLOPT_URL, url);
     if(!useProxy) {
 	curl_easy_setopt(handle, CURLOPT_PROXY, "");
@@ -205,9 +207,9 @@ char *http_get_text(char *url,bool useProxy){
     if( (chunk == NULL) || (chunk->data == NULL) ) { free_http_data_memory(chunk); return NULL; }
     result = (char *)malloc(chunk->length+1);
     if(result == NULL) {
-	/* out of memory */
-	free_http_data_memory(chunk);
-	return NULL;
+        /* out of memory */
+        free_http_data_memory(chunk);
+        return NULL;
     }
     memcpy(result,chunk->data,chunk->length);
     result[chunk->length] = 0;

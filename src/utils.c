@@ -154,8 +154,10 @@ char *wchar_to_char(LPWSTR wch) {
     copied = wcstombs(buffer,wch,size-1);
     while(copied == size-1) {
         size *= 2;
+        char *old = buffer;
         buffer = (char *)realloc(buffer,size);
         if( buffer == NULL ) {
+            free(old);
             return NULL;
         }
         memset(buffer,0,size);

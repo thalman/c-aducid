@@ -357,7 +357,7 @@ DLL_PUBLIC bool  aducid_verify(AducidHandle handle);
 
 DLL_PUBLIC AducidAttributeList *aducid_get_attributes(AducidHandle handle,char *attrSetName);
 DLL_PUBLIC bool  aducid_set_attributes(AducidHandle handle, char *attrSetName, AducidAttributeList *attrs);
-DLL_PUBLIC char *aducid_get_user_database_index(AducidHandle handle);
+DLL_PUBLIC const char *aducid_get_user_database_index(AducidHandle handle);
 DLL_PUBLIC void  aducid_clear_psl_cache(AducidHandle handle);
 
 DLL_PUBLIC const char *aducid_get_authid(AducidHandle handle);

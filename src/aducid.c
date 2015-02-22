@@ -767,7 +767,7 @@ bool aducid_set_attributes(AducidHandle handle, char *attrSetName, AducidAttribu
 }
 
 DLL_PUBLIC
-char *aducid_get_user_database_index(AducidHandle handle) {
+const char *aducid_get_user_database_index(AducidHandle handle) {
     AducidAIMGetPSLAttributesResponse *response;
     
     if( !handle || !handle->authId || !handle->authKey ) return NULL;
