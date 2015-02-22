@@ -342,12 +342,12 @@ DLL_PUBLIC AducidAuthStatus aducid_auth_status_enum(char *status);
 /* c interface */
 DLL_PUBLIC AducidHandle aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey);
 
-DLL_PUBLIC char *aducid_open(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC char *aducid_init(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC char *aducid_reinit(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC char *aducid_change(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC char *aducid_rechange(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC char *aducid_delete(AducidHandle handle, const char *peigReturnName);
+DLL_PUBLIC const char *aducid_open(AducidHandle handle, const char *peigReturnName);
+DLL_PUBLIC const char *aducid_init(AducidHandle handle, const char *peigReturnName);
+DLL_PUBLIC const char *aducid_reinit(AducidHandle handle, const char *peigReturnName);
+DLL_PUBLIC const char *aducid_change(AducidHandle handle, const char *peigReturnName);
+DLL_PUBLIC const char *aducid_rechange(AducidHandle handle, const char *peigReturnName);
+DLL_PUBLIC const char *aducid_delete(AducidHandle handle, const char *peigReturnName);
 
 DLL_PUBLIC bool aducid_close(AducidHandle handle);
 
@@ -360,13 +360,13 @@ DLL_PUBLIC bool  aducid_set_attributes(AducidHandle handle, char *attrSetName, A
 DLL_PUBLIC char *aducid_get_user_database_index(AducidHandle handle);
 DLL_PUBLIC void  aducid_clear_psl_cache(AducidHandle handle);
 
-DLL_PUBLIC char *aducid_get_authid(AducidHandle handle);
+DLL_PUBLIC const char *aducid_get_authid(AducidHandle handle);
 DLL_PUBLIC void  aducid_set_authid(AducidHandle handle, const char *authId);
-DLL_PUBLIC char *aducid_get_authkey(AducidHandle handle);
+DLL_PUBLIC const char *aducid_get_authkey(AducidHandle handle);
 DLL_PUBLIC void  aducid_set_authkey(AducidHandle handle, const char *authKey);
-DLL_PUBLIC char *aducid_get_bindingkey(AducidHandle handle);
+DLL_PUBLIC const char *aducid_get_bindingkey(AducidHandle handle);
 DLL_PUBLIC void  aducid_set_bindingkey(AducidHandle handle, const char *bindingKey);
-DLL_PUBLIC char *aducid_get_bindingid(AducidHandle handle);
+DLL_PUBLIC const char *aducid_get_bindingid(AducidHandle handle);
 DLL_PUBLIC void  aducid_set_bindingid(AducidHandle handle, const char *bindingId);
 
 DLL_PUBLIC void  aducid_free(AducidHandle handle);

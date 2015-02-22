@@ -15,7 +15,7 @@ AducidClient::AducidClient(const char* AIM) {
 
 string AducidClient::authId() const {
     string result;
-    char *id =  aducid_get_authid(this->handle);
+    const char *id =  aducid_get_authid(this->handle);
     if(id) result = id;
     return result;
 }
@@ -30,7 +30,7 @@ void AducidClient::authId(const char *authId) {
 
 string AducidClient::authKey() const {
     string result;
-    char *id =  aducid_get_authkey(this->handle);
+    const char *id =  aducid_get_authkey(this->handle);
     if(id) result = id;
     return result;
 }    
@@ -45,7 +45,7 @@ void AducidClient::authKey(const char *authKey) {
         
 string  AducidClient::bindingId() const {
     string result;
-    char *id =  aducid_get_bindingid(this->handle);
+    const char *id =  aducid_get_bindingid(this->handle);
     if(id) result = id;
     return result;
 }
@@ -60,7 +60,7 @@ void  AducidClient::bindingId(const char *bindingId) {
 
 string AducidClient::bindingKey() const {
     string result;
-    char *id =  aducid_get_bindingkey(this->handle);
+    const char *id =  aducid_get_bindingkey(this->handle);
     if(id) result = id;
     return result;
 }
@@ -74,28 +74,23 @@ void AducidClient::bindingKey(const char *bindingKey) {
 }
 
 bool AducidClient::open(const string peigReturnName) {
-    char *id = aducid_open(this->handle, peigReturnName.c_str());
-    return id != NULL;
+    return ( aducid_open(this->handle, peigReturnName.c_str()) != NULL );
 }
 
 bool AducidClient::init(const string peigReturnName) {
-    char *id = aducid_init(this->handle, peigReturnName.c_str());
-    return id != NULL;
+    return ( aducid_init(this->handle, peigReturnName.c_str()) != NULL );
 }
 
 bool AducidClient::change(const string peigReturnName) {
-    char *id = aducid_change(this->handle, peigReturnName.c_str());
-    return id != NULL;
+    return ( aducid_change(this->handle, peigReturnName.c_str()) != NULL );
 }
 
 bool AducidClient::rechange(const string peigReturnName) {
-    char *id = aducid_rechange(this->handle, peigReturnName.c_str());
-    return id != NULL;
+    return ( aducid_rechange(this->handle, peigReturnName.c_str()) != NULL );
 }
 
 bool AducidClient::erase(const string peigReturnName) {
-    char *id = aducid_delete(this->handle, peigReturnName.c_str());
-    return id != NULL;
+    return( aducid_delete(this->handle, peigReturnName.c_str()) != NULL );
 }
 
 string AducidClient::AIMProxyURL() const {

@@ -539,7 +539,7 @@ void aducid_set_authid(AducidHandle handle, const char *authId) {
 }
 
 DLL_PUBLIC
-char *aducid_get_authid(AducidHandle handle) {
+const char *aducid_get_authid(AducidHandle handle) {
     if(!handle) return NULL;
     return handle->authId;
 }
@@ -557,7 +557,7 @@ void aducid_set_authkey(AducidHandle handle, const char *authKey) {
 }
 
 DLL_PUBLIC
-char *aducid_get_authkey(AducidHandle handle) {
+const char *aducid_get_authkey(AducidHandle handle) {
     if(!handle) return NULL;
     return handle->authKey;
 }
@@ -575,7 +575,7 @@ void aducid_set_bindingkey(AducidHandle handle, const char *bindingKey) {
 }
 
 DLL_PUBLIC
-char *aducid_get_bindingkey(AducidHandle handle) {
+const char *aducid_get_bindingkey(AducidHandle handle) {
     if(!handle) return NULL;
     return handle->bindingKey;
 }
@@ -593,13 +593,13 @@ void aducid_set_bindingid(AducidHandle handle, const char *bindingId) {
 }
 
 DLL_PUBLIC
-char *aducid_get_bindingid(AducidHandle handle) {
+const char *aducid_get_bindingid(AducidHandle handle) {
     if(!handle) return NULL;
     return handle->bindingId;
 }
 
 DLL_PUBLIC
-char *aducid_request_operation(AducidHandle handle,
+const char *aducid_request_operation(AducidHandle handle,
                                AducidOperation operation,
                                const char* methodName,
                                const char* methodParameter,
@@ -641,32 +641,32 @@ char *aducid_request_operation(AducidHandle handle,
 }
 
 DLL_PUBLIC
-char *aducid_open(AducidHandle handle, const char *peigReturnName) {
+const char *aducid_open(AducidHandle handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_OPEN,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
 DLL_PUBLIC
-char *aducid_init(AducidHandle handle, const char *peigReturnName) {
+const char *aducid_init(AducidHandle handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_INIT,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
 DLL_PUBLIC
-char *aducid_reinit(AducidHandle handle, const char *peigReturnName) {
+const char *aducid_reinit(AducidHandle handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_REINIT,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
 DLL_PUBLIC
-char *aducid_change(AducidHandle handle, const char *peigReturnName) {
+const char *aducid_change(AducidHandle handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_CHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
 DLL_PUBLIC
-char *aducid_rechange(AducidHandle handle, const char *peigReturnName) {
+const char *aducid_rechange(AducidHandle handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_RECHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
 DLL_PUBLIC
-char *aducid_delete(AducidHandle handle, const char *peigReturnName) {
+const char *aducid_delete(AducidHandle handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_DELETE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
