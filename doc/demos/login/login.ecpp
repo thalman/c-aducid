@@ -61,14 +61,14 @@ std::string udi = "";
 %     if( error != "" ) {
         <p>Login failed with error code <b><$ error $></b>!</p>
 %     }
-      <p>You are not loggen in.</p>
+      <p>You are not logged in.</p>
       <a href="?action=login">LOGIN</a>
 %   } else {
       <!-- user is logged in -->
       <h1>Welcome <$ udi $></h1>
       <p>Every user has its unique identifier in ADUCID, called user database index.
       It is unique per AIM and it is persistent, so the application can distinguish particular user.</p>
-      <p>You are loggen in.</p>
+      <p>You are logged in.</p>
       <a href="?action=logout">LOGOUT</a>
 %   }
     </div>
