@@ -64,7 +64,6 @@ const static char *aducidOperations[] = {
     "change",
     "rechange",
     "delete",
-    "replica",
     "link",
     "exuse",
     "autoChange",
@@ -292,8 +291,8 @@ AducidAIMRequestOperationResponse *aducid_aim_request_operation(const char *R4,
                                                                 const char *authId,
                                                                 const char *bindingKey,
                                                                 const char *methodName,
-                                                                const char *methodParameter,
-                                                                const char *personalObject,
+                                                                const AducidAttributeList methodParameters,
+                                                                const AducidAttributeList personalObject,
                                                                 const char *AAIM2,
                                                                 const char *ilData,
                                                                 const char *peigReturnName)
@@ -304,7 +303,7 @@ AducidAIMRequestOperationResponse *aducid_aim_request_operation(const char *R4,
     
     XML = create_aim_request_operation_xml(
                                            aducid_operation_str(operation),
-                                           AIMName,authId,bindingKey, methodName, methodParameter,
+                                           AIMName,authId,bindingKey, methodName, methodParameters,
                                            personalObject,AAIM2,ilData,
                                            peigReturnName
                                            );
@@ -602,8 +601,8 @@ DLL_PUBLIC
 const char *aducid_request_operation(AducidHandle handle,
                                AducidOperation operation,
                                const char* methodName,
-                               const char* methodParameter,
-                               const char *personalObject,
+                               const AducidAttributeList methodParameters,
+                               const AducidAttributeList personalObject,
                                const char *AAIM2,
                                const char *ilData,
                                const char *peigReturnName) {
@@ -623,7 +622,7 @@ const char *aducid_request_operation(AducidHandle handle,
                                             handle->AIMName,
                                             handle->authId,
                                             handle->bindingKey,
-                                            methodName, methodParameter,
+                                            methodName, methodParameters,
                                             personalObject,AAIM2,ilData,
                                             peigReturnName);
     if( response && (response->authId) ) {
@@ -675,6 +674,7 @@ bool aducid_close(AducidHandle handle) {
     return aducid_aim_close_session(handle->R4,handle->authId,handle->AIMName,handle->authKey);
 }
 
+
 DLL_PUBLIC
 AducidAIMGetPSLAttributesResponse *aducid_get_psl_attributes(AducidHandle handle,AducidAttributeSet attributeSet, bool useCache){
     if(!handle || !handle->authId) return false;
@@ -725,7 +725,7 @@ bool aducid_verify(AducidHandle handle) {
 }
 
 DLL_PUBLIC
-AducidAttributeList *aducid_get_attributes(AducidHandle handle,char *attrSetName) {
+AducidAttributeList *aducid_get_attributes(AducidHandle handle, char *attrSetName) {
     AducidAttributeList *list = NULL;
     AducidAIMExecutePersonalObjectResponse *dpo;
     

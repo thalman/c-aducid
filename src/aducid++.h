@@ -44,6 +44,8 @@ namespace aducid
         string userDatabaseIndex();
         string AIMProxyURL() const;
         ~AducidClient();
+    protected:
+        map<string,string> AducidListToMap(const AducidAttributeList *list) const;
     private:
         AducidHandle handle;
         std::string AIM;

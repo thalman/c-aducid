@@ -1,4 +1,5 @@
 #include "aducid++.h"
+#include "attrlist.h"
 
 namespace aducid
 {
@@ -144,8 +145,8 @@ AducidClient::getPSLAtributes( AducidAttributeSet set, bool useCache ) {
     if( response->authKey2 )          result["authKey2"] = response->authKey2;
     if( response->sessionKey )        result["sessionKey"] = response->sessionKey;
     if( response->bindingType )       result["bindingType"] = response->bindingType;
-    return result;    
-} 
+    return result;
+}
 
 string AducidClient::getPSLAtribute( const std::string &attr ) {
     map<string,string> attrs = getPSLAtributes(ADUCID_ATTRIBUTE_SET_ALL,true);
@@ -162,6 +163,17 @@ string AducidClient::AIMProxyURL() const {
     if(url) {
         result = url;
         free(url);
+    }
+    return result;
+}
+
+map<string,string> AducidClient::AducidListToMap(const AducidAttributeList *list) const {
+    map<string,string> result;
+    if( list == NULL ) return result;
+    AducidAttributeListItem *attr = ((AducidAttributeListStruct *)list)->firstItem;
+    while( attr ) {
+        result[attr->name] = attr->value;
+        attr = attr->next;
     }
     return result;
 }

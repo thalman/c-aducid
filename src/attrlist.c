@@ -18,7 +18,8 @@ AducidAttributeList aducid_attr_list_new() {
 }
 
 DLL_PUBLIC
-int aducid_attr_list_count(AducidAttributeList handle) {
+int aducid_attr_list_count( const AducidAttributeList handle )
+{
     int i = 0;
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     AducidAttributeListItem *node;
@@ -32,7 +33,8 @@ int aducid_attr_list_count(AducidAttributeList handle) {
     return i;
 }
 
-AducidAttributeListItem *aducid_attr_list_get_item(AducidAttributeList handle,int idx) {
+AducidAttributeListItem *aducid_attr_list_get_item( const AducidAttributeList handle, int idx)
+{
     int i = 0;
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     AducidAttributeListItem *node;
@@ -47,7 +49,8 @@ AducidAttributeListItem *aducid_attr_list_get_item(AducidAttributeList handle,in
 }
     
 DLL_PUBLIC
-char *aducid_attr_list_get_item_name(AducidAttributeList handle,int idx) {
+char *aducid_attr_list_get_item_name( const AducidAttributeList handle,int idx)
+{
     AducidAttributeListItem *node;
     
     if(!handle) return NULL;
@@ -56,7 +59,8 @@ char *aducid_attr_list_get_item_name(AducidAttributeList handle,int idx) {
 }
 
 DLL_PUBLIC
-char *aducid_attr_list_get_item_value(AducidAttributeList handle,int idx) {
+char *aducid_attr_list_get_item_value( const AducidAttributeList handle,int idx)
+{
     AducidAttributeListItem *node;
     
     if(!handle) return NULL;
@@ -65,7 +69,8 @@ char *aducid_attr_list_get_item_value(AducidAttributeList handle,int idx) {
 }
 
 DLL_PUBLIC
-void aducid_attr_list_append(AducidAttributeList handle,char *name,char *value) {
+void aducid_attr_list_append( AducidAttributeList handle,char *name,char *value)
+{
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     
     if(!handle) return;
@@ -73,7 +78,8 @@ void aducid_attr_list_append(AducidAttributeList handle,char *name,char *value) 
 }
 
 DLL_PUBLIC
-void aducid_attr_list_insert(AducidAttributeList handle,char *name,char *value,int idx) {
+void aducid_attr_list_insert(AducidAttributeList handle,char *name,char *value,int idx)
+{
     AducidAttributeListItem *node,*newNode;
     
     if(!handle) return;
@@ -93,7 +99,8 @@ void aducid_attr_list_insert(AducidAttributeList handle,char *name,char *value,i
 
 
 DLL_PUBLIC
-void aducid_attr_list_prepend(AducidAttributeList handle,char *name,char *value) {
+void aducid_attr_list_prepend(AducidAttributeList handle,char *name, char *value)
+{
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     
     if(!handle) return;
@@ -101,7 +108,8 @@ void aducid_attr_list_prepend(AducidAttributeList handle,char *name,char *value)
 }
 
 DLL_PUBLIC
-char *aducid_attr_list_get_first_by_name(AducidAttributeList handle,char *name) {
+char *aducid_attr_list_get_first_by_name( const AducidAttributeList handle, const char *name)
+{
     AducidAttributeListItem *node;
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     
@@ -119,7 +127,8 @@ char *aducid_attr_list_get_first_by_name(AducidAttributeList handle,char *name) 
 }
 
 DLL_PUBLIC
-char *aducid_attr_list_get_next_by_name(AducidAttributeList handle,char *name) {
+char *aducid_attr_list_get_next_by_name( const AducidAttributeList handle, const char *name)
+{
     AducidAttributeListItem *node;
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     
@@ -139,7 +148,8 @@ char *aducid_attr_list_get_next_by_name(AducidAttributeList handle,char *name) {
 }
 
 DLL_PUBLIC
-int aducid_attr_list_get_count_by_name(AducidAttributeList handle,char *name) {
+int aducid_attr_list_get_count_by_name( const AducidAttributeList handle, const char *name)
+{
     AducidAttributeListItem *node;
     int cnt = 0;
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
@@ -156,7 +166,8 @@ int aducid_attr_list_get_count_by_name(AducidAttributeList handle,char *name) {
     return cnt;
 }
 
-bool aducid_attr_list_delete_node(AducidAttributeList handle,AducidAttributeListItem *item) {
+bool aducid_attr_list_delete_node( AducidAttributeList handle, AducidAttributeListItem *item )
+{
     AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
     
     if(!handle) { return false; }
@@ -165,7 +176,8 @@ bool aducid_attr_list_delete_node(AducidAttributeList handle,AducidAttributeList
 }
 
 DLL_PUBLIC
-bool aducid_attr_list_delete(AducidAttributeList handle,int idx) {
+bool aducid_attr_list_delete(AducidAttributeList handle, int idx)
+{
     AducidAttributeListItem *node;
     
     if(!handle) { return false; }
@@ -176,7 +188,7 @@ bool aducid_attr_list_delete(AducidAttributeList handle,int idx) {
 }
 
 DLL_PUBLIC
-bool aducid_attr_list_delete_by_name(AducidAttributeList handle,char *name) {
+bool aducid_attr_list_delete_by_name(AducidAttributeList handle, char *name) {
     AducidAttributeListItem *node;
     bool result = false;
     int cnt,i;

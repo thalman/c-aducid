@@ -61,7 +61,7 @@ bool aducid_peig_invoke(AducidHandle handle) {
 }
 
 DLL_PUBLIC
-char *aducid_peig_get_authkey(AducidHandle handle) {
+const char *aducid_peig_get_authkey(AducidHandle handle) {
     static char *notUsed = "http://not.used/";
     char *encodedAuthId;
     char *encodedReturnUrl;
@@ -117,7 +117,7 @@ char *aducid_peig_get_authkey(AducidHandle handle) {
         }
     }
     free_http_data_memory(raReply);
-    return aducid_get_authkey(handle);
+    return (const char *)aducid_get_authkey(handle);
 }
 
 DLL_PUBLIC

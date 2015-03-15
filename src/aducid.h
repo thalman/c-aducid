@@ -51,18 +51,18 @@ extern "C" {
 typedef void *AducidAttributeList;
 
 DLL_PUBLIC AducidAttributeList aducid_attr_list_new();
-DLL_PUBLIC int   aducid_attr_list_count(AducidAttributeList handle);
-DLL_PUBLIC char *aducid_attr_list_get_item_name(AducidAttributeList handle,int idx);
-DLL_PUBLIC char *aducid_attr_list_get_item_value(AducidAttributeList handle,int idx);
-DLL_PUBLIC void  aducid_attr_list_append(AducidAttributeList handle,char *name,char *value);
-DLL_PUBLIC void  aducid_attr_list_prepend(AducidAttributeList handle,char *name,char *value);
-DLL_PUBLIC void  aducid_attr_list_insert(AducidAttributeList handle,char *name,char *value,int idx);
-DLL_PUBLIC char *aducid_attr_list_get_first_by_name(AducidAttributeList handle,char *name);
-DLL_PUBLIC char *aducid_attr_list_get_next_by_name(AducidAttributeList handle,char *name);
-DLL_PUBLIC int   aducid_attr_list_get_count_by_name(AducidAttributeList handle,char *name);
-DLL_PUBLIC bool  aducid_attr_list_delete(AducidAttributeList handle,int idx);
-DLL_PUBLIC bool  aducid_attr_list_delete_by_name(AducidAttributeList handle,char *name);
-DLL_PUBLIC void  aducid_attr_list_free(AducidAttributeList handle);
+DLL_PUBLIC int   aducid_attr_list_count( const AducidAttributeList handle );
+DLL_PUBLIC char *aducid_attr_list_get_item_name( const AducidAttributeList handle, int idx );
+DLL_PUBLIC char *aducid_attr_list_get_item_value( const AducidAttributeList handle, int idx );
+DLL_PUBLIC void  aducid_attr_list_append( AducidAttributeList handle,char *name,char *value );
+DLL_PUBLIC void  aducid_attr_list_prepend( AducidAttributeList handle,char *name,char *value );
+DLL_PUBLIC void  aducid_attr_list_insert( AducidAttributeList handle,char *name,char *value,int idx );
+DLL_PUBLIC char *aducid_attr_list_get_first_by_name( const AducidAttributeList handle, const char *name );
+DLL_PUBLIC char *aducid_attr_list_get_next_by_name( const AducidAttributeList handle, const char *name );
+DLL_PUBLIC int   aducid_attr_list_get_count_by_name( const AducidAttributeList handle, const char *name );
+DLL_PUBLIC bool  aducid_attr_list_delete( AducidAttributeList handle, int idx );
+DLL_PUBLIC bool  aducid_attr_list_delete_by_name( AducidAttributeList handle,char *name );
+DLL_PUBLIC void  aducid_attr_list_free( AducidAttributeList handle );
 
 /* ADUCID enum constants begin */
 
@@ -284,8 +284,8 @@ DLL_PUBLIC AducidAIMRequestOperationResponse *aducid_aim_request_operation(
     const char *authId,
     const char *bindingKey,
     const char *methodName,
-    const char *methodParameter,
-    const char *personalObject,
+    const AducidAttributeList methodParameter,
+    const AducidAttributeList personalObject,
     const char *AAIM2,
     const char *ilData,
     const char *peigReturnName);
@@ -349,6 +349,12 @@ DLL_PUBLIC const char *aducid_change(AducidHandle handle, const char *peigReturn
 DLL_PUBLIC const char *aducid_rechange(AducidHandle handle, const char *peigReturnName);
 DLL_PUBLIC const char *aducid_delete(AducidHandle handle, const char *peigReturnName);
 
+DLL_PUBLIC const char *aducid_exuse(AducidHandle handle,
+                                    const char *methodName,
+                                    const AducidAttributeList methodParameters,
+                                    const AducidAttributeList personalObject,
+                                    const char *peigReturnName);
+
 DLL_PUBLIC bool aducid_close(AducidHandle handle);
 
 DLL_PUBLIC AducidAIMGetPSLAttributesResponse *aducid_get_psl_attributes(AducidHandle handle,AducidAttributeSet attributeSet, bool useCache);
@@ -394,7 +400,7 @@ class DLL_PUBLIC AducidClient
  */
 
 DLL_PUBLIC bool aducid_peig_invoke(AducidHandle handle);
-DLL_PUBLIC char *aducid_peig_get_authkey(AducidHandle handle);
+DLL_PUBLIC const char *aducid_peig_get_authkey(AducidHandle handle);
 DLL_PUBLIC char *aducid_get_aimproxy_url(AducidHandle handle);
 DLL_PUBLIC char *aducid_get_aducid_url(AducidHandle handle);
 
