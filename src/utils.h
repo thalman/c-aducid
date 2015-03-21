@@ -10,8 +10,8 @@
 char *dyn_strcat(char *string1,char *string2, bool frees2);
 char *xml_get_single_node_text(xmlDocPtr doc, xmlChar *xpath);
 void safe_free(void *ptr);
-char *url_decode(char *encoded);
-char *url_encode(char *decoded);
+char *url_decode(const char *encoded);
+char *url_encode(const char *decoded);
 char *url_to_host_and_port(char *URL);
 char *url_to_host(char *URL);
 char *url_to_location(char *URL);

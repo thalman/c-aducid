@@ -1,9 +1,9 @@
-#include "aducid.h"
+#include "definitions.h"
 #include "httpclient.h"
 #include "utils.h"
 #include <string.h>
 
-#if defined _WIN32 || defined _WIN64
+#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
 /* nothing for win */
 #else
 #include <curl/curl.h>
@@ -13,8 +13,9 @@
 
 static char *peigProxyInterface = "http://127.0.0.1:44240/ADUCID/PEIG/auth";
 
-DLL_PUBLIC
-bool aducid_peig_invoke(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC bool
+aducid_peig_invoke(AducidHandle_t handle)
+{
     char *encoded;
     char *raurl = NULL;
     char *raReply;
@@ -60,8 +61,9 @@ bool aducid_peig_invoke(AducidHandle handle) {
     }
 }
 
-DLL_PUBLIC
-const char *aducid_peig_get_authkey(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC const char *
+aducid_peig_get_authkey(AducidHandle_t handle)
+{
     static char *notUsed = "http://not.used/";
     char *encodedAuthId;
     char *encodedReturnUrl;
@@ -120,8 +122,9 @@ const char *aducid_peig_get_authkey(AducidHandle handle) {
     return (const char *)aducid_get_authkey(handle);
 }
 
-DLL_PUBLIC
-char *aducid_get_aimproxy_url(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC char *
+aducid_get_aimproxy_url(AducidHandle_t handle)
+{
     char *aimproxyurl;
     char *p;
     char *encoded;
@@ -161,8 +164,9 @@ char *aducid_get_aimproxy_url(AducidHandle handle) {
     return aimproxyurl;
 }
 
-DLL_PUBLIC
-char *aducid_get_aducid_url(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC char *
+aducid_get_aducid_url(AducidHandle_t handle)
+{
     char *url = NULL;
     char *encoded;
     

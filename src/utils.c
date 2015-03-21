@@ -167,7 +167,7 @@ char *wchar_to_char(LPWSTR wch) {
 }
 #endif
 
-char *url_decode(char *encoded) {
+char *url_decode(const char *encoded) {
     char c, *result = NULL,hex[5];
     unsigned int i,j;
     unsigned int x = 0;
@@ -209,7 +209,7 @@ char *url_decode(char *encoded) {
     return result;
 }
 
-char *url_encode(char *decoded) {
+char *url_encode(const char *decoded) {
     char *result = NULL,c;
     unsigned int i,j;
 

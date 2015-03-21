@@ -1,8 +1,28 @@
 #ifndef _DEFINITION_H_
 #define _DEFINITION_H_
 
+#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+  /* on windows */
+  #ifdef __GNUC__
+    #define ADUCID_PUBLIC_FUNC __attribute__ ((dllexport))
+  #else
+    #define ADUCID_PUBLIC_FUNC __declspec(dllexport)
+  #endif
+  #define ADUCID_LOCAL_FUNC
+#else
+  /* on posix */
+  #if __GNUC__ >= 4
+    #define ADUCID_PUBLIC_FUNC __attribute__ ((visibility ("default")))
+    #define ADUCID_LOCAL_FUNC  __attribute__ ((visibility ("hidden")))
+  #else
+    #define ADUCID_PUBLIC_FUNC
+    #define ADUCID_LOCAL_FUNC
+  #endif
+#endif
 
-#if defined _WIN32 || defined _WIN64
+
+#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+/* windows includes */
 #ifndef bool
 #define bool int
 #define false 0
@@ -18,8 +38,13 @@
 #define sleep(x) Sleep(1000*x)
 #pragma comment(lib, "winhttp.lib")
 #else
+/* posix includes */
 #include<stdbool.h>
 #endif
+
+/* common includes */
+#include "aducid.h"
+#include "aducidprivate.h"
 
 #endif
 

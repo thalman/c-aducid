@@ -11,32 +11,32 @@ extern "C" {
 #include <stdio.h>
 #include <string.h>
 
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
-  #ifdef BUILDING_ADUCID_DLL
+#ifndef ADUCID_PUBLIC_FUNC
+  #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+    /* on windows */
     #ifdef __GNUC__
-      #define DLL_PUBLIC __attribute__ ((dllexport))
+      #define ADUCID_PUBLIC_FUNC __attribute__ ((dllimport))
     #else
-      #define DLL_PUBLIC __declspec(dllexport) /* Note: actually gcc seems to also supports this syntax. */
+      #define ADUCID_PUBLIC_FUNC __declspec(dllimport)
     #endif
+    #define ADUCID_LOCAL_FUNC
   #else
-    #ifdef __GNUC__
-      #define DLL_PUBLIC __attribute__ ((dllimport))
+    /* on posix */
+    /*
+    #if __GNUC__ >= 4
+      #define ADUCID_PUBLIC_FUNC __attribute__ ((visibility ("default")))
+      #define ADUCID_LOCAL_FUNC  __attribute__ ((visibility ("hidden")))
     #else
-      #define DLL_PUBLIC __declspec(dllimport) /* Note: actually gcc seems to also supports this syntax. */
+    */
+      #define ADUCID_PUBLIC_FUNC
+      #define ADUCID_LOCAL_FUNC
+    /*
     #endif
-  #endif
-  #define DLL_LOCAL
-#else
-  #if __GNUC__ >= 4
-    #define DLL_PUBLIC __attribute__ ((visibility ("default")))
-    #define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
-  #else
-    #define DLL_PUBLIC
-    #define DLL_LOCAL
+    */
   #endif
 #endif
 
-#if defined _WIN32 || defined _WIN64
+#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
 #ifndef bool
 #define bool int
 #define false 0
@@ -48,21 +48,21 @@ extern "C" {
 /**
  * attribute list functions
  */
-typedef void *AducidAttributeList;
+typedef void *AducidAttributeList_t;
 
-DLL_PUBLIC AducidAttributeList aducid_attr_list_new();
-DLL_PUBLIC int   aducid_attr_list_count( const AducidAttributeList handle );
-DLL_PUBLIC char *aducid_attr_list_get_item_name( const AducidAttributeList handle, int idx );
-DLL_PUBLIC char *aducid_attr_list_get_item_value( const AducidAttributeList handle, int idx );
-DLL_PUBLIC void  aducid_attr_list_append( AducidAttributeList handle,char *name,char *value );
-DLL_PUBLIC void  aducid_attr_list_prepend( AducidAttributeList handle,char *name,char *value );
-DLL_PUBLIC void  aducid_attr_list_insert( AducidAttributeList handle,char *name,char *value,int idx );
-DLL_PUBLIC char *aducid_attr_list_get_first_by_name( const AducidAttributeList handle, const char *name );
-DLL_PUBLIC char *aducid_attr_list_get_next_by_name( const AducidAttributeList handle, const char *name );
-DLL_PUBLIC int   aducid_attr_list_get_count_by_name( const AducidAttributeList handle, const char *name );
-DLL_PUBLIC bool  aducid_attr_list_delete( AducidAttributeList handle, int idx );
-DLL_PUBLIC bool  aducid_attr_list_delete_by_name( AducidAttributeList handle,char *name );
-DLL_PUBLIC void  aducid_attr_list_free( AducidAttributeList handle );
+ADUCID_PUBLIC_FUNC AducidAttributeList_t aducid_attr_list_new();
+ADUCID_PUBLIC_FUNC int   aducid_attr_list_count( const AducidAttributeList_t handle );
+ADUCID_PUBLIC_FUNC char *aducid_attr_list_get_item_name( const AducidAttributeList_t handle, int idx );
+ADUCID_PUBLIC_FUNC char *aducid_attr_list_get_item_value( const AducidAttributeList_t handle, int idx );
+ADUCID_PUBLIC_FUNC void  aducid_attr_list_append( AducidAttributeList_t handle, const char *name, const char *value );
+ADUCID_PUBLIC_FUNC void  aducid_attr_list_prepend( AducidAttributeList_t handle, const char *name, const char *value );
+ADUCID_PUBLIC_FUNC void  aducid_attr_list_insert( AducidAttributeList_t handle, const char *name, const char *value, int idx );
+ADUCID_PUBLIC_FUNC char *aducid_attr_list_get_first_by_name( const AducidAttributeList_t handle, const char *name );
+ADUCID_PUBLIC_FUNC char *aducid_attr_list_get_next_by_name( const AducidAttributeList_t handle, const char *name );
+ADUCID_PUBLIC_FUNC int   aducid_attr_list_get_count_by_name( const AducidAttributeList_t handle, const char *name );
+ADUCID_PUBLIC_FUNC bool  aducid_attr_list_delete( AducidAttributeList_t handle, int idx );
+ADUCID_PUBLIC_FUNC bool  aducid_attr_list_delete_by_name( AducidAttributeList_t handle,char *name );
+ADUCID_PUBLIC_FUNC void  aducid_attr_list_free( AducidAttributeList_t handle );
 
 /* ADUCID enum constants begin */
 
@@ -74,11 +74,10 @@ typedef enum {
     ADUCID_OPERATION_CHANGE,
     ADUCID_OPERATION_RECHANGE,
     ADUCID_OPERATION_DELETE,
-    ADUCID_OPERATION_REPLICA,
     ADUCID_OPERATION_LINK,
     ADUCID_OPERATION_EXUSE,
     ADUCID_OPERATION_AUTO_CHANGE
-} AducidOperation;
+} AducidOperation_t;
 
 typedef enum {
     ADUCID_ATTRIBUTE_SET_INVALID = 0,
@@ -89,7 +88,7 @@ typedef enum {
     ADUCID_ATTRIBUTE_SET_LINK,
     ADUCID_ATTRIBUTE_SET_ERROR,
     ADUCID_ATTRIBUTE_SET_PEIG_RETURN_NAME
-} AducidAttributeSet;
+} AducidAttributeSet_t;
 
 typedef enum {
     ADUCID_AIM_STATUS_INVALID = 0,
@@ -107,7 +106,7 @@ typedef enum {
     ADUCID_AIM_STATUS_END,
     ADUCID_AIM_STATUS_PASSIVE,
     ADUCID_AIM_STATUS_AUTH_ERROR
-} AducidAIMStatus;
+} AducidAIMStatus_t;
 
 typedef enum {
     ADUCID_METHOD_INVALID = 0,
@@ -148,7 +147,7 @@ typedef enum {
     ADUCID_METHOD_CONFIRM_TRANSACTION,
     ADUCID_METHOD_VERIFY_LF,
     ADUCID_METHOD_PEIG_LOCAL_LINK
-} AducidMethod;
+} AducidMethod_t;
 
 typedef enum {
     ADUCID_ALGORITHM_INVALID = 0,
@@ -158,8 +157,9 @@ typedef enum {
     ADUCID_ALGORITHM_BIN_STRING,
     ADUCID_ALGORITHM_OTP_AIM_1,
     ADUCID_ALGORITHM_X509_SIG,
+    ADUCID_ALGORITHM_PEIG_MGMT,
     ADUCID_ALGORITHM_PAYMENT
-} AducidAlgorithm;
+} AducidAlgorithm_t;
 
 typedef enum {
     ADUCID_AUTHSTATUS_INVALID = 0,
@@ -209,36 +209,43 @@ typedef enum {
     ADUCID_AUTHSTATUS_BEE,
     ADUCID_AUTHSTATUS_UBM,
     ADUCID_AUTHSTATUS_PCD
-} AducidAuthStatus;
+} AducidAuthStatus_t;
 
 
 /* ADUCID enum constants end */
 
+typedef enum {
+    ADUCID_PEIG_LOCAL_LINK_PRIMARY_REPLICA,
+    ADUCID_PEIG_LOCAL_LINK_SECONDARY_REPLICA,
+    ADUCID_PEIG_LOCAL_LINK_CONNECTION_USB,
+} AducidPeigLocalLink_t;
+
+    
 typedef struct {
     char *authId;
     char *bindingId;
     char *bindingKey;
-    AducidAIMStatus statusAIM;
-    AducidAuthStatus statusAuth;
-} AducidAIMRequestOperationResponse;
+    AducidAIMStatus_t statusAIM;
+    AducidAuthStatus_t statusAuth;
+} AducidAIMRequestOperationResponse_t;
 
 typedef struct {
-    AducidAIMStatus statusAIM;
-    AducidAuthStatus statusAuth;
+    AducidAIMStatus_t statusAIM;
+    AducidAuthStatus_t statusAuth;
     char *statusMessage;
-    AducidAttributeList personalObject;
-} AducidAIMExecutePersonalObjectResponse;
+    AducidAttributeList_t personalObject;
+} AducidAIMExecutePersonalObjectResponse_t;
 
 typedef struct {
-    AducidAIMStatus statusAIM;
-    AducidAuthStatus statusAuth;
-    AducidOperation operationName;
+    AducidAIMStatus_t statusAIM;
+    AducidAuthStatus_t statusAuth;
+    AducidOperation_t operationName;
     char *userDatabaseIndex;
     char *userId;
     char *validityCount;
     char *validityTime;
-    char *orangeCount;
-    char *orangeTime;
+    char *expirationCountdownUses;
+    char *expirationCountdownTime;
     char *securityProfileName;
     char *authenticationProtocolName;
     char *securityLevel;
@@ -255,7 +262,7 @@ typedef struct {
     char *authKey2;
     char *sessionKey;
     char *bindingType;
-} AducidAIMGetPSLAttributesResponse;
+} AducidAIMGetPSLAttributesResponse_t;
 
 typedef struct {
     char *authId;
@@ -265,53 +272,53 @@ typedef struct {
     char *AIMName;
     char *R3;
     char *R4;
-    AducidAIMGetPSLAttributesResponse *PSLCache[ADUCID_ATTRIBUTE_SET_ERROR];
+    AducidAIMGetPSLAttributesResponse_t *PSLCache[ADUCID_ATTRIBUTE_SET_ERROR];
 } AducidHandleStruct;
 
-typedef AducidHandleStruct *AducidHandle;
+typedef AducidHandleStruct *AducidHandle_t;
 
 /**
   * Aducid operations
   */
-DLL_PUBLIC void aducid_free_aim_request_operation_response(AducidAIMRequestOperationResponse *response);
-DLL_PUBLIC void aducid_free_aim_get_psl_attributes_response(AducidAIMGetPSLAttributesResponse *response);
-DLL_PUBLIC void aducid_free_aim_execute_personal_object_response(AducidAIMExecutePersonalObjectResponse *response);
+ADUCID_PUBLIC_FUNC void aducid_free_aim_request_operation_response(AducidAIMRequestOperationResponse_t *response);
+ADUCID_PUBLIC_FUNC void aducid_free_aim_get_psl_attributes_response(AducidAIMGetPSLAttributesResponse_t *response);
+ADUCID_PUBLIC_FUNC void aducid_free_aim_execute_personal_object_response(AducidAIMExecutePersonalObjectResponse_t *response);
 
-DLL_PUBLIC AducidAIMRequestOperationResponse *aducid_aim_request_operation(
+ADUCID_PUBLIC_FUNC AducidAIMRequestOperationResponse_t *aducid_aim_request_operation(
     const char *R4,
-    AducidOperation operation,
+    AducidOperation_t operation,
     const char *AIMName,
     const char *authId,
     const char *bindingKey,
     const char *methodName,
-    const AducidAttributeList methodParameter,
-    const AducidAttributeList personalObject,
+    const AducidAttributeList_t methodParameter,
+    const AducidAttributeList_t personalObject,
     const char *AAIM2,
     const char *ilData,
     const char *peigReturnName);
     
-DLL_PUBLIC AducidAIMGetPSLAttributesResponse *aducid_aim_get_psl_attributes(
+ADUCID_PUBLIC_FUNC AducidAIMGetPSLAttributesResponse_t *aducid_aim_get_psl_attributes(
     const char *R4,
     const char *authId,
     const char *bindingId,
     const char *AIMName,
     const char *authKey,
-    AducidAttributeSet attributeSet);
+    AducidAttributeSet_t attributeSet);
 
-DLL_PUBLIC AducidAIMExecutePersonalObjectResponse *aducid_aim_execute_personal_object(
+ADUCID_PUBLIC_FUNC AducidAIMExecutePersonalObjectResponse_t *aducid_aim_execute_personal_object(
     const char *R4,
     const char *authId,
     const char *AIMName,
     const char *authKey,
-    AducidMethod methodName,
+    AducidMethod_t methodName,
     const char *personalObjectName,
-    AducidAlgorithm personalObjectAlgorithm,
-    AducidAttributeList *personalObjectData,
+    AducidAlgorithm_t personalObjectAlgorithm,
+    AducidAttributeList_t *personalObjectData,
     const char *ILID,
     const char *AAIM2,
     const char *ilData);
 
-DLL_PUBLIC bool aducid_aim_close_session(
+ADUCID_PUBLIC_FUNC bool aducid_aim_close_session(
     const char *R4,
     const char *authId,
     const char *AIMName,
@@ -321,94 +328,167 @@ DLL_PUBLIC bool aducid_aim_close_session(
 const char *    aducid_operation_str(AducidOperation operation);
 AducidOperation aducid_operation_enum(char *operation);
 */
-DLL_PUBLIC const char *aducid_operation_str(AducidOperation operation);
-DLL_PUBLIC AducidOperation aducid_operation_enum(char *operation);
+ADUCID_PUBLIC_FUNC const char *aducid_operation_str(AducidOperation_t operation);
+ADUCID_PUBLIC_FUNC AducidOperation_t aducid_operation_enum(char *operation);
 
-DLL_PUBLIC const char *       aducid_attribute_set_str(AducidAttributeSet set);
-DLL_PUBLIC AducidAttributeSet aducid_attribute_set_enum(char *set);
+ADUCID_PUBLIC_FUNC const char *       aducid_attribute_set_str(AducidAttributeSet_t set);
+ADUCID_PUBLIC_FUNC AducidAttributeSet_t aducid_attribute_set_enum(char *set);
 
-DLL_PUBLIC const char *    aducid_aim_status_str(AducidAIMStatus status);
-DLL_PUBLIC AducidAIMStatus aducid_aim_status_enum(char *status);
+ADUCID_PUBLIC_FUNC const char *    aducid_aim_status_str(AducidAIMStatus_t status);
+ADUCID_PUBLIC_FUNC AducidAIMStatus_t aducid_aim_status_enum(char *status);
 
-DLL_PUBLIC const char * aducid_method_str(AducidMethod method);
-DLL_PUBLIC AducidMethod aducid_method_enum(char *method);
+ADUCID_PUBLIC_FUNC const char * aducid_method_str(AducidMethod_t method);
+ADUCID_PUBLIC_FUNC AducidMethod_t aducid_method_enum(char *method);
 
-DLL_PUBLIC const char *    aducid_algorithm_str(AducidAlgorithm alg);
-DLL_PUBLIC AducidAlgorithm aducid_algorithm_enum(char *alg);
+ADUCID_PUBLIC_FUNC const char *    aducid_algorithm_str(AducidAlgorithm_t alg);
+ADUCID_PUBLIC_FUNC AducidAlgorithm_t aducid_algorithm_enum(char *alg);
 
-DLL_PUBLIC const char *     aducid_auth_status_str(AducidAuthStatus status);
-DLL_PUBLIC AducidAuthStatus aducid_auth_status_enum(char *status);
+ADUCID_PUBLIC_FUNC const char *     aducid_auth_status_str(AducidAuthStatus_t status);
+ADUCID_PUBLIC_FUNC AducidAuthStatus_t aducid_auth_status_enum(char *status);
 
 /* c interface */
-DLL_PUBLIC AducidHandle aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey);
+ADUCID_PUBLIC_FUNC AducidHandle_t aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey);
 
-DLL_PUBLIC const char *aducid_open(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC const char *aducid_init(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC const char *aducid_reinit(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC const char *aducid_change(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC const char *aducid_rechange(AducidHandle handle, const char *peigReturnName);
-DLL_PUBLIC const char *aducid_delete(AducidHandle handle, const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *aducid_open( AducidHandle_t handle, const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *aducid_init( AducidHandle_t handle, const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *aducid_reinit( AducidHandle_t handle, const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *aducid_change( AducidHandle_t handle, const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *aducid_rechange( AducidHandle_t handle, const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *aducid_delete( AducidHandle_t handle, const char *peigReturnName);
 
-DLL_PUBLIC const char *aducid_exuse(AducidHandle handle,
-                                    const char *methodName,
-                                    const AducidAttributeList methodParameters,
-                                    const AducidAttributeList personalObject,
-                                    const char *peigReturnName);
+ADUCID_PUBLIC_FUNC const char *
+aducid_exuse( AducidHandle_t handle,
+              const char *methodName,
+              const AducidAttributeList_t methodParameters,
+              const AducidAttributeList_t personalObject,
+              const char *peigReturnName );
 
-DLL_PUBLIC bool aducid_close(AducidHandle handle);
+ADUCID_PUBLIC_FUNC bool aducid_close(AducidHandle_t handle);
 
-DLL_PUBLIC AducidAIMGetPSLAttributesResponse *aducid_get_psl_attributes(AducidHandle handle,AducidAttributeSet attributeSet, bool useCache);
-DLL_PUBLIC bool  aducid_wait_for_operation(AducidHandle handle);
-DLL_PUBLIC bool  aducid_verify(AducidHandle handle);
+ADUCID_PUBLIC_FUNC AducidAIMGetPSLAttributesResponse_t *
+aducid_get_psl_attributes( AducidHandle_t handle, AducidAttributeSet_t attributeSet, bool useCache );
 
-DLL_PUBLIC AducidAttributeList *aducid_get_attributes(AducidHandle handle,char *attrSetName);
-DLL_PUBLIC bool  aducid_set_attributes(AducidHandle handle, char *attrSetName, AducidAttributeList *attrs);
-DLL_PUBLIC const char *aducid_get_user_database_index(AducidHandle handle);
-DLL_PUBLIC void  aducid_clear_psl_cache(AducidHandle handle);
+ADUCID_PUBLIC_FUNC bool
+aducid_wait_for_operation( AducidHandle_t handle );
 
-DLL_PUBLIC const char *aducid_get_authid(AducidHandle handle);
-DLL_PUBLIC void  aducid_set_authid(AducidHandle handle, const char *authId);
-DLL_PUBLIC const char *aducid_get_authkey(AducidHandle handle);
-DLL_PUBLIC void  aducid_set_authkey(AducidHandle handle, const char *authKey);
-DLL_PUBLIC const char *aducid_get_bindingkey(AducidHandle handle);
-DLL_PUBLIC void  aducid_set_bindingkey(AducidHandle handle, const char *bindingKey);
-DLL_PUBLIC const char *aducid_get_bindingid(AducidHandle handle);
-DLL_PUBLIC void  aducid_set_bindingid(AducidHandle handle, const char *bindingId);
+ADUCID_PUBLIC_FUNC bool
+aducid_verify( AducidHandle_t handle );
 
-DLL_PUBLIC void  aducid_free(AducidHandle handle);
+ADUCID_PUBLIC_FUNC AducidAttributeList_t *
+aducid_get_attributes( AducidHandle_t handle, char *attrSetName );
 
-/* cpp interface
-class DLL_PUBLIC AducidClient
-{
- private:
-    AducidHandle handle;
- public:
-    DLL_PUBLIC AducidClient(char *aim);
-    DLL_PUBLIC ~AducidClient();
-    DLL_PUBLIC char *open();
-    DLL_PUBLIC char *init();
-    DLL_PUBLIC char *reinit();
-    DLL_PUBLIC char *change();
-    DLL_PUBLIC char *rechange();
-    DLL_PUBLIC bool close();
-    DLL_PUBLIC AIMGetPSLAttributesResponse *getPslAttributes(AducidAttributeSet attributeSet, bool useCache);
-};
-*/
+ADUCID_PUBLIC_FUNC bool
+aducid_set_attributes( AducidHandle_t handle, char *attrSetName, AducidAttributeList_t *attrs );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_get_user_database_index( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC void
+aducid_clear_psl_cache( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_get_authid( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC void
+aducid_set_authid( AducidHandle_t handle, const char *authId );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_get_authkey( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC void
+aducid_set_authkey( AducidHandle_t handle, const char *authKey );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_get_bindingkey( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC void
+aducid_set_bindingkey( AducidHandle_t handle, const char *bindingKey );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_get_bindingid( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC void
+aducid_set_bindingid( AducidHandle_t handle, const char *bindingId );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_exuse( AducidHandle_t handle,
+              const char *methodName,
+              const AducidAttributeList_t methodParameters,
+              const AducidAttributeList_t personalObject,
+              const char *peigReturnName );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_init_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_change_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_delete_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_verify_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+
+/*
+ *   Room operations
+ */
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_create_room_by_name( AducidHandle_t handle, const char *roomName, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_enter_room_by_name( AducidHandle_t handle, const char *roomName, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_create_room_by_story( AducidHandle_t handle, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_enter_room_by_story( AducidHandle_t handle, const char * peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_peig_local_link( AducidHandle_t handle, AducidPeigLocalLink_t linkType, const char * peigReturnURL );
+
+/*
+ * Payment operations
+ */
+ADUCID_PUBLIC_FUNC const char *
+aducid_init_payment( AducidHandle_t handle, bool useLocalFactor, const char *peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_confirm_text_transaction(
+    AducidHandle_t handle,
+    const char *textUTF8,
+    bool useLocalFactor,
+    const char *peigReturnURL );
+
+ADUCID_PUBLIC_FUNC const char *
+aducid_confirm_money_transaction(
+    AducidHandle_t handle,
+    const char *fromAccount,
+    const char *toAccount,
+    const char *amount,
+    bool useLocalFactor,
+    const char *peigReturnURL );
+
+
+ADUCID_PUBLIC_FUNC void
+aducid_free( AducidHandle_t handle );
+
 
 /**
  * PEIG
  */
 
-DLL_PUBLIC bool aducid_peig_invoke(AducidHandle handle);
-DLL_PUBLIC const char *aducid_peig_get_authkey(AducidHandle handle);
-DLL_PUBLIC char *aducid_get_aimproxy_url(AducidHandle handle);
-DLL_PUBLIC char *aducid_get_aducid_url(AducidHandle handle);
+ADUCID_PUBLIC_FUNC bool aducid_peig_invoke(AducidHandle_t handle);
+ADUCID_PUBLIC_FUNC const char *aducid_peig_get_authkey(AducidHandle_t handle);
+ADUCID_PUBLIC_FUNC char *aducid_get_aimproxy_url(AducidHandle_t handle);
+ADUCID_PUBLIC_FUNC char *aducid_get_aducid_url(AducidHandle_t handle);
 
 /**
  * library inicialization
  */
-DLL_PUBLIC int aducid_library_init();
-DLL_PUBLIC int aducid_library_free();
+ADUCID_PUBLIC_FUNC int aducid_library_init();
+ADUCID_PUBLIC_FUNC int aducid_library_free();
 
 #ifdef __cplusplus
 }

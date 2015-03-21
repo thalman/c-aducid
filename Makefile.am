@@ -6,6 +6,8 @@ lib_LTLIBRARIES      = libaducid.la libaducidpp.la
 
 libaducid_la_SOURCES = \
     src/aducid.c \
+    src/textconstants.c \
+    src/aim.c \
     src/exuse.c \
     src/aducidsoap.c \
     src/attrlist.c \

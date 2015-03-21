@@ -53,7 +53,7 @@ char *create_xml_attribute(const char *name, const char *value) {
     return attr;
 }
 
-char *create_method_params_xml(const AducidAttributeList list)
+char *create_method_params_xml(const AducidAttributeList_t list)
 {
     char *xml = NULL;
     int a;
@@ -63,22 +63,22 @@ char *create_method_params_xml(const AducidAttributeList list)
         xml = dyn_strcat(xml, aducid_attr_list_get_item_name(list,a), false);
         xml = dyn_strcat(xml, "</parameterName>\n  <parameterValue xsi:type=\"xsd:string\">", false);
         xml = dyn_strcat(xml, aducid_attr_list_get_item_value(list, a), false);
-        xml = dyn_strcat(xml, "  </parameterValue>\n</methodParameter>\n",false);
+        xml = dyn_strcat(xml, "</parameterValue>\n</methodParameter>\n",false);
     }
     return xml;
 }
 
-char *create_personal_object_xml(const char *name, const char *typeName, const char *algorithm, AducidAttributeList *attributes) {
+char *create_personal_object_xml(const char *name, const char *typeName, const char *algorithm, AducidAttributeList_t *attributes) {
     static const char *poaformat = "<personalObjectAttribute iface:attributeName=\"%s\">\n"
 	"<attributeValue xmlns:s115=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:s116=\"http://www.w3.org/2001/XMLSchema\" s115:type=\"s116:string\">%s</attributeValue>\n"
 	"</personalObjectAttribute>\n";
     int attrLength;
     char *buffer;
-    AducidAttributeListItem *attr;
+    AducidAttributeListItem_t *attr;
     char *XML = NULL;
     const char *N = name, *T = typeName, *A = algorithm;
 
-    attr = ((AducidAttributeListStruct *)attributes)->firstItem;
+    attr = ((AducidAttributeListStruct_t *)attributes)->firstItem;
     if( name == NULL && typeName == NULL && algorithm == NULL ) {
         // attributes are in list if param is null
         if( strcmp( attr->name, "personalObjectName" ) == 0 ) {
@@ -120,8 +120,8 @@ char *create_aim_request_operation_xml(
     const char *authId,
     const char *bindingKey,
     const char *methodName,
-    const AducidAttributeList methodParameters,
-    const AducidAttributeList personalObject,
+    const AducidAttributeList_t methodParameters,
+    const AducidAttributeList_t personalObject,
     const char *AAIM2,
     const char *ilData,
     const char *peigReturnName)
@@ -207,7 +207,7 @@ char *create_aim_execute_personal_object_xml(const char *authId,
 					     const char *methodName,
 					     const char *personalObjectName,
 					     const char *personalObjectAlgorithm,
-					     AducidAttributeList *personalObjectData,
+					     AducidAttributeList_t *personalObjectData,
 					     const char *ILID,
 					     const char *AAIM2,
 					     const char *ilData) {
@@ -253,7 +253,7 @@ char *create_aim_execute_personal_object_xml(const char *authId,
     return XMLC;
 }
 
-AducidAttributeList *parse_personal_object(xmlDocPtr doc) {
+AducidAttributeList_t *parse_personal_object(xmlDocPtr doc) {
 
     /**
      //FIXME:Personal Object
@@ -275,7 +275,7 @@ AducidAttributeList *parse_personal_object(xmlDocPtr doc) {
      </personalObjectAttribute>
      </personalObject>
     */
-    AducidAttributeList *list;
+    AducidAttributeList_t *list;
     char *name,*value,*p,*q;
     xmlChar *txt,*valueAttr;
     
@@ -312,7 +312,7 @@ AducidAttributeList *parse_personal_object(xmlDocPtr doc) {
       xmlXPathObjectPtr result;
       xmlNodePtr node,subNode;
       xmlAttrPtr attr;
-      AducidAttributeList *list;
+      AducidAttributeList_t *list;
       char *name,*value;
       int i;
     

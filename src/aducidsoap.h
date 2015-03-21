@@ -11,8 +11,8 @@ char *create_aim_request_operation_xml(const char *operationName,
 				       const char *authId,
 				       const char *bindingKey,
 				       const char *methodName,
-				       const AducidAttributeList methodParameter,
-				       const AducidAttributeList personalObject,
+				       const AducidAttributeList_t methodParameter,
+				       const AducidAttributeList_t personalObject,
 				       const char *AAIM2,
 				       const char *ilData,
 				       const char *peigReturnName);
@@ -27,11 +27,11 @@ char *create_aim_execute_personal_object_xml(const char *authId,
 					     const char *methodName,
 					     const char *personalObjectName,
 					     const char *personalObjectAlgorithm,
-					     AducidAttributeList *personalObjectData,
+					     AducidAttributeList_t *personalObjectData,
 					     const char *ILID,
 					     const char *AAIM2,
 					     const char *ilData);
-AducidAttributeList *parse_personal_object(xmlDocPtr doc);
+AducidAttributeList_t *parse_personal_object(xmlDocPtr doc);
 char *create_aim_close_session_xml(const char *authId, const char *AIMName, const char *authKey);
 
 #endif

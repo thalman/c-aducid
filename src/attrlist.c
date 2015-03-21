@@ -6,23 +6,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-DLL_PUBLIC
-AducidAttributeList aducid_attr_list_new() {
-    AducidAttributeList list;
+ADUCID_PUBLIC_FUNC
+AducidAttributeList_t aducid_attr_list_new() {
+    AducidAttributeList_t list;
 
-    list = malloc(sizeof(AducidAttributeListStruct));
+    list = malloc(sizeof(AducidAttributeListStruct_t));
     if(list) {
-	memset(list,0,sizeof(AducidAttributeListStruct));
+	memset(list,0,sizeof(AducidAttributeListStruct_t));
     }
     return list;
 }
 
-DLL_PUBLIC
-int aducid_attr_list_count( const AducidAttributeList handle )
+ADUCID_PUBLIC_FUNC
+int aducid_attr_list_count( const AducidAttributeList_t handle )
 {
     int i = 0;
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
-    AducidAttributeListItem *node;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
+    AducidAttributeListItem_t *node;
 
     if(!h) return 0;
     node = h->firstItem;
@@ -33,11 +33,11 @@ int aducid_attr_list_count( const AducidAttributeList handle )
     return i;
 }
 
-AducidAttributeListItem *aducid_attr_list_get_item( const AducidAttributeList handle, int idx)
+AducidAttributeListItem_t *aducid_attr_list_get_item( const AducidAttributeList_t handle, int idx)
 {
     int i = 0;
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
-    AducidAttributeListItem *node;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
+    AducidAttributeListItem_t *node;
     
     if(!handle) return NULL;
     node = h->firstItem;
@@ -48,39 +48,39 @@ AducidAttributeListItem *aducid_attr_list_get_item( const AducidAttributeList ha
     return node;
 }
     
-DLL_PUBLIC
-char *aducid_attr_list_get_item_name( const AducidAttributeList handle,int idx)
+ADUCID_PUBLIC_FUNC
+char *aducid_attr_list_get_item_name( const AducidAttributeList_t handle,int idx)
 {
-    AducidAttributeListItem *node;
+    AducidAttributeListItem_t *node;
     
     if(!handle) return NULL;
     node = aducid_attr_list_get_item(handle,idx);
     return node->name;
 }
 
-DLL_PUBLIC
-char *aducid_attr_list_get_item_value( const AducidAttributeList handle,int idx)
+ADUCID_PUBLIC_FUNC
+char *aducid_attr_list_get_item_value( const AducidAttributeList_t handle,int idx)
 {
-    AducidAttributeListItem *node;
+    AducidAttributeListItem_t *node;
     
     if(!handle) return NULL;
     node = aducid_attr_list_get_item(handle,idx);
     return node->value;
 }
 
-DLL_PUBLIC
-void aducid_attr_list_append( AducidAttributeList handle,char *name,char *value)
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_append( AducidAttributeList_t handle, const char *name, const char *value)
 {
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
     
     if(!handle) return;
     h->firstItem = ll_append_attribute(h->firstItem,name,value);
 }
 
-DLL_PUBLIC
-void aducid_attr_list_insert(AducidAttributeList handle,char *name,char *value,int idx)
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_insert(AducidAttributeList_t handle, const char *name, const char *value, int idx)
 {
-    AducidAttributeListItem *node,*newNode;
+    AducidAttributeListItem_t *node,*newNode;
     
     if(!handle) return;
     if(idx == 0) {
@@ -98,20 +98,20 @@ void aducid_attr_list_insert(AducidAttributeList handle,char *name,char *value,i
 }
 
 
-DLL_PUBLIC
-void aducid_attr_list_prepend(AducidAttributeList handle,char *name, char *value)
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_prepend(AducidAttributeList_t handle, const char *name, const char *value)
 {
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
     
     if(!handle) return;
     h->firstItem = ll_prepend_attribute(h->firstItem,name,value);
 }
 
-DLL_PUBLIC
-char *aducid_attr_list_get_first_by_name( const AducidAttributeList handle, const char *name)
+ADUCID_PUBLIC_FUNC
+char *aducid_attr_list_get_first_by_name( const AducidAttributeList_t handle, const char *name)
 {
-    AducidAttributeListItem *node;
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+    AducidAttributeListItem_t *node;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
     
     if(!handle) return NULL;
     node = h->firstItem;
@@ -126,11 +126,11 @@ char *aducid_attr_list_get_first_by_name( const AducidAttributeList handle, cons
     return NULL;
 }
 
-DLL_PUBLIC
-char *aducid_attr_list_get_next_by_name( const AducidAttributeList handle, const char *name)
+ADUCID_PUBLIC_FUNC
+char *aducid_attr_list_get_next_by_name( const AducidAttributeList_t handle, const char *name)
 {
-    AducidAttributeListItem *node;
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+    AducidAttributeListItem_t *node;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
     
     if(!handle) return NULL;
     node = aducid_attr_list_get_item(handle,h->index);
@@ -147,12 +147,12 @@ char *aducid_attr_list_get_next_by_name( const AducidAttributeList handle, const
     return NULL;
 }
 
-DLL_PUBLIC
-int aducid_attr_list_get_count_by_name( const AducidAttributeList handle, const char *name)
+ADUCID_PUBLIC_FUNC
+int aducid_attr_list_get_count_by_name( const AducidAttributeList_t handle, const char *name)
 {
-    AducidAttributeListItem *node;
+    AducidAttributeListItem_t *node;
     int cnt = 0;
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
     
     if(!handle) return 0;
     node = h->firstItem;
@@ -166,19 +166,19 @@ int aducid_attr_list_get_count_by_name( const AducidAttributeList handle, const 
     return cnt;
 }
 
-bool aducid_attr_list_delete_node( AducidAttributeList handle, AducidAttributeListItem *item )
+bool aducid_attr_list_delete_node( AducidAttributeList_t handle, AducidAttributeListItem_t *item )
 {
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
     
     if(!handle) { return false; }
     h->firstItem = ll_free_attribute_node(h->firstItem,item);
     return true;
 }
 
-DLL_PUBLIC
-bool aducid_attr_list_delete(AducidAttributeList handle, int idx)
+ADUCID_PUBLIC_FUNC
+bool aducid_attr_list_delete(AducidAttributeList_t handle, int idx)
 {
-    AducidAttributeListItem *node;
+    AducidAttributeListItem_t *node;
     
     if(!handle) { return false; }
     node = aducid_attr_list_get_item(handle,idx);
@@ -187,9 +187,9 @@ bool aducid_attr_list_delete(AducidAttributeList handle, int idx)
     return true;
 }
 
-DLL_PUBLIC
-bool aducid_attr_list_delete_by_name(AducidAttributeList handle, char *name) {
-    AducidAttributeListItem *node;
+ADUCID_PUBLIC_FUNC
+bool aducid_attr_list_delete_by_name(AducidAttributeList_t handle, char *name) {
+    AducidAttributeListItem_t *node;
     bool result = false;
     int cnt,i;
     
@@ -205,25 +205,25 @@ bool aducid_attr_list_delete_by_name(AducidAttributeList handle, char *name) {
     return result;
 }
 
-DLL_PUBLIC
-void aducid_attr_list_free(AducidAttributeList handle) {
-    AducidAttributeListStruct *h = (AducidAttributeListStruct *)handle;
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_free(AducidAttributeList_t handle) {
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
 
     if(!handle) return;
     ll_free_attribute_list(h->firstItem);
     free(handle);
 }
 
-AducidAttributeListItem *ll_append_attribute(AducidAttributeListItem *list, char *name, char *value) {
-    AducidAttributeListItem *node,*newNode;
+AducidAttributeListItem_t *ll_append_attribute( AducidAttributeListItem_t *list, const char *name, const char *value) {
+    AducidAttributeListItem_t *node,*newNode;
 
     if( (name == NULL) || (value == NULL) ) { return list; }
-    newNode = (AducidAttributeListItem *)malloc(sizeof(AducidAttributeListItem));
+    newNode = (AducidAttributeListItem_t *)malloc(sizeof(AducidAttributeListItem_t));
     if(newNode == NULL) {
 	ll_free_attribute_list(list);
 	return NULL;
     }
-    memset(newNode,0,sizeof(AducidAttributeListItem));
+    memset(newNode,0,sizeof(AducidAttributeListItem_t));
     newNode->name = strdup(name);
     newNode->value = strdup(value);
     if(list == NULL) { return newNode; }
@@ -233,31 +233,31 @@ AducidAttributeListItem *ll_append_attribute(AducidAttributeListItem *list, char
     return list;
 }
 
-AducidAttributeListItem *ll_prepend_attribute(AducidAttributeListItem *list, char *name, char *value) {
-    AducidAttributeListItem *newNode;
+AducidAttributeListItem_t *ll_prepend_attribute(AducidAttributeListItem_t *list, const char *name, const char *value) {
+    AducidAttributeListItem_t *newNode;
 
     if( (name == NULL) || (value == NULL) ) { return list; }
-    newNode = (AducidAttributeListItem *)malloc(sizeof(AducidAttributeListItem));
+    newNode = (AducidAttributeListItem_t *)malloc(sizeof(AducidAttributeListItem_t));
     if(newNode == NULL) {
 	ll_free_attribute_list(list);
 	return NULL;
     }
-    memset(newNode,0,sizeof(AducidAttributeListItem));
+    memset(newNode,0,sizeof(AducidAttributeListItem_t));
     newNode->name = strdup(name);
     newNode->value = strdup(value);
     newNode->next = list;
     return newNode;
 }
 
-AducidAttributeListItem *ll_free_attribute(AducidAttributeListItem *list, char *name){
-    AducidAttributeListItem *nodeToDelete;
+AducidAttributeListItem_t *ll_free_attribute(AducidAttributeListItem_t *list,  const char *name){
+    AducidAttributeListItem_t *nodeToDelete;
     nodeToDelete = ll_get_attribute(list, name);
     if(nodeToDelete == NULL) { return list; }
     return ll_free_attribute_node(list,nodeToDelete);
 }
 
-AducidAttributeListItem *ll_free_attribute_node(AducidAttributeListItem *list, AducidAttributeListItem *tofree){
-    AducidAttributeListItem *node;
+AducidAttributeListItem_t *ll_free_attribute_node(AducidAttributeListItem_t *list, AducidAttributeListItem_t *tofree){
+    AducidAttributeListItem_t *node;
     if(!list) { return NULL; }
     node = list;
     if(node == tofree) {
@@ -281,8 +281,8 @@ AducidAttributeListItem *ll_free_attribute_node(AducidAttributeListItem *list, A
     return list;
 }
 
-void ll_free_attribute_list(AducidAttributeListItem *list){
-    AducidAttributeListItem *node;
+void ll_free_attribute_list(AducidAttributeListItem_t *list){
+    AducidAttributeListItem_t *node;
     while(list) {
 	node = list;
 	list = list->next;
@@ -292,8 +292,8 @@ void ll_free_attribute_list(AducidAttributeListItem *list){
     }
 }
 
-AducidAttributeListItem *ll_get_attribute(AducidAttributeListItem *list, char *name) {
-    AducidAttributeListItem *node = list;
+AducidAttributeListItem_t *ll_get_attribute(AducidAttributeListItem_t *list, const char *name) {
+    AducidAttributeListItem_t *node = list;
 
     while(node) {
 	if( strcmp(node->name,name) == 0 ) {
@@ -305,8 +305,8 @@ AducidAttributeListItem *ll_get_attribute(AducidAttributeListItem *list, char *n
 }
 
 /**
-   char *ll_get_attribute_value(AducidAttributeListItem *list, char *name) {
-   AducidAttributeListItem *node;
+   char *ll_get_attribute_value(AducidAttributeListItem_t *list, char *name) {
+   AducidAttributeListItem_t *node;
    node = get_attribute(list, name);
    if( node == NULL ) { return NULL; }
    return node->value;

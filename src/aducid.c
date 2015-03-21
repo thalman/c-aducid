@@ -1,4 +1,5 @@
-#include "aducid.h"
+#include "definitions.h"
+#include "textconstants.h"
 #include "soap.h"
 #include "aducidsoap.h"
 #include "utils.h"
@@ -15,487 +16,10 @@
 
 #include "definitions.h"
 
-DLL_PUBLIC
-void aducid_free_aim_request_operation_response(AducidAIMRequestOperationResponse *response) {
-    if( response == NULL ) { return; }
-    safe_free(response->authId);
-    safe_free(response->bindingId);
-    safe_free(response->bindingKey);
-    free(response);
-}
 
-DLL_PUBLIC
-void aducid_free_aim_get_psl_attributes_response(AducidAIMGetPSLAttributesResponse *response) {
-    if( response == NULL ) { return; }
-    safe_free(response->userDatabaseIndex);
-    safe_free(response->userId);
-    safe_free(response->validityCount);
-    safe_free(response->validityTime);
-    safe_free(response->orangeCount);
-    safe_free(response->orangeTime);
-    safe_free(response->securityProfileName);
-    safe_free(response->authenticationProtocolName);
-    safe_free(response->securityLevel);
-    safe_free(response->ILID);
-    safe_free(response->ilTypeName);
-    safe_free(response->ilAlgorithmName);
-    safe_free(response->ilValidityCount);
-    safe_free(response->ilValidityTime);
-    safe_free(response->authKey2);
-    safe_free(response->sessionKey);
-    safe_free(response->bindingType);
-    free(response);
-}
-
-DLL_PUBLIC
-void aducid_free_aim_execute_personal_object_response(AducidAIMExecutePersonalObjectResponse *response) {
-    if( response == NULL ) { return; }
-    safe_free(response->statusMessage);
-    aducid_attr_list_free(response->personalObject);
-    free(response);
-}
-
-/* ADUCID text constants begin */
-
-const static char *aducidOperations[] = {
-    "open",
-    "init",
-    "reinit",
-    "change",
-    "rechange",
-    "delete",
-    "link",
-    "exuse",
-    "autoChange",
-    NULL
-};
-
-const static char *aducidAttributeSets[] = {
-    "Status",
-    "Basic",
-    "All",
-    "Validity",
-    "Link",
-    "Error",
-    "PeigReturnName",
-    NULL
-};
-
-const static char *aducidAIMStatuses[] = {
-    "none",
-    "error",
-    "working",
-    "Client-binding",
-    "start",
-    "finished",
-    "active",
-    "internal-error",
-    "startTimeout",
-    "processTimeout",
-    "bindingTimeout",
-    "end",
-    "passive",
-    "Auth-error",
-    NULL
-};
-
-const static char *aducidMethods[] = {
-    "Init",
-    "Create",
-    "Change",
-    "Read",
-    "Delete",
-    "Write",
-    "LegacyLogin",
-    "Set",
-    "GenKeyPair",
-    "WriteCert",
-    "LegacySign",
-    "OTPverification",
-    "ILread",
-    "PasswdDecrypt",
-    "SetExecuteRight",
-    "ClearExecuteRight",
-    "UploadCert",
-    "TempEnableCAPI",
-    "TempDisableCAPI",
-    "PermEnableCAPI",
-    "PermDisableCAPI",
-    "PPOresult",
-    "AIMread",
-    "ReadPeigCount",
-    "ActivateOtherPeigs",
-    "DeactivateOtherPeigs",
-    "ActivateThePeig",
-    "DeactivateThePeig",
-    "ReadPeigId",
-    "ReadOtherPeigsId",
-    "CreateRoomByName",
-    "CreateRoomByStory",
-    "EnterRoomByName",
-    "EnterRoomByStory",
-    "ConfirmTransaction",
-    "VerifyLF",
-    "PeigLocalLink",
-    NULL
-};
-
-const static char *aducidAlgorithms[] = {
-    "USER_ATTRIBUTE_SET",
-    "PASSWD",
-    "PASSWD-AIM",
-    "BIN_STRING",
-    "OTP-AIM_1",
-    "X509-SIG",
-    "PAYMENT",
-    NULL
-};
-
-const static char *aducidAuthStatuses[] = {
-    "OK",
-    "ERR",
-    "UV",
-    "USP",
-    "DI",
-    "UPR",
-    "CR",
-    "UI",
-    "MI",
-    "VI",
-    "UIP",
-    "USSP",
-    "NEO",
-    "UOP",
-    "NER",
-    "IE",
-    "NAU",
-    "NU",
-    "NTD",
-    "DR",
-    "SPE",
-    "NAP",
-    "UU",
-    "UUS",
-    "UTL",
-    "UCC",
-    "NOP",
-    "UIL",
-    "ILM",
-    "ISE",
-    "NSA",
-    "KO",
-    "PPNP",
-    "NS",
-    "CTO",
-    "LI",
-    "DMR",
-    "UMR",
-    "CMR",
-    "MET",
-    "BIM",
-    "DLN",
-    "MCT",
-    "BEE",
-    "UBM",
-    "PCD",
-    NULL
-};
-
-
-/* ADUCID text constants end */
-
-const char *aducid_enum_to_str(const int aenum,const char *array[]) {
-    int cnt=0;
-
-    while( array[cnt] != NULL ) { cnt++; }
-    if( aenum < 1 || aenum > cnt ) { return NULL; }
-    return array[aenum - 1];
-}
-
-int aducid_str_to_enum(const char *aenum,const char *array[]) {
-    int i;
-
-    if(! aenum ) { return 0; }
-    for(i=0 ; array[i] != NULL; i++) {
-        if( strcasecmp(array[i],aenum) == 0 ) {
-            return i+1;
-        }
-    }
-    return 0;
-}
-
-DLL_PUBLIC
-const char *aducid_operation_str(AducidOperation operation) {
-    return aducid_enum_to_str(operation,aducidOperations);
-}
-
-DLL_PUBLIC
-AducidOperation aducid_operation_enum(char *operation) {
-    return (AducidOperation)aducid_str_to_enum(operation,aducidOperations);
-}
-
-DLL_PUBLIC
-const char *aducid_attribute_set_str(AducidAttributeSet set) {
-    return aducid_enum_to_str(set,aducidAttributeSets);
-}
-
-DLL_PUBLIC
-AducidAttributeSet aducid_attribute_set_enum(char *set) {
-    return (AducidAttributeSet)aducid_str_to_enum(set,aducidAttributeSets);
-}
-
-DLL_PUBLIC
-const char *aducid_aim_status_str(AducidAIMStatus status) {
-    return aducid_enum_to_str(status,aducidAIMStatuses);
-}
-
-DLL_PUBLIC
-AducidAIMStatus aducid_aim_status_enum(char *status) {
-    return (AducidAIMStatus)aducid_str_to_enum(status,aducidAIMStatuses);
-}
-
-DLL_PUBLIC
-const char *aducid_method_str(AducidMethod method) {
-    return aducid_enum_to_str(method,aducidMethods);
-}
-
-DLL_PUBLIC
-AducidMethod aducid_method_enum(char *method) {
-    return (AducidMethod)aducid_str_to_enum(method,aducidMethods);
-}
-
-DLL_PUBLIC
-const char *aducid_algorithm_str(AducidAlgorithm alg) {
-    return aducid_enum_to_str(alg,aducidAlgorithms);
-}
-
-DLL_PUBLIC
-AducidAlgorithm aducid_algorithm_enum(char *alg) {
-    return (AducidAlgorithm)aducid_str_to_enum(alg,aducidAlgorithms);
-}
-
-DLL_PUBLIC
-const char *aducid_auth_status_str(AducidAuthStatus status) {
-    return aducid_enum_to_str(status,aducidAuthStatuses);
-}
-
-DLL_PUBLIC
-AducidAuthStatus aducid_auth_status_enum(char *status) {
-    return (AducidAuthStatus)aducid_str_to_enum(status,aducidAuthStatuses);
-}
-
-DLL_PUBLIC
-AducidAIMRequestOperationResponse *aducid_aim_request_operation(const char *R4,
-                                                                AducidOperation operation,
-                                                                const char *AIMName,
-                                                                const char *authId,
-                                                                const char *bindingKey,
-                                                                const char *methodName,
-                                                                const AducidAttributeList methodParameters,
-                                                                const AducidAttributeList personalObject,
-                                                                const char *AAIM2,
-                                                                const char *ilData,
-                                                                const char *peigReturnName)
-{
-    char *XML;
-    char *dom,*p;
-    AducidAIMRequestOperationResponse *result;
-    
-    XML = create_aim_request_operation_xml(
-                                           aducid_operation_str(operation),
-                                           AIMName,authId,bindingKey, methodName, methodParameters,
-                                           personalObject,AAIM2,ilData,
-                                           peigReturnName
-                                           );
-    dom = soap_request(R4,"AIMrequestOperation",XML);
-
-    /* dom = xmlParseDoc(BAD_CAST response); */
-    result = NULL;
-    if(dom != NULL) {
-        result = (AducidAIMRequestOperationResponse *)malloc( sizeof(AducidAIMRequestOperationResponse) );
-        result->authId = xml_get_single_node_text(dom, "//authId");
-        result->bindingId = xml_get_single_node_text(dom, "//bindingId");
-        result->bindingKey = xml_get_single_node_text(dom, "//bindingKey");
-        p = xml_get_single_node_text(dom, "//statusAIM");
-        result->statusAIM = aducid_aim_status_enum( p );
-        safe_free(p);
-        p = xml_get_single_node_text(dom, "//statusAuth");
-        result->statusAuth = aducid_auth_status_enum( p );
-        safe_free(p);
-    }
-    safe_free(XML);
-    safe_free(dom);
-    
-    return result;
-}
-
-DLL_PUBLIC
-AducidAIMGetPSLAttributesResponse *aducid_aim_get_psl_attributes(const char *R4,
-                                                                 const char *authId,
-                                                                 const char *bindingId,
-                                                                 const char *AIMName,
-                                                                 const char *authKey,
-                                                                 AducidAttributeSet attributeSet) {
-    char *XML;
-    char *dom, *p;
-    AducidAIMGetPSLAttributesResponse *result;
-    
-    /**
-       #<xs:element name="authId" type="authidType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="AIMname" type="nameType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="authKey" type="authkeyType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="attributeSetName" type="nameType" minOccurs="0" maxOccurs="1"/>
-    */
-    XML = create_aim_get_psl_attributes_xml(authId, bindingId, AIMName, authKey, aducid_attribute_set_str( attributeSet ) );
-    dom = soap_request(R4,"AIMgetPSLAttributes",XML);
-    
-    /* dom = xmlParseDoc(response); */
-    result = NULL;
-    if( dom ) {
-        result = (AducidAIMGetPSLAttributesResponse *)malloc( sizeof(AducidAIMGetPSLAttributesResponse) );
-        memset(result,0,sizeof(AducidAIMGetPSLAttributesResponse));
-
-        p = xml_get_single_node_text(dom,"//statusAIM");
-        result->statusAIM = aducid_aim_status_enum( p );
-        safe_free(p);
-
-        p =  xml_get_single_node_text(dom,"//statusAuth");
-        result->statusAuth = aducid_auth_status_enum( p );
-        safe_free(p);
-
-        p = xml_get_single_node_text(dom,"//operationName");
-	result->operationName = aducid_operation_enum( p );
-        safe_free(p);
-    
-	result->userDatabaseIndex = xml_get_single_node_text(dom, "//userDatabaseIndex");
-        result->userId = xml_get_single_node_text(dom,"//userId");
-
-	result->validityCount = xml_get_single_node_text(dom,"//validityCount");
-        result->validityTime = xml_get_single_node_text(dom,"//validityTime");
-        result->orangeCount = xml_get_single_node_text(dom,"//orangeCount");
-	result->orangeTime = xml_get_single_node_text(dom,"//orangeTime");
-
-	result->securityProfileName = xml_get_single_node_text(dom,"//securityProfileName");
-        result->authenticationProtocolName = xml_get_single_node_text(dom,"//authenticationProtocolName");
-	result->securityLevel = xml_get_single_node_text(dom,"//securityLevel");
-    
-        result->ILID = xml_get_single_node_text(dom,"//ilid");
-        result->ilTypeName = xml_get_single_node_text(dom,"//ilTypeName");
-        result->ilAlgorithmName = xml_get_single_node_text(dom,"//ilAlgorithmName");
-	result->ilValidityTime = xml_get_single_node_text(dom,"//ilValidityTime");
-        result->ilValidityCount = xml_get_single_node_text(dom,"//ilValidityCount");
-
-	result->authKey2 = xml_get_single_node_text(dom,"//authKey2");
-        result->sessionKey = xml_get_single_node_text(dom,"//sessionKey");
-
-        result->bindingType = xml_get_single_node_text(dom,"//bindingType");
-    }
-    safe_free(XML);
-    safe_free(dom);
-
-    return result;
-}
-
-
-DLL_PUBLIC
-AducidAIMExecutePersonalObjectResponse *aducid_aim_execute_personal_object(
-    const char *R4,
-    const char *authId,
-    const char *AIMName,
-    const char *authKey,
-    AducidMethod methodName,
-    const char *personalObjectName,
-    AducidAlgorithm personalObjectAlgorithm,
-    AducidAttributeList *personalObjectData,
-    const char *ILID, const char *AAIM2, const char *ilData
-                                                                           ) {
-    char *XML;
-    char *dom;
-    char *p;
-    AducidAIMExecutePersonalObjectResponse *result;
-    /**
-       #<xs:element name="authId" type="authidType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="AIMname" type="nameType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="authKey" type="authkeyType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="methodName" type="nameType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="personalObject" type="personalObjectType" minOccurs="0" maxOccurs="1"/>..
-       #<xs:element name="ILID" type="ILIDType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="AAIM2" type="aimUrlType" minOccurs="0" maxOccurs="1"/>
-       #<xs:element name="ilData" type="ildataType" minOccurs="0" maxOccurs="1"/>
-    */
-    XML = create_aim_execute_personal_object_xml(authId, AIMName, authKey,
-                                                 aducid_method_str( methodName ),
-                                                 personalObjectName,
-                                                 aducid_algorithm_str(personalObjectAlgorithm),
-                                                 personalObjectData,ILID,AAIM2,ilData);
-    dom = soap_request(R4,"AIMexecutePersonalObject",XML);
-    result = (AducidAIMExecutePersonalObjectResponse *)malloc( sizeof(AducidAIMExecutePersonalObjectResponse) );
-    memset(result,0,sizeof(AducidAIMExecutePersonalObjectResponse) );
-
-    p = xml_get_single_node_text(dom,"//statusAIM");
-    result->statusAIM = aducid_aim_status_enum( p );
-    safe_free(p);
-    
-    p = xml_get_single_node_text(dom,"//statusAuth");
-    result->statusAuth = aducid_auth_status_enum( p );
-    safe_free(p);
-    
-    result->personalObject = parse_personal_object(dom);
-    free(XML);
-    free(dom);
-    return result;
-}
-
-DLL_PUBLIC
-bool aducid_aim_close_session(const char *R4, const char *authId, const char *AIMName, const char *authKey) {
-    /**
-       function callCloseSession($R4URL,$request) {
-       $soap = new SoapClient(NULL,
-       array ( "location" => $R4URL,
-       "uri"      => "http://iface.aducid.anect.com",
-       "style"    => SOAP_RPC,
-       "use"      => SOAP_ENCODED
-       ));
-       $soapParams = array();
-       if( isset($request["authId"])  && ( $request["authId"] != NULL )  ) { array_push($soapParams, new SoapParam($request["authId"],"authId") ); }
-       if( isset($request["AIMName"]) && ( $request["AIMName"] != NULL ) ) { array_push($soapParams, new SoapParam($request["AIMName"],"AIMName") ); }
-       if( isset($request["authKey"]) && ( $request["authKey"] != NULL ) ) { array_push($soapParams, new SoapParam($request["authKey"],"authKey") ); }
-       $result = $soap->__call(
-       "AIMcloseSession",
-       $soapParams
-       );
-       return $result;
-       }
-    */
-    char *XML;
-    char *dom;
-    char *status;
-    AducidAIMStatus AIMStatus;
-    AducidAuthStatus AuthStatus;
-    
-    XML = create_aim_close_session_xml(authId, AIMName, authKey);
-    dom = soap_request(R4,"AIMcloseSession",XML);
-
-    status = xml_get_single_node_text(dom,"//statusAIM");
-    AIMStatus = aducid_aim_status_enum( status );
-    safe_free(status);
-
-    status = xml_get_single_node_text(dom,"//statusAuth");
-    AuthStatus = aducid_auth_status_enum( status );
-    safe_free(status);
-
-    /**
-       <?xml version='1.0' encoding='UTF-8'?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Body><ns1:AIMcloseSessionResponse xmlns:ns1=\"http://iface.aducid.anect.com\"><statusAIM>end</statusAIM><statusAuth>OK</statusAuth></ns1:AIMcloseSessionResponse></soapenv:Body></soapenv:Envelope>"
-    */
-    free(XML);
-    free(dom);
-    return (AuthStatus == ADUCID_AUTHSTATUS_OK) && ( AIMStatus == ADUCID_AIM_STATUS_END );
-}
-
-
-DLL_PUBLIC
-AducidHandle aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey) {
-    AducidHandle handle;
+ADUCID_PUBLIC_FUNC
+AducidHandle_t aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey) {
+    AducidHandle_t handle;
     char *r3 = NULL;
     char *r4 = NULL;
     
@@ -525,8 +49,8 @@ AducidHandle aducid_new(const char *AIM, const char *authId, const char *authKey
     return handle;
 }
 
-DLL_PUBLIC
-void aducid_set_authid(AducidHandle handle, const char *authId) {
+ADUCID_PUBLIC_FUNC
+void aducid_set_authid(AducidHandle_t handle, const char *authId) {
     if(!handle) return;
     
     safe_free(handle->authId);
@@ -537,14 +61,14 @@ void aducid_set_authid(AducidHandle handle, const char *authId) {
     }
 }
 
-DLL_PUBLIC
-const char *aducid_get_authid(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_get_authid(AducidHandle_t handle) {
     if(!handle) return NULL;
     return handle->authId;
 }
 
-DLL_PUBLIC
-void aducid_set_authkey(AducidHandle handle, const char *authKey) {
+ADUCID_PUBLIC_FUNC
+void aducid_set_authkey(AducidHandle_t handle, const char *authKey) {
     if(!handle) return;
     
     safe_free(handle->authKey);
@@ -555,14 +79,14 @@ void aducid_set_authkey(AducidHandle handle, const char *authKey) {
     }
 }
 
-DLL_PUBLIC
-const char *aducid_get_authkey(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_get_authkey(AducidHandle_t handle) {
     if(!handle) return NULL;
     return handle->authKey;
 }
 
-DLL_PUBLIC
-void aducid_set_bindingkey(AducidHandle handle, const char *bindingKey) {
+ADUCID_PUBLIC_FUNC
+void aducid_set_bindingkey(AducidHandle_t handle, const char *bindingKey) {
     if(!handle) return;
     
     safe_free(handle->bindingKey);
@@ -573,14 +97,14 @@ void aducid_set_bindingkey(AducidHandle handle, const char *bindingKey) {
     }
 }
 
-DLL_PUBLIC
-const char *aducid_get_bindingkey(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_get_bindingkey(AducidHandle_t handle) {
     if(!handle) return NULL;
     return handle->bindingKey;
 }
 
-DLL_PUBLIC
-void aducid_set_bindingid(AducidHandle handle, const char *bindingId) {
+ADUCID_PUBLIC_FUNC
+void aducid_set_bindingid(AducidHandle_t handle, const char *bindingId) {
     if(!handle) return;
     
     safe_free(handle->bindingId);
@@ -591,24 +115,25 @@ void aducid_set_bindingid(AducidHandle handle, const char *bindingId) {
     }
 }
 
-DLL_PUBLIC
-const char *aducid_get_bindingid(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_get_bindingid(AducidHandle_t handle) {
     if(!handle) return NULL;
     return handle->bindingId;
 }
 
-DLL_PUBLIC
-const char *aducid_request_operation(AducidHandle handle,
-                               AducidOperation operation,
-                               const char* methodName,
-                               const AducidAttributeList methodParameters,
-                               const AducidAttributeList personalObject,
-                               const char *AAIM2,
-                               const char *ilData,
-                               const char *peigReturnName) {
-    AducidAIMRequestOperationResponse *response;
-
+const char *
+aducid_request_operation(AducidHandle_t handle,
+                         AducidOperation_t operation,
+                         const char* methodName,
+                         const AducidAttributeList_t methodParameters,
+                         const AducidAttributeList_t personalObject,
+                         const char *AAIM2,
+                         const char *ilData,
+                         const char *peigReturnName) {
+    AducidAIMRequestOperationResponse_t *response;
+    
     if(!handle)return NULL;
+    /*
     if( handle->authId == NULL ) {
         safe_free(handle->authKey);
         safe_free(handle->bindingId);
@@ -617,6 +142,15 @@ const char *aducid_request_operation(AducidHandle handle,
         handle->bindingKey = NULL;
         handle->bindingId = NULL;
     }
+    */
+    safe_free(handle->authId);
+    safe_free(handle->authKey);
+    safe_free(handle->bindingId);
+    safe_free(handle->bindingKey);
+    handle->authId = NULL;
+    handle->authKey = NULL;
+    handle->bindingId = NULL;
+    handle->bindingKey = NULL;
     response = aducid_aim_request_operation(handle->R4,
                                             operation,
                                             handle->AIMName,
@@ -639,44 +173,44 @@ const char *aducid_request_operation(AducidHandle handle,
     return handle->authId;
 }
 
-DLL_PUBLIC
-const char *aducid_open(AducidHandle handle, const char *peigReturnName) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_open(AducidHandle_t handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_OPEN,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
-DLL_PUBLIC
-const char *aducid_init(AducidHandle handle, const char *peigReturnName) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_init(AducidHandle_t handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_INIT,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
-DLL_PUBLIC
-const char *aducid_reinit(AducidHandle handle, const char *peigReturnName) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_reinit(AducidHandle_t handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_REINIT,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
-DLL_PUBLIC
-const char *aducid_change(AducidHandle handle, const char *peigReturnName) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_change(AducidHandle_t handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_CHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
-DLL_PUBLIC
-const char *aducid_rechange(AducidHandle handle, const char *peigReturnName) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_rechange(AducidHandle_t handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_RECHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
-DLL_PUBLIC
-const char *aducid_delete(AducidHandle handle, const char *peigReturnName) {
+ADUCID_PUBLIC_FUNC
+const char *aducid_delete(AducidHandle_t handle, const char *peigReturnName) {
     return aducid_request_operation(handle,ADUCID_OPERATION_DELETE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
 }
 
-DLL_PUBLIC
-bool aducid_close(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC bool
+aducid_close(AducidHandle_t handle) {
     return aducid_aim_close_session(handle->R4,handle->authId,handle->AIMName,handle->authKey);
 }
 
 
-DLL_PUBLIC
-AducidAIMGetPSLAttributesResponse *aducid_get_psl_attributes(AducidHandle handle,AducidAttributeSet attributeSet, bool useCache){
+ADUCID_PUBLIC_FUNC AducidAIMGetPSLAttributesResponse_t *
+aducid_get_psl_attributes( AducidHandle_t handle, AducidAttributeSet_t attributeSet, bool useCache){
     if(!handle || !handle->authId) return false;
     if(attributeSet <= ADUCID_ATTRIBUTE_SET_INVALID || attributeSet > ADUCID_ATTRIBUTE_SET_ERROR ) return false;
     if( ! useCache && handle->PSLCache[attributeSet-1] ) {
@@ -693,15 +227,15 @@ AducidAIMGetPSLAttributesResponse *aducid_get_psl_attributes(AducidHandle handle
     return handle->PSLCache[attributeSet-1];    
 }
 
-DLL_PUBLIC
-bool aducid_wait_for_operation(AducidHandle handle) {
-    AducidAIMGetPSLAttributesResponse *status;
+ADUCID_PUBLIC_FUNC bool
+aducid_wait_for_operation( AducidHandle_t handle ) {
+    AducidAIMGetPSLAttributesResponse_t *status;
     
     if(!handle) return false;
     if(!handle->authId) return false;
     
     while(true) {
-        status = aducid_get_psl_attributes(handle,ADUCID_ATTRIBUTE_SET_STATUS,false);
+        status = aducid_get_psl_attributes( handle, ADUCID_ATTRIBUTE_SET_STATUS, false );
         if( (status == NULL) || (status->statusAIM == ADUCID_AIM_STATUS_INVALID) ) {
             /* unexpected error */
             return false;
@@ -714,9 +248,9 @@ bool aducid_wait_for_operation(AducidHandle handle) {
     }
 }
 
-DLL_PUBLIC
-bool aducid_verify(AducidHandle handle) {
-    AducidAIMGetPSLAttributesResponse *status;
+ADUCID_PUBLIC_FUNC
+bool aducid_verify(AducidHandle_t handle) {
+    AducidAIMGetPSLAttributesResponse_t *status;
     if(!handle) return false;
     
     status = aducid_get_psl_attributes(handle,ADUCID_ATTRIBUTE_SET_ALL,true);
@@ -724,10 +258,10 @@ bool aducid_verify(AducidHandle handle) {
     return (status->statusAuth == ADUCID_AUTHSTATUS_OK) && (status->statusAIM == ADUCID_AIM_STATUS_ACTIVE);
 }
 
-DLL_PUBLIC
-AducidAttributeList *aducid_get_attributes(AducidHandle handle, char *attrSetName) {
-    AducidAttributeList *list = NULL;
-    AducidAIMExecutePersonalObjectResponse *dpo;
+ADUCID_PUBLIC_FUNC AducidAttributeList_t *
+aducid_get_attributes(AducidHandle_t handle, char *attrSetName) {
+    AducidAttributeList_t *list = NULL;
+    AducidAIMExecutePersonalObjectResponse_t *dpo;
     
     if(!handle || !handle->authId || !handle->authKey ) return NULL;
     if( attrSetName == NULL ) { attrSetName = "default"; }
@@ -747,9 +281,9 @@ AducidAttributeList *aducid_get_attributes(AducidHandle handle, char *attrSetNam
     return list;
 }
 
-DLL_PUBLIC
-bool aducid_set_attributes(AducidHandle handle, char *attrSetName, AducidAttributeList *attrs) {
-    AducidAIMExecutePersonalObjectResponse *dpo;
+ADUCID_PUBLIC_FUNC bool
+aducid_set_attributes(AducidHandle_t handle, char *attrSetName, AducidAttributeList_t *attrs) {
+    AducidAIMExecutePersonalObjectResponse_t *dpo;
     
     if(!handle || !handle->authId || !handle->authKey ) return false;
     if( attrSetName == NULL ) { attrSetName = "default"; }
@@ -766,17 +300,17 @@ bool aducid_set_attributes(AducidHandle handle, char *attrSetName, AducidAttribu
     return true;
 }
 
-DLL_PUBLIC
-const char *aducid_get_user_database_index(AducidHandle handle) {
-    AducidAIMGetPSLAttributesResponse *response;
+ADUCID_PUBLIC_FUNC
+const char *aducid_get_user_database_index(AducidHandle_t handle) {
+    AducidAIMGetPSLAttributesResponse_t *response;
     
     if( !handle || !handle->authId || !handle->authKey ) return NULL;
     response = aducid_get_psl_attributes(handle,ADUCID_ATTRIBUTE_SET_ALL,true);
     return response->userDatabaseIndex;
 }
 
-DLL_PUBLIC
-void aducid_clear_psl_cache(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC
+void aducid_clear_psl_cache(AducidHandle_t handle) {
     if(handle) {
         int i;
 
@@ -786,8 +320,8 @@ void aducid_clear_psl_cache(AducidHandle handle) {
     }
 }
 
-DLL_PUBLIC
-void aducid_free(AducidHandle handle) {
+ADUCID_PUBLIC_FUNC
+void aducid_free(AducidHandle_t handle) {
     if(handle) {
         safe_free(handle->authId);
         safe_free(handle->authKey);
@@ -800,36 +334,36 @@ void aducid_free(AducidHandle handle) {
 }
 
 /*
-  DLL_PUBLIC AducidClient::AducidClient(char *aim) {
+  ADUCID_PUBLIC_FUNC AducidClient::AducidClient(char *aim) {
   handle = aducid_new(aim);
   }
-  DLL_PUBLIC AducidClient::~AducidClient() {
+  ADUCID_PUBLIC_FUNC AducidClient::~AducidClient() {
   aducid_free(handle);
   }
-  DLL_PUBLIC char *AducidClient::open() {
+  ADUCID_PUBLIC_FUNC char *AducidClient::open() {
   return aducid_open(handle);
   }
-  DLL_PUBLIC char *AducidClient::init() {
+  ADUCID_PUBLIC_FUNC char *AducidClient::init() {
   return aducid_init(handle);
   }
-  DLL_PUBLIC char *AducidClient::reinit() {
+  ADUCID_PUBLIC_FUNC char *AducidClient::reinit() {
   return aducid_reinit(handle);
   }
-  DLL_PUBLIC char *AducidClient::change() {
+  ADUCID_PUBLIC_FUNC char *AducidClient::change() {
   return aducid_change(handle);
   }
-  DLL_PUBLIC char *AducidClient::rechange() {
+  ADUCID_PUBLIC_FUNC char *AducidClient::rechange() {
   return aducid_rechange(handle);
   }
-  DLL_PUBLIC bool AducidClient::close() {
+  ADUCID_PUBLIC_FUNC bool AducidClient::close() {
   return aducid_close(handle);
   }
-  DLL_PUBLIC AIMGetPSLAttributesResponse *AducidClient::getPslAttributes(AducidAttributeSet attributeSet, bool useCache) {
+  ADUCID_PUBLIC_FUNC AIMGetPSLAttributesResponse *AducidClient::getPslAttributes(AducidAttributeSet attributeSet, bool useCache) {
   return aducid_get_psl_attributes(handle,attributeSet,useCache);
   }
 */
 
-DLL_PUBLIC
+ADUCID_PUBLIC_FUNC
 int aducid_library_init() {
 #if defined(_WIN32) || defined(_W64)
     return 0;
@@ -838,7 +372,7 @@ int aducid_library_init() {
 #endif
 }
 
-DLL_PUBLIC
+ADUCID_PUBLIC_FUNC
 int aducid_library_free() {
 #if defined(_WIN32) || defined(_W64)
     return 0;

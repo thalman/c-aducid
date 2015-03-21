@@ -1,30 +1,25 @@
 #ifndef __ATTRLIST_H__
 #define __ATTRLIST_H__
 
-#if defined(_WIN32) || defined(_WIN64) 
-/* nothing for win */
-#else
-#include <stdbool.h>
-#endif
-#include "aducid.h"
+#include "definitions.h"
 
 typedef struct StructAducidAttributeListItem {
     char *name;
     char *value;
     struct StructAducidAttributeListItem *next;
-} AducidAttributeListItem;
+} AducidAttributeListItem_t;
 
 typedef struct {
     int index;
-    AducidAttributeListItem *firstItem;
-} AducidAttributeListStruct;
+    AducidAttributeListItem_t *firstItem;
+} AducidAttributeListStruct_t;
 
-AducidAttributeListItem *ll_append_attribute(AducidAttributeListItem *list, char *name, char *value);
-AducidAttributeListItem *ll_prepend_attribute(AducidAttributeListItem *list, char *name, char *value);
-AducidAttributeListItem *ll_free_attribute(AducidAttributeListItem *list, char *name);
-void ll_free_attribute_list(AducidAttributeListItem *list);
-AducidAttributeListItem *ll_get_attribute(AducidAttributeListItem *list, char *name);
-char *ll_get_attribute_value(AducidAttributeListItem *list, char *name);
-AducidAttributeListItem *ll_free_attribute_node(AducidAttributeListItem *list, AducidAttributeListItem *tofree);
+AducidAttributeListItem_t *ll_append_attribute(AducidAttributeListItem_t *list, const char *name, const char *value);
+AducidAttributeListItem_t *ll_prepend_attribute(AducidAttributeListItem_t *list, const char *name, const char *value);
+AducidAttributeListItem_t *ll_free_attribute(AducidAttributeListItem_t *list, const char *name);
+void ll_free_attribute_list(AducidAttributeListItem_t *list);
+AducidAttributeListItem_t *ll_get_attribute(AducidAttributeListItem_t *list, const char *name);
+char *ll_get_attribute_value(AducidAttributeListItem_t *list, const char *name);
+AducidAttributeListItem_t *ll_free_attribute_node(AducidAttributeListItem_t *list, AducidAttributeListItem_t *tofree);
 
 #endif
