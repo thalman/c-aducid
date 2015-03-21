@@ -1,0 +1,60 @@
+<%pre>
+
+#include "defs.h"
+#include <aducid++.h>
+#include <map>
+#include <string>
+
+</%pre>
+<%args>
+
+std::string authId;
+std::string authKey;
+std::string bindingId;
+std::string bindingKey;
+
+</%args>
+<%session>
+// define your session scope variables here
+// std::string mySessionState;
+   // AducidHandle handle = NULL;
+aducid::AducidClient aducid(AIMSERVER);
+
+</%session>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>ADUCID C++ SDK test</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+  </head>
+  <body>
+    <div id="content">
+    <h1>Operation result</h1>
+<%cpp>
+
+std::map<std::string,std::string> all, err;
+
+aducid.authId(authId);
+aducid.authKey(authKey);
+aducid.bindingId(bindingId);
+aducid.bindingKey(bindingKey);
+all = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ALL, false);
+err = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR, false);
+
+</%cpp>
+% if( aducid.verify() ) {
+    <a href="/"><img src="ok.png"></a> udi: <$ aducid.userDatabaseIndex() $>
+% } else {
+    <a href="/"><img src="ko.png"></a>
+% }
+    <h2>Authentication process</h2>
+    <table>
+      <tr> <td><b>Action</b></td> <td><b>statusAIM</b></td> <td><b>statusAuth</b></td> </tr>
+      <tr> <td>getResult(ALL)</td> <td><$ all["statusAIM"] $></td>  <td><$ all["statusAuth"] $></td> </tr>
+      <tr> <td>getResult(ERR)</td> <td><$ err["statusAIM"] $></td>  <td><$ err["statusAuth"] $></td> </tr>
+    </table>
+
+    <br/><a href="/">Back</a>
+    </div>
+  </body>
+</html>

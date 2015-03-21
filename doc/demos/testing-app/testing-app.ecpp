@@ -1,0 +1,301 @@
+<%pre>
+
+#include "defs.h"
+#include <aducid++.h>
+#include <string>
+
+</%pre>
+<%args>
+
+std::string action;
+
+</%args>
+<%session>
+
+aducid::AducidClient aducid(AIMSERVER);
+
+</%session>
+<%cpp>
+
+std::string error;
+
+/**
+ * basic operations -------------------------------------------------------------
+ */
+if( action == "init" ) {
+    if( aducid.init( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "open" ) {
+    if( aducid.open( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "change" ) {
+    if( aducid.change( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "delete" ) {
+    if( aducid.deleteIdentity( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "reinit" ) {
+    if( aducid.reinit( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "rechange" ) {
+    if( aducid.rechange( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+/**
+ * meetings -------------------------------------------------------------
+ */
+if( action == "createroombystory" ) {
+    if( aducid.createRoomByStory( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "enterroombystory" ) {
+    if( aducid.createRoomByStory( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "createroombyname" ) {
+    if( aducid.createRoomByName( "test", std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "enterroombyname" ) {
+    if( aducid.enterRoomByName( "test", std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+/**
+ * payment -------------------------------------------------------------
+ */
+if( action == "initpayment" ) {
+    if( aducid.initPayment( false, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "initpaymentlf" ) {
+    if( aducid.initPayment( true, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "confirmtext" ) {
+    if( aducid.confirmTextTransaction( "too yellow horse", false, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "confirmtextlf" ) {
+    if( aducid.confirmTextTransaction( "too yellow horse", true, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "confirmmoney" ) {
+    if( aducid.confirmMoneyTransaction( "My account","Your account","1000", false, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "confirmmoneylf" ) {
+    if( aducid.confirmMoneyTransaction("My account","Your account","1000", true, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+/**
+ * local factor -------------------------------------------------------------
+ */
+if( action == "initlf" ) {
+    if( aducid.initLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "changelf" ) {
+    if( aducid.changeLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "deletelf" ) {
+    if( aducid.deleteLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "verifylf" ) {
+    if( aducid.verifyLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+/**
+ * local link -------------------------------------------------------------
+ */
+if( action == "primaryreplica" ) {
+    if( aducid.linkLocal( ADUCID_PEIG_LOCAL_LINK_PRIMARY_REPLICA, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "secondaryreplica" ) {
+    if( aducid.linkLocal( ADUCID_PEIG_LOCAL_LINK_SECONDARY_REPLICA, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+if( action == "connectionusb" ) {
+    if( aducid.linkLocal( ADUCID_PEIG_LOCAL_LINK_SECONDARY_REPLICA, std::string(DEMOSITE) + "verify" ) ) {
+        reply.redirect( aducid.AIMProxyURL() );
+        return HTTP_MOVED_TEMPORARILY;
+    } else {
+        error = "Can't start ADUCID session";
+    }
+}
+
+
+
+
+</%cpp>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>ADUCID C++ SDK test</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+  </head>
+  <body>
+    <div id="content">
+      <div class="column">
+      <$$ ( error.empty() ? "" : "<b>Error: " + error + "</b>" ) $>
+      <h1>Basic operations</h1>
+      <ul>
+        <li><a href="/?action=init">Init</a></li>
+        <li><a href="/?action=open">Open</a></li>
+        <li><a href="/?action=change">Change</a></li>
+        <li><a href="/?action=delete">Delete</a></li>
+        <li><a href="/?action=reinit">Reinit</a></li>
+        <li><a href="/?action=rechange">Rechange</a></li>
+      </ul>
+      <h1>Meetings</h1>
+      <ul>
+        <li><a href="/?action=createroombystory">Create room by story</a></li>
+        <li><a href="/?action=enterroombystory">Enter room by story</a></li>
+        <li><a href="/?action=createroombyname">Create room by name</a></li>
+        <li><a href="/?action=enterroombyname">Enter room by name</a></li>
+      </ul>
+      <h1>Payment</h1>
+      <ul>
+        <li><a href="/?action=initpayment">Init</a></li>
+        <li><a href="/?action=initpaymentlf">Init + LF</a></li>
+        <li><a href="/?action=confirmtext">Confirm text</a></li>
+        <li><a href="/?action=confirmtextlf">Confirm text + LF</a></li>
+        <li><a href="/?action=confirmmoney">Confirm money transfer</a></li>
+        <li><a href="/?action=confirmmoneylf">Confirm money transfer + LF</a></li>
+      </ul>
+      </div>
+      <div class="column">
+      <h1>Local factor</h1>
+      <ul>
+        <li><a href="/?action=initlf">Init local factor</a></li>
+        <li><a href="/?action=changelf">Change local factor</a></li>
+        <li><a href="/?action=deletelf">Delete local factor</a></li>
+        <li><a href="/?action=verifylf">Verify local factor</a></li>
+      </ul>
+      <h1>Local link</h1>
+      <ul>
+        <li><a href="/?action=primaryreplica">Primary replica</a></li>
+        <li><a href="/?action=secondaryreplica">Secondary replica</a></li>
+        <li><a href="/?action=connectionusb">Connection USB</a></li>
+      </ul>
+      </div>
+    </div>
+ </body>
+</html>
