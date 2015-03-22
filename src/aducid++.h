@@ -74,6 +74,8 @@ namespace aducid
         bool close();
 
         bool verify();
+        bool verifyTransaction();
+        bool verifyTransaction( map<string,string> &params );
         map<string,string> getPSLAtributes( AducidAttributeSet_t set, bool useCache );
         string getPSLAtribute( const std::string &attr );
         string userDatabaseIndex();

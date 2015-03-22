@@ -264,6 +264,23 @@ bool AducidClient::verify() {
     return aducid_verify( _handle );
 }
 
+bool AducidClient::verifyTransaction() {
+    return aducid_verify_transaction( _handle, NULL );
+}
+
+bool AducidClient::verifyTransaction( map<string,string> &params ) {
+    AducidAttributeList_t list = NULL;
+    bool result = aducid_verify_transaction( _handle, &list );
+    if( list == NULL ) return result;
+    AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
+    while( attr ) {
+        params[attr->name] = attr->value;
+        attr = attr->next;
+    }
+    aducid_attr_list_free( list );
+    return result;
+}
+
 string AducidClient::userDatabaseIndex() {
     string result;
     const char *udi = aducid_get_user_database_index( _handle );
@@ -275,7 +292,7 @@ map<string,string>
 AducidClient::getPSLAtributes( AducidAttributeSet_t set, bool useCache ) {
     map<string,string> result;
     const AducidAIMGetPSLAttributesResponse_t *response =
-        aducid_get_psl_attributes( _handle, set, useCache);
+        aducid_get_psl_attributes( _handle, set, useCache );
     if(response->statusAIM) result["statusAIM"] = aducid_aim_status_str(response->statusAIM);
     if(response->statusAuth) result["statusAuth"] = aducid_auth_status_str(response->statusAuth);
     if(response->operationName) result["operationName"] = aducid_operation_str(response->operationName);
