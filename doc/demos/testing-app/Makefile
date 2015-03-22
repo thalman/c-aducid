@@ -3,7 +3,7 @@ all: testing-app.so
 test: all
 	LD_LIBRARY_PATH=../../../.libs ${TNTNET} tntnet.xml
 
-testing-app.so: testing-app.o verify.o bg.o css.o ko.o ok.o
+testing-app.so: testing-app.o verify.o verifytransaction.o bg.o css.o ko.o ok.o
 	${CXX} -o $@ $^ ${LDFLAGS}
 
 clean:

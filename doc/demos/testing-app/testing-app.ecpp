@@ -119,7 +119,7 @@ if( action == "enterroombyname" ) {
  * payment -------------------------------------------------------------
  */
 if( action == "initpayment" ) {
-    if( aducid.initPayment( false, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.initPayment( false, std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -128,7 +128,7 @@ if( action == "initpayment" ) {
 }
 
 if( action == "initpaymentlf" ) {
-    if( aducid.initPayment( true, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.initPayment( true, std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -137,7 +137,7 @@ if( action == "initpaymentlf" ) {
 }
 
 if( action == "confirmtext" ) {
-    if( aducid.confirmTextTransaction( "too yellow horse", false, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.confirmTextTransaction( "too yellow horse", false, std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -146,7 +146,7 @@ if( action == "confirmtext" ) {
 }
 
 if( action == "confirmtextlf" ) {
-    if( aducid.confirmTextTransaction( "too yellow horse", true, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.confirmTextTransaction( "too yellow horse", true, std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -155,7 +155,7 @@ if( action == "confirmtextlf" ) {
 }
 
 if( action == "confirmmoney" ) {
-    if( aducid.confirmMoneyTransaction( "My account","Your account","1000", false, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.confirmMoneyTransaction( "My account","Your account","1000", false, std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -164,7 +164,7 @@ if( action == "confirmmoney" ) {
 }
 
 if( action == "confirmmoneylf" ) {
-    if( aducid.confirmMoneyTransaction("My account","Your account","1000", true, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.confirmMoneyTransaction("My account","Your account","1000", true, std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
