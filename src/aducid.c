@@ -14,8 +14,6 @@
 #include <unistd.h>
 #endif
 
-#include "definitions.h"
-
 
 ADUCID_PUBLIC_FUNC
 AducidHandle_t aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey) {
@@ -151,6 +149,7 @@ aducid_request_operation(AducidHandle_t handle,
     handle->authKey = NULL;
     handle->bindingId = NULL;
     handle->bindingKey = NULL;
+    aducid_clear_psl_cache( handle );
     response = aducid_aim_request_operation(handle->R4,
                                             operation,
                                             handle->AIMName,
@@ -310,12 +309,12 @@ const char *aducid_get_user_database_index(AducidHandle_t handle) {
 }
 
 ADUCID_PUBLIC_FUNC
-void aducid_clear_psl_cache(AducidHandle_t handle) {
+void aducid_clear_psl_cache( AducidHandle_t handle ) {
     if(handle) {
         int i;
-
         for( i=0; i < ADUCID_ATTRIBUTE_SET_ERROR; i++) {
             aducid_free_aim_get_psl_attributes_response(handle->PSLCache[i]);
+            handle->PSLCache[i] = NULL;
         }
     }
 }

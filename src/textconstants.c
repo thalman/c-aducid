@@ -176,7 +176,7 @@ const char *aducid_operation_str(AducidOperation_t operation) {
 }
 
 ADUCID_PUBLIC_FUNC
-AducidOperation_t aducid_operation_enum(char *operation) {
+AducidOperation_t aducid_operation_enum(const char *operation) {
     return (AducidOperation_t)aducid_str_to_enum(operation,aducidOperations);
 }
 
@@ -186,7 +186,7 @@ const char *aducid_attribute_set_str(AducidAttributeSet_t set) {
 }
 
 ADUCID_PUBLIC_FUNC
-AducidAttributeSet_t aducid_attribute_set_enum(char *set) {
+AducidAttributeSet_t aducid_attribute_set_enum(const char *set) {
     return (AducidAttributeSet_t)aducid_str_to_enum(set,aducidAttributeSets);
 }
 
@@ -196,7 +196,7 @@ const char *aducid_aim_status_str(AducidAIMStatus_t status) {
 }
 
 ADUCID_PUBLIC_FUNC
-AducidAIMStatus_t aducid_aim_status_enum(char *status) {
+AducidAIMStatus_t aducid_aim_status_enum(const char *status) {
     return (AducidAIMStatus_t)aducid_str_to_enum(status,aducidAIMStatuses);
 }
 
@@ -206,7 +206,7 @@ const char *aducid_method_str(AducidMethod_t method) {
 }
 
 ADUCID_PUBLIC_FUNC
-AducidMethod_t aducid_method_enum(char *method) {
+AducidMethod_t aducid_method_enum(const char *method) {
     return (AducidMethod_t)aducid_str_to_enum(method,aducidMethods);
 }
 
@@ -216,7 +216,7 @@ const char *aducid_algorithm_str(AducidAlgorithm_t alg) {
 }
 
 ADUCID_PUBLIC_FUNC
-AducidAlgorithm_t aducid_algorithm_enum(char *alg) {
+AducidAlgorithm_t aducid_algorithm_enum(const char *alg) {
     return (AducidAlgorithm_t)aducid_str_to_enum(alg,aducidAlgorithms);
 }
 
@@ -226,6 +226,6 @@ const char *aducid_auth_status_str(AducidAuthStatus_t status) {
 }
 
 ADUCID_PUBLIC_FUNC
-AducidAuthStatus_t aducid_auth_status_enum(char *status) {
+AducidAuthStatus_t aducid_auth_status_enum(const char *status) {
     return (AducidAuthStatus_t)aducid_str_to_enum(status,aducidAuthStatuses);
 }

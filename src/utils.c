@@ -5,13 +5,13 @@
 #include <string.h>
 #include <ctype.h>
 
-#if defined(_WIN32) || defined(_WIN32) 
+#if defined(_WIN32) || defined(_WIN32) || defined(__CYGWIN__)
 #include<Windows.h>
 #else
 #include <curl/curl.h>
 #endif
 
-char *dyn_strcat(char *string1,char *string2, bool frees2) {
+char *dyn_strcat(char *string1, char *string2, bool frees2) {
     size_t len;
     char *res;
     
@@ -37,8 +37,8 @@ char *dyn_strcat(char *string1,char *string2, bool frees2) {
     return res;
 }
 
-char *xml_get_single_node_text(xmlDocPtr doc, xmlChar *xpath){
-    xmlChar *node = myxml_find_xpath_first(doc,xpath);
+char *xml_get_single_node_text(char *doc, char *xpath){
+    char *node = myxml_find_xpath_first(doc,xpath);
     return myxml_get_node_text(node);
 }
 

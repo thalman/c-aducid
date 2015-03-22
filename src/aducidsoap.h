@@ -31,7 +31,7 @@ char *create_aim_execute_personal_object_xml(const char *authId,
 					     const char *ILID,
 					     const char *AAIM2,
 					     const char *ilData);
-AducidAttributeList_t *parse_personal_object(xmlDocPtr doc);
+AducidAttributeList_t *parse_personal_object(char *doc);
 char *create_aim_close_session_xml(const char *authId, const char *AIMName, const char *authKey);
 
 #endif

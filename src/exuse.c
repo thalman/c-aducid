@@ -317,11 +317,51 @@ aducid_confirm_money_transaction(AducidHandle_t handle, const char *fromAccount,
 }
 
 ADUCID_PUBLIC_FUNC bool
-aducid_verify_transaction( AducidHandle_t handle ) {
-    if( ! aducid_verify( handle ) ) return false;
+aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transaction )
+{
+    static const char *attributes[] = {
+        "PaymentSignature",
+        "PaymentMessage",
+        "PaymentAmount",
+        "PaymentFromAccount",
+        "PaymentToAccount",
+        NULL
+    };
+    static const char *allways[] = {
+        "Return_Status",
+        "UseLocalFactor",
+        NULL
+    };
+    bool result = false;
+    int a;
+    
+    if( ! aducid_verify( handle ) ) { *transaction = NULL; return false; }
+    if( transaction ) *transaction = aducid_attr_list_new();
     AducidAIMGetPSLAttributesResponse_t *
         all = aducid_get_psl_attributes( handle, ADUCID_ATTRIBUTE_SET_ALL, true );
-    // FIXME: not finished
-    aducid_free_aim_get_psl_attributes_response( all );
-    return true;
+    char *p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "Return_Status" );
+    if( p && ( strcmp( p, "ConfirmedByUser" ) == 0 ) ) {
+        p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "UseLocalFactor" );
+        if( ! p ) result = true;
+        if( p && ( strcmp( p, "OK" ) == 0 ) ) {
+            result = true;
+        }
+        if( transaction ) {
+            a = 0;
+            if( result ) {
+                while( attributes[a] ) {
+                    p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, attributes[a] );
+                    if( p ) aducid_attr_list_append( *transaction, attributes[a], p);
+                    a++;
+                }
+            }
+        }
+    }
+    a = 0;
+    while( allways[a] ) {
+        p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, allways[a] );
+        if( p ) aducid_attr_list_append( *transaction, allways[a], p );
+        a++;
+    }
+    return result;
 }

@@ -188,7 +188,7 @@ bool aducid_attr_list_delete(AducidAttributeList_t handle, int idx)
 }
 
 ADUCID_PUBLIC_FUNC
-bool aducid_attr_list_delete_by_name(AducidAttributeList_t handle, char *name) {
+bool aducid_attr_list_delete_by_name(AducidAttributeList_t handle, const char *name) {
     AducidAttributeListItem_t *node;
     bool result = false;
     int cnt,i;

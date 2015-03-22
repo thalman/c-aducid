@@ -22,17 +22,8 @@ extern "C" {
     #define ADUCID_LOCAL_FUNC
   #else
     /* on posix */
-    /*
-    #if __GNUC__ >= 4
-      #define ADUCID_PUBLIC_FUNC __attribute__ ((visibility ("default")))
-      #define ADUCID_LOCAL_FUNC  __attribute__ ((visibility ("hidden")))
-    #else
-    */
-      #define ADUCID_PUBLIC_FUNC
-      #define ADUCID_LOCAL_FUNC
-    /*
-    #endif
-    */
+    #define ADUCID_PUBLIC_FUNC
+    #define ADUCID_LOCAL_FUNC
   #endif
 #endif
 
@@ -61,7 +52,7 @@ ADUCID_PUBLIC_FUNC char *aducid_attr_list_get_first_by_name( const AducidAttribu
 ADUCID_PUBLIC_FUNC char *aducid_attr_list_get_next_by_name( const AducidAttributeList_t handle, const char *name );
 ADUCID_PUBLIC_FUNC int   aducid_attr_list_get_count_by_name( const AducidAttributeList_t handle, const char *name );
 ADUCID_PUBLIC_FUNC bool  aducid_attr_list_delete( AducidAttributeList_t handle, int idx );
-ADUCID_PUBLIC_FUNC bool  aducid_attr_list_delete_by_name( AducidAttributeList_t handle,char *name );
+ADUCID_PUBLIC_FUNC bool  aducid_attr_list_delete_by_name( AducidAttributeList_t handle, const char *name );
 ADUCID_PUBLIC_FUNC void  aducid_attr_list_free( AducidAttributeList_t handle );
 
 /* ADUCID enum constants begin */
@@ -233,6 +224,7 @@ typedef struct {
     AducidAIMStatus_t statusAIM;
     AducidAuthStatus_t statusAuth;
     char *statusMessage;
+    // FIXME explode personalObject
     AducidAttributeList_t personalObject;
 } AducidAIMExecutePersonalObjectResponse_t;
 
@@ -254,11 +246,10 @@ typedef struct {
     char *ilAlgorithmName;
     char *ilValidityCount;
     char *ilValidityTime;
-    /**
-       FIXME
-       personalObjectName
-       personalObject
-    */
+    char *personalObjectName;
+    char *personalObjectTypeName;
+    char *personalObjectAlgorithmName;
+    AducidAttributeList_t personalObjectAttributes;
     char *authKey2;
     char *sessionKey;
     char *bindingType;
@@ -313,7 +304,7 @@ ADUCID_PUBLIC_FUNC AducidAIMExecutePersonalObjectResponse_t *aducid_aim_execute_
     AducidMethod_t methodName,
     const char *personalObjectName,
     AducidAlgorithm_t personalObjectAlgorithm,
-    AducidAttributeList_t *personalObjectData,
+    AducidAttributeList_t personalObjectData,
     const char *ILID,
     const char *AAIM2,
     const char *ilData);
@@ -329,22 +320,22 @@ const char *    aducid_operation_str(AducidOperation operation);
 AducidOperation aducid_operation_enum(char *operation);
 */
 ADUCID_PUBLIC_FUNC const char *aducid_operation_str(AducidOperation_t operation);
-ADUCID_PUBLIC_FUNC AducidOperation_t aducid_operation_enum(char *operation);
+ADUCID_PUBLIC_FUNC AducidOperation_t aducid_operation_enum(const char *operation);
 
 ADUCID_PUBLIC_FUNC const char *       aducid_attribute_set_str(AducidAttributeSet_t set);
-ADUCID_PUBLIC_FUNC AducidAttributeSet_t aducid_attribute_set_enum(char *set);
+ADUCID_PUBLIC_FUNC AducidAttributeSet_t aducid_attribute_set_enum(const char *set);
 
 ADUCID_PUBLIC_FUNC const char *    aducid_aim_status_str(AducidAIMStatus_t status);
-ADUCID_PUBLIC_FUNC AducidAIMStatus_t aducid_aim_status_enum(char *status);
+ADUCID_PUBLIC_FUNC AducidAIMStatus_t aducid_aim_status_enum(const char *status);
 
 ADUCID_PUBLIC_FUNC const char * aducid_method_str(AducidMethod_t method);
-ADUCID_PUBLIC_FUNC AducidMethod_t aducid_method_enum(char *method);
+ADUCID_PUBLIC_FUNC AducidMethod_t aducid_method_enum(const char *method);
 
 ADUCID_PUBLIC_FUNC const char *    aducid_algorithm_str(AducidAlgorithm_t alg);
-ADUCID_PUBLIC_FUNC AducidAlgorithm_t aducid_algorithm_enum(char *alg);
+ADUCID_PUBLIC_FUNC AducidAlgorithm_t aducid_algorithm_enum(const char *alg);
 
 ADUCID_PUBLIC_FUNC const char *     aducid_auth_status_str(AducidAuthStatus_t status);
-ADUCID_PUBLIC_FUNC AducidAuthStatus_t aducid_auth_status_enum(char *status);
+ADUCID_PUBLIC_FUNC AducidAuthStatus_t aducid_auth_status_enum(const char *status);
 
 /* c interface */
 ADUCID_PUBLIC_FUNC AducidHandle_t aducid_new(const char *AIM, const char *authId, const char *authKey, const char *bindingId, const char *bindingKey);
@@ -373,6 +364,9 @@ aducid_wait_for_operation( AducidHandle_t handle );
 
 ADUCID_PUBLIC_FUNC bool
 aducid_verify( AducidHandle_t handle );
+
+ADUCID_PUBLIC_FUNC bool
+aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transaction );
 
 ADUCID_PUBLIC_FUNC AducidAttributeList_t *
 aducid_get_attributes( AducidHandle_t handle, char *attrSetName );
@@ -479,10 +473,10 @@ aducid_free( AducidHandle_t handle );
  * PEIG
  */
 
-ADUCID_PUBLIC_FUNC bool aducid_peig_invoke(AducidHandle_t handle);
-ADUCID_PUBLIC_FUNC const char *aducid_peig_get_authkey(AducidHandle_t handle);
-ADUCID_PUBLIC_FUNC char *aducid_get_aimproxy_url(AducidHandle_t handle);
-ADUCID_PUBLIC_FUNC char *aducid_get_aducid_url(AducidHandle_t handle);
+ADUCID_PUBLIC_FUNC bool aducid_peig_invoke( AducidHandle_t handle );
+ADUCID_PUBLIC_FUNC const char *aducid_peig_get_authkey( AducidHandle_t handle );
+ADUCID_PUBLIC_FUNC char *aducid_get_aimproxy_url( AducidHandle_t handle );
+ADUCID_PUBLIC_FUNC char *aducid_get_aducid_url( AducidHandle_t handle );
 
 /**
  * library inicialization

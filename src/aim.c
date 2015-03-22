@@ -26,6 +26,10 @@ void aducid_free_aim_get_psl_attributes_response(AducidAIMGetPSLAttributesRespon
     safe_free(response->ilAlgorithmName);
     safe_free(response->ilValidityCount);
     safe_free(response->ilValidityTime);
+    safe_free(response->personalObjectName);
+    safe_free(response->personalObjectTypeName);
+    safe_free(response->personalObjectAlgorithmName);
+    aducid_attr_list_free( response->personalObjectAttributes );
     safe_free(response->authKey2);
     safe_free(response->sessionKey);
     safe_free(response->bindingType);
@@ -142,7 +146,12 @@ aducid_aim_get_psl_attributes( const char *R4,
         result->ilAlgorithmName = xml_get_single_node_text(dom,"//ilAlgorithmName");
         result->ilValidityTime = xml_get_single_node_text(dom,"//ilValidityTime");
         result->ilValidityCount = xml_get_single_node_text(dom,"//ilValidityCount");
-        
+
+        result->personalObjectName = xml_get_single_node_text(dom,"//personalObjectName");
+        result->personalObjectTypeName = xml_get_single_node_text(dom,"//personalObjectTypeName");
+        result->personalObjectAlgorithmName = xml_get_single_node_text(dom,"//personalObjectAlgorithmName");
+        result->personalObjectAttributes = parse_personal_object(dom);
+
         result->authKey2 = xml_get_single_node_text(dom,"//authKey2");
         result->sessionKey = xml_get_single_node_text(dom,"//sessionKey");
         
@@ -162,7 +171,7 @@ aducid_aim_execute_personal_object( const char *R4,
                                     AducidMethod_t methodName,
                                     const char *personalObjectName,
                                     AducidAlgorithm_t personalObjectAlgorithm,
-                                    AducidAttributeList_t *personalObjectData,
+                                    AducidAttributeList_t personalObjectData,
                                     const char *ILID,
                                     const char *AAIM2,
                                     const char *ilData )

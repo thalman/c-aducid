@@ -253,7 +253,7 @@ char *create_aim_execute_personal_object_xml(const char *authId,
     return XMLC;
 }
 
-AducidAttributeList_t *parse_personal_object(xmlDocPtr doc) {
+AducidAttributeList_t *parse_personal_object( char *doc ) {
 
     /**
      //FIXME:Personal Object
@@ -276,8 +276,8 @@ AducidAttributeList_t *parse_personal_object(xmlDocPtr doc) {
      </personalObject>
     */
     AducidAttributeList_t *list;
-    char *name,*value,*p,*q;
-    xmlChar *txt,*valueAttr;
+    char *name, *value, *p, *q;
+    char *txt, *valueAttr;
     
     list = aducid_attr_list_new();
     txt = myxml_get_node_text(myxml_find_xpath_first(doc,"//personalObject"));

@@ -3,14 +3,18 @@
 
 #include "definitions.h"
 
-typedef char *xmlDocPtr;
-typedef char xmlChar;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-xmlChar *myxml_find_xpath_first(xmlDocPtr doc, xmlChar *xpath);
-xmlChar *myxml_extract_node_name(xmlChar *attr, bool removeNS);
-bool     myxml_is_node_single(xmlChar *attr);
-xmlChar *myxml_get_node_text(xmlChar *xml);
-xmlChar *myxml_get_node_attribute(xmlChar *xml,xmlChar *attrname);
+char *myxml_find_xpath_first(const char *doc, const char *xpath);
+char *myxml_extract_node_name(char *attr, bool removeNS);
+bool  myxml_is_node_single(char *attr);
+char *myxml_get_node_text(char *xml);
+char *myxml_get_node_attribute(char *xml, char *attrname);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

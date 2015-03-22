@@ -5,8 +5,8 @@
 #include <ctype.h>
 #include <string.h>
 
-xmlChar *myxml_find_xpath_first(xmlDocPtr doc, xmlChar *xpath) {
-    xmlChar *attr, *pos, *p, *q;
+char *myxml_find_xpath_first(const char *doc, const char *xpath) {
+    char *attr, *pos, *p, *q;
     int size;
     if( ! xpath ) return NULL;
     if( ! doc ) return NULL;
@@ -58,8 +58,8 @@ xmlChar *myxml_find_xpath_first(xmlDocPtr doc, xmlChar *xpath) {
     return NULL;
 }
 
-xmlChar *myxml_extract_node_name(xmlChar *attr, bool removeNS) {
-    xmlChar *b,*name,*newname;
+char *myxml_extract_node_name(char *attr, bool removeNS) {
+    char *b,*name,*newname;
     int cnt = 0;
 
     if(!attr) { return NULL; }
@@ -88,8 +88,8 @@ xmlChar *myxml_extract_node_name(xmlChar *attr, bool removeNS) {
 }
 
 
-bool myxml_is_node_single(xmlChar *attr) {
-    xmlChar *p;
+bool myxml_is_node_single(char *attr) {
+    char *p;
 
     if( attr == NULL ) { return false; }
     if( attr[0] != '<') { return false; }
@@ -103,8 +103,8 @@ bool myxml_is_node_single(xmlChar *attr) {
     return false;
 }
 
-xmlChar *myxml_node_end(xmlChar *attr) {
-    xmlChar *p,*name,*endname;
+char *myxml_node_end(char *attr) {
+    char *p,*name,*endname;
     int size;
     
     if( attr == NULL ) { return NULL; }
@@ -130,8 +130,8 @@ xmlChar *myxml_node_end(xmlChar *attr) {
     return p;
 }
     
-xmlChar *myxml_get_node_text(xmlChar *xml) {
-    xmlChar *begin,*end, *text;
+char *myxml_get_node_text(char *xml) {
+    char *begin,*end, *text;
     int size;
 
     if(!xml) { return NULL; }
@@ -150,8 +150,8 @@ xmlChar *myxml_get_node_text(xmlChar *xml) {
     return text;
 }
 
-xmlChar *myxml_get_node_attribute(xmlChar *xml,xmlChar *attrname) {
-    xmlChar *node,*end, *p, *text, *attreq, quote;
+char *myxml_get_node_attribute(char *xml,char *attrname) {
+    char *node,*end, *p, *text, *attreq, quote;
     int size;
 
     if( (xml == NULL) || (attrname == NULL) ) { return NULL; }
