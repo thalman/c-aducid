@@ -44,14 +44,14 @@ namespace aducid
         bool deleteIdentity( const char *peigReturnURL );
         bool deleteIdentity( const string &peigReturnURL );
 
-        bool initLocalFactor( const char *peigReturnURL );
-        bool initLocalFactor( const string &peigReturnURL );
-        bool changeLocalFactor( const char *peigReturnURL );
-        bool changeLocalFactor( const string &peigReturnURL );
-        bool deleteLocalFactor( const char *peigReturnURL );
-        bool deleteLocalFactor( const string &peigReturnURL );
-        bool verifyLocalFactor( const char *peigReturnURL );
-        bool verifyLocalFactor( const string &peigReturnURL );
+        bool initPersonalFactor( const char *peigReturnURL );
+        bool initPersonalFactor( const string &peigReturnURL );
+        bool changePersonalFactor( const char *peigReturnURL );
+        bool changePersonalFactor( const string &peigReturnURL );
+        bool deletePersonalFactor( const char *peigReturnURL );
+        bool deletePersonalFactor( const string &peigReturnURL );
+        bool verifyPersonalFactor( const char *peigReturnURL );
+        bool verifyPersonalFactor( const string &peigReturnURL );
 
         bool createRoomByStory( const char *peigReturnURL );
         bool createRoomByStory( const string &peigReturnURL );
@@ -64,12 +64,12 @@ namespace aducid
 
         bool linkLocal( AducidPeigLocalLink_t linkType, const char *peigReturnURL );
         bool linkLocal( AducidPeigLocalLink_t linkType, const string &peigReturnURL );
-        bool initPayment( bool useLocalFactor, const char *peigReturnURL );
-        bool initPayment( bool useLocalFactor, const string &peigReturnURL );
-        bool confirmTextTransaction( const char *textUTF8, bool useLocalFactor, const char *peigReturnURL );
-        bool confirmTextTransaction( const string &textUTF8, bool useLocalFactor, const string &peigReturnURL );
-        bool confirmMoneyTransaction( const char *fromAccount, const char *toAccount, const char *amount, bool useLocalFactor, const char *peigReturnURL );
-        bool confirmMoneyTransaction( const string &fromAccount, const string &toAccount, const string &amount, bool useLocalFactor, const string &peigReturnURL );
+        bool initPayment( bool usePersonalFactor, const char *peigReturnURL );
+        bool initPayment( bool usePersonalFactor, const string &peigReturnURL );
+        bool confirmTextTransaction( const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL );
+        bool confirmTextTransaction( const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL );
+        bool confirmMoneyTransaction( const char *fromAccount, const char *toAccount, const char *amount, bool usePersonalFactor, const char *peigReturnURL );
+        bool confirmMoneyTransaction( const string &fromAccount, const string &toAccount, const string &amount, bool usePersonalFactor, const string &peigReturnURL );
         
         bool close();
 

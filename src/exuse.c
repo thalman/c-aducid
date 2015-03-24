@@ -19,10 +19,10 @@ aducid_exuse(AducidHandle_t handle,
         peigReturnName);
 }
 
-/* local factor operations */
+/* personal factor operations */
 
 const char *
-local_factor_management_operation(AducidHandle_t handle,
+personal_factor_management_operation(AducidHandle_t handle,
                                   const char *operation,
                                   const char *peigReturnURL)
 {
@@ -30,7 +30,7 @@ local_factor_management_operation(AducidHandle_t handle,
     AducidAttributeList_t params, personalObject;
 
     params = aducid_attr_list_new();
-    aducid_attr_list_append( params, "UseLocalFactor", "1" );
+    aducid_attr_list_append( params, "UsePersonalFactor", "1" );
     personalObject = aducid_attr_list_new();
     //aducid_attr_list_append( personalObject, "personalObjectName", "" );
     aducid_attr_list_append( personalObject, "personalObjectTypeName", "peigMgmt" );
@@ -48,9 +48,9 @@ local_factor_management_operation(AducidHandle_t handle,
 }
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_init_local_factor( AducidHandle_t handle, const char * peigReturnURL )
+aducid_init_personal_factor( AducidHandle_t handle, const char * peigReturnURL )
 {
-    return local_factor_management_operation(
+    return personal_factor_management_operation(
         handle,
         aducid_method_str( ADUCID_METHOD_INIT ),
         peigReturnURL
@@ -58,9 +58,9 @@ aducid_init_local_factor( AducidHandle_t handle, const char * peigReturnURL )
 }
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_change_local_factor( AducidHandle_t handle, const char * peigReturnURL )
+aducid_change_personal_factor( AducidHandle_t handle, const char * peigReturnURL )
 {
-    return local_factor_management_operation(
+    return personal_factor_management_operation(
         handle,
         aducid_method_str( ADUCID_METHOD_CHANGE ),
         peigReturnURL
@@ -68,9 +68,9 @@ aducid_change_local_factor( AducidHandle_t handle, const char * peigReturnURL )
 }
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_delete_local_factor( AducidHandle_t handle, const char * peigReturnURL )
+aducid_delete_personal_factor( AducidHandle_t handle, const char * peigReturnURL )
 {
-    return local_factor_management_operation(
+    return personal_factor_management_operation(
         handle,
         aducid_method_str( ADUCID_METHOD_DELETE ),
         peigReturnURL
@@ -78,9 +78,9 @@ aducid_delete_local_factor( AducidHandle_t handle, const char * peigReturnURL )
 }
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_verify_local_factor( AducidHandle_t handle, const char * peigReturnURL )
+aducid_verify_personal_factor( AducidHandle_t handle, const char * peigReturnURL )
 {
-    return local_factor_management_operation(
+    return personal_factor_management_operation(
         handle,
         aducid_method_str( ADUCID_METHOD_VERIFY_LF ),
         peigReturnURL
@@ -225,13 +225,13 @@ aducid_peig_local_link( AducidHandle_t handle, AducidPeigLocalLink_t linkType, c
 /* payment/transaction operations */
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_init_payment(AducidHandle_t handle, bool useLocalFactor, const char *peigReturnURL)
+aducid_init_payment(AducidHandle_t handle, bool usePersonalFactor, const char *peigReturnURL)
 {
     const char *result;
     AducidAttributeList_t params, personalObject;
 
     params = aducid_attr_list_new();
-    if( useLocalFactor ) aducid_attr_list_append( params, "UseLocalFactor", "1" );
+    if( usePersonalFactor ) aducid_attr_list_append( params, "UsePersonalFactor", "1" );
 
     personalObject = aducid_attr_list_new();
     aducid_attr_list_append( personalObject, "personalObjectName", "payment" );
@@ -252,7 +252,7 @@ aducid_init_payment(AducidHandle_t handle, bool useLocalFactor, const char *peig
 }
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_confirm_text_transaction(AducidHandle_t handle, const char *textUTF8, bool useLocalFactor, const char *peigReturnURL)
+aducid_confirm_text_transaction(AducidHandle_t handle, const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL)
 {
     const char *result;
     char *textEscaped;
@@ -263,7 +263,7 @@ aducid_confirm_text_transaction(AducidHandle_t handle, const char *textUTF8, boo
     textEscaped = url_encode(textUTF8);
     params = aducid_attr_list_new();
     aducid_attr_list_append( params, "PaymentMessage", textEscaped );
-    if( useLocalFactor ) aducid_attr_list_append( params, "UseLocalFactor", "1" );
+    if( usePersonalFactor ) aducid_attr_list_append( params, "UsePersonalFactor", "1" );
 
     personalObject = aducid_attr_list_new();
     aducid_attr_list_append( personalObject, "personalObjectName", "payment" );
@@ -285,7 +285,7 @@ aducid_confirm_text_transaction(AducidHandle_t handle, const char *textUTF8, boo
 }
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_confirm_money_transaction(AducidHandle_t handle, const char *fromAccount, const char *toAccount, const char *amount, bool useLocalFactor, const char *peigReturnURL)
+aducid_confirm_money_transaction(AducidHandle_t handle, const char *fromAccount, const char *toAccount, const char *amount, bool usePersonalFactor, const char *peigReturnURL)
 {
     const char *result;
     AducidAttributeList_t params, personalObject;
@@ -296,7 +296,7 @@ aducid_confirm_money_transaction(AducidHandle_t handle, const char *fromAccount,
     aducid_attr_list_append( params, "PaymentAmount", amount );
     aducid_attr_list_append( params, "PaymentFromAccount", fromAccount );
     aducid_attr_list_append( params, "PaymentToAccount", toAccount );
-    if( useLocalFactor ) aducid_attr_list_append( params, "UseLocalFactor", "1" );
+    if( usePersonalFactor ) aducid_attr_list_append( params, "UsePersonalFactor", "1" );
 
     personalObject = aducid_attr_list_new();
     aducid_attr_list_append( personalObject, "personalObjectName", "payment" );
@@ -329,7 +329,7 @@ aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transac
     };
     static const char *allways[] = {
         "Return_Status",
-        "UseLocalFactor",
+        "UsePersonalFactor",
         NULL
     };
     bool result = false;
@@ -341,7 +341,7 @@ aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transac
         all = aducid_get_psl_attributes( handle, ADUCID_ATTRIBUTE_SET_ALL, true );
     char *p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "Return_Status" );
     if( p && ( strcmp( p, "ConfirmedByUser" ) == 0 ) ) {
-        p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "UseLocalFactor" );
+        p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "UsePersonalFactor" );
         if( ! p ) result = true;
         if( p && ( strcmp( p, "OK" ) == 0 ) ) {
             result = true;

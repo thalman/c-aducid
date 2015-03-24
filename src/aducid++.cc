@@ -124,40 +124,40 @@ bool AducidClient::deleteIdentity( const string &peigReturnURL ) {
     return deleteIdentity( peigReturnURL.c_str() );
 }
 
-bool AducidClient::initLocalFactor( const char *peigReturnURL )
+bool AducidClient::initPersonalFactor( const char *peigReturnURL )
 {
-    return aducid_init_local_factor( _handle, peigReturnURL ) != NULL;
+    return aducid_init_personal_factor( _handle, peigReturnURL ) != NULL;
 }
-bool AducidClient::initLocalFactor( const string &peigReturnURL )
+bool AducidClient::initPersonalFactor( const string &peigReturnURL )
 {
-    return initLocalFactor( peigReturnURL.c_str() );
-}
-
-bool AducidClient::changeLocalFactor( const char *peigReturnURL )
-{
-    return aducid_change_local_factor( _handle, peigReturnURL ) != NULL;
-}
-bool AducidClient::changeLocalFactor( const string &peigReturnURL )
-{
-    return changeLocalFactor( peigReturnURL.c_str() );
+    return initPersonalFactor( peigReturnURL.c_str() );
 }
 
-bool AducidClient::deleteLocalFactor( const char *peigReturnURL )
+bool AducidClient::changePersonalFactor( const char *peigReturnURL )
 {
-    return aducid_delete_local_factor( _handle, peigReturnURL ) != NULL;
+    return aducid_change_personal_factor( _handle, peigReturnURL ) != NULL;
 }
-bool AducidClient::deleteLocalFactor( const string &peigReturnURL )
+bool AducidClient::changePersonalFactor( const string &peigReturnURL )
 {
-    return deleteLocalFactor( peigReturnURL.c_str() );
+    return changePersonalFactor( peigReturnURL.c_str() );
 }
 
-bool AducidClient::verifyLocalFactor( const char *peigReturnURL )
+bool AducidClient::deletePersonalFactor( const char *peigReturnURL )
 {
-    return aducid_verify_local_factor( _handle, peigReturnURL ) != NULL;
+    return aducid_delete_personal_factor( _handle, peigReturnURL ) != NULL;
 }
-bool AducidClient::verifyLocalFactor( const string &peigReturnURL )
+bool AducidClient::deletePersonalFactor( const string &peigReturnURL )
 {
-    return verifyLocalFactor( peigReturnURL.c_str() );
+    return deletePersonalFactor( peigReturnURL.c_str() );
+}
+
+bool AducidClient::verifyPersonalFactor( const char *peigReturnURL )
+{
+    return aducid_verify_personal_factor( _handle, peigReturnURL ) != NULL;
+}
+bool AducidClient::verifyPersonalFactor( const string &peigReturnURL )
+{
+    return verifyPersonalFactor( peigReturnURL.c_str() );
 }
 
 bool AducidClient::createRoomByStory( const char *peigReturnURL )
@@ -205,27 +205,27 @@ bool AducidClient::linkLocal( AducidPeigLocalLink_t linkType, const string &peig
     return linkLocal( linkType, peigReturnURL.c_str() );
 }
 
-bool AducidClient::initPayment( bool useLocalFactor, const char *peigReturnURL )
+bool AducidClient::initPayment( bool usePersonalFactor, const char *peigReturnURL )
 {
-    return ( aducid_init_payment( _handle, useLocalFactor, peigReturnURL ) != NULL );
+    return ( aducid_init_payment( _handle, usePersonalFactor, peigReturnURL ) != NULL );
 }
-bool AducidClient::initPayment( bool useLocalFactor, const string &peigReturnURL ) {
-    return initPayment( useLocalFactor, peigReturnURL.c_str() );
+bool AducidClient::initPayment( bool usePersonalFactor, const string &peigReturnURL ) {
+    return initPayment( usePersonalFactor, peigReturnURL.c_str() );
 }
 
-bool AducidClient::confirmTextTransaction( const char *textUTF8, bool useLocalFactor, const char *peigReturnURL )
+bool AducidClient::confirmTextTransaction( const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL )
 {
-    return aducid_confirm_text_transaction( _handle, textUTF8, useLocalFactor, peigReturnURL ) != NULL;
+    return aducid_confirm_text_transaction( _handle, textUTF8, usePersonalFactor, peigReturnURL ) != NULL;
 }
-bool AducidClient::confirmTextTransaction( const string &textUTF8, bool useLocalFactor, const string &peigReturnURL )
+bool AducidClient::confirmTextTransaction( const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL )
 {
-    return confirmTextTransaction( textUTF8.c_str(), useLocalFactor, peigReturnURL.c_str() );
+    return confirmTextTransaction( textUTF8.c_str(), usePersonalFactor, peigReturnURL.c_str() );
 }
 
 bool AducidClient::confirmMoneyTransaction( const char *fromAccount,
                                             const char *toAccount,
                                             const char *amount,
-                                            bool useLocalFactor,
+                                            bool usePersonalFactor,
                                             const char *peigReturnURL )
 {
     return aducid_confirm_money_transaction(
@@ -233,20 +233,20 @@ bool AducidClient::confirmMoneyTransaction( const char *fromAccount,
         fromAccount,
         toAccount,
         amount,
-        useLocalFactor,
+        usePersonalFactor,
         peigReturnURL ) != NULL ;
 }
 bool AducidClient::confirmMoneyTransaction( const string &fromAccount,
                                             const string &toAccount,
                                             const string &amount,
-                                            bool useLocalFactor,
+                                            bool usePersonalFactor,
                                             const string &peigReturnURL )
 {
     return confirmMoneyTransaction(
         fromAccount.c_str(),
         toAccount.c_str(),
         amount.c_str(),
-        useLocalFactor,
+        usePersonalFactor,
         peigReturnURL.c_str() );
 }
 

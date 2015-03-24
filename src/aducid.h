@@ -412,16 +412,16 @@ aducid_exuse( AducidHandle_t handle,
               const char *peigReturnName );
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_init_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+aducid_init_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_change_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+aducid_change_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_delete_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+aducid_delete_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 ADUCID_PUBLIC_FUNC const char *
-aducid_verify_local_factor( AducidHandle_t handle, const char * peigReturnURL );
+aducid_verify_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 /*
  *   Room operations
@@ -446,13 +446,13 @@ aducid_peig_local_link( AducidHandle_t handle, AducidPeigLocalLink_t linkType, c
  * Payment operations
  */
 ADUCID_PUBLIC_FUNC const char *
-aducid_init_payment( AducidHandle_t handle, bool useLocalFactor, const char *peigReturnURL );
+aducid_init_payment( AducidHandle_t handle, bool usePersonalFactor, const char *peigReturnURL );
 
 ADUCID_PUBLIC_FUNC const char *
 aducid_confirm_text_transaction(
     AducidHandle_t handle,
     const char *textUTF8,
-    bool useLocalFactor,
+    bool usePersonalFactor,
     const char *peigReturnURL );
 
 ADUCID_PUBLIC_FUNC const char *
@@ -461,7 +461,7 @@ aducid_confirm_money_transaction(
     const char *fromAccount,
     const char *toAccount,
     const char *amount,
-    bool useLocalFactor,
+    bool usePersonalFactor,
     const char *peigReturnURL );
 
 
