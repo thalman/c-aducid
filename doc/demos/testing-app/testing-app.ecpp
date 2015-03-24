@@ -173,10 +173,10 @@ if( action == "confirmmoneylf" ) {
 }
 
 /**
- * local factor -------------------------------------------------------------
+ * personal factor -------------------------------------------------------------
  */
 if( action == "initlf" ) {
-    if( aducid.initLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.initPersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -185,7 +185,7 @@ if( action == "initlf" ) {
 }
 
 if( action == "changelf" ) {
-    if( aducid.changeLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.changePersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -194,7 +194,7 @@ if( action == "changelf" ) {
 }
 
 if( action == "deletelf" ) {
-    if( aducid.deleteLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.deletePersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -203,7 +203,7 @@ if( action == "deletelf" ) {
 }
 
 if( action == "verifylf" ) {
-    if( aducid.verifyLocalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.verifyPersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -274,11 +274,11 @@ if( action == "connectionusb" ) {
       <h1>Payment</h1>
       <ul>
         <li><a href="/?action=initpayment">Init</a></li>
-        <li><a href="/?action=initpaymentlf">Init + LF</a></li>
+        <li><a href="/?action=initpaymentlf">Init + PF</a></li>
         <li><a href="/?action=confirmtext">Confirm text</a></li>
-        <li><a href="/?action=confirmtextlf">Confirm text + LF</a></li>
+        <li><a href="/?action=confirmtextlf">Confirm text + PF</a></li>
         <li><a href="/?action=confirmmoney">Confirm money transfer</a></li>
-        <li><a href="/?action=confirmmoneylf">Confirm money transfer + LF</a></li>
+        <li><a href="/?action=confirmmoneylf">Confirm money transfer + PF</a></li>
       </ul>
       </div>
       <div class="column">
