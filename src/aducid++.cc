@@ -325,6 +325,22 @@ string AducidClient::getPSLAtribute( const std::string &attr ) {
     return "";
 }
 
+map<string,string>
+AducidClient::EPOReadUserAttrSet( const char *attrSetName ) {
+    AducidAttributeList_t list;
+    map<string,string> result;
+
+    list = aducid_epo_read_user_attr_set( _handle, attrSetName );
+    result = AducidListToMap( list );
+    aducid_attr_list_free( list );
+    return result;
+}
+
+map<string,string>
+AducidClient::EPOReadUserAttrSet( const string &attrSetName ) {
+    return EPOReadUserAttrSet( attrSetName.c_str() );
+}
+
 string AducidClient::AIMProxyURL() const {
     string result;
     char *url = aducid_get_aimproxy_url( _handle );
@@ -335,7 +351,7 @@ string AducidClient::AIMProxyURL() const {
     return result;
 }
 
-map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t *list) const {
+map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const {
     map<string,string> result;
     if( list == NULL ) return result;
     AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
