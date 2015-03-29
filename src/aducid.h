@@ -27,15 +27,8 @@ extern "C" {
   #endif
 #endif
 
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
-#ifndef bool
-#define bool int
-#define false 0
-#define true 1
-#endif
-#else
-#include<stdbool.h>
-#endif
+#include <stdbool.h>
+
 /**
  * attribute list functions
  */

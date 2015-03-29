@@ -1,8 +1,6 @@
 #ifndef __ATTRLIST_H__
 #define __ATTRLIST_H__
 
-#include "definitions.h"
-
 typedef struct StructAducidAttributeListItem {
     char *name;
     char *value;

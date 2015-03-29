@@ -12,11 +12,11 @@ char *xml_get_single_node_text(char *doc, char *xpath);
 void safe_free(void *ptr);
 char *url_decode(const char *encoded);
 char *url_encode(const char *decoded);
-char *url_to_host_and_port(char *URL);
-char *url_to_host(char *URL);
-char *url_to_location(char *URL);
-bool use_ssl(char *URL);
-int url_to_port(char *URL);
+char *url_to_host_and_port(const char *URL);
+char *url_to_host(const char *URL);
+char *url_to_location(const char *URL);
+bool use_ssl(const char *URL);
+int url_to_port(const char *URL);
 
 #if defined _WIN32 || defined _WIN64
 LPWSTR char_to_wchar(char *ch);

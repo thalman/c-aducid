@@ -8,12 +8,12 @@
 #include <string.h>
 #include <ctype.h>
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined __CYGWIN__
 /* windows soap request */
 #include <windows.h>
 #include <winhttp.h>
 
-char *soap_request_raw(const char *URL,const char *action, const char *request)
+char *soap_request_raw(const char *URL, const char *action, const char *request)
 {
     HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL;
     char *host,*location,*result;
@@ -72,10 +72,12 @@ char *soap_request_raw(const char *URL,const char *action, const char *request)
                                       headerw,
                                       (ULONG)-1L,
                                       WINHTTP_ADDREQ_FLAG_ADD );
+			char *rq = strdup(request);
             bResults = WinHttpSendRequest( hRequest,
                                            WINHTTP_NO_ADDITIONAL_HEADERS,
-                                           0, request, strlen(request),
-                                           strlen(request), 0);
+                                           0, rq, strlen(rq),
+                                           strlen(rq), 0);
+			safe_free(rq);
         }
         /* End the request. */
         if (bResults) {
@@ -139,12 +141,13 @@ char *soap_request_raw(const char *URL,const char *action, const char *request)
     return result;
 }
 /* windows soap request - end*/
-char *soap_request(const char *URL, const char *action, const char *request) {
+char *soap_request(const char *URL, const char *action, const char *request)
+{
     char *result = NULL;
     int retry = 3;
     while( result == NULL && retry ) {
         retry--;
-        result = soap_request_raw(URL,action, request);
+        result = soap_request_raw( URL, action, request);
     }
     return result;
 }

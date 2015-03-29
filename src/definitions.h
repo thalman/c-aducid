@@ -23,11 +23,7 @@
 
 #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
 /* windows includes */
-#ifndef bool
-#define bool int
-#define false 0
-#define true 1
-#endif
+#include<stdbool.h>
 #define _CRT_SECURE_NO_DEPRECATE  
 #define _CRT_NONSTDC_NO_DEPRECATE
 #define snprintf _snprintf

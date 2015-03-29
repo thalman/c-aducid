@@ -46,7 +46,7 @@ void safe_free(void *ptr) {
     if(ptr) { free(ptr); }
 }
 
-char *url_to_host_and_port(char *URL) {
+char *url_to_host_and_port(const char *URL) {
     char *b,*e;
     char *result = NULL;
     int len;
@@ -69,7 +69,7 @@ char *url_to_host_and_port(char *URL) {
     return NULL;
 }
 
-char *url_to_host(char *URL) {
+char *url_to_host(const char *URL) {
     char *hp,*colon;
 
     hp = url_to_host_and_port(URL);
@@ -82,7 +82,7 @@ char *url_to_host(char *URL) {
     return hp;
 }
 
-char *url_to_location(char *URL) {
+char *url_to_location(const char *URL) {
     char *p;
 
     p = strstr(URL,"://");
@@ -99,11 +99,11 @@ char *url_to_location(char *URL) {
     return NULL;
 }
 
-bool use_ssl(char *URL) {
+bool use_ssl(const char *URL) {
     return ( URL[4] == 's' || URL[4] == 'S');
 }
 
-int url_to_port(char *URL) {
+int url_to_port(const char *URL) {
     char *hp,*colon;
     int port;
 
@@ -122,7 +122,7 @@ int url_to_port(char *URL) {
     }
     return port;
 }
-#ifdef _WIN32
+#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
 LPWSTR char_to_wchar(char *ch) {
     LPWSTR result;
     int size;
