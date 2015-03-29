@@ -24,60 +24,69 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\aducid.h">
+    <ClInclude Include="..\..\..\src\aducid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\aducidsoap.h">
+    <ClInclude Include="..\..\..\src\aducidsoap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\attrlist.h">
+    <ClInclude Include="..\..\..\src\attrlist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\definitions.h">
+    <ClInclude Include="..\..\..\src\definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\httpclient.h">
+    <ClInclude Include="..\..\..\src\httpclient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\myxml.h">
+    <ClInclude Include="..\..\..\src\myxml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\soap.h">
+    <ClInclude Include="..\..\..\src\soap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\utils.h">
+    <ClInclude Include="..\..\..\src\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\textconstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\httpclient.c">
+    <ClCompile Include="..\..\..\src\httpclient.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\aducid.c">
+    <ClCompile Include="..\..\..\src\aducid.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\aducidsoap.c">
+    <ClCompile Include="..\..\..\src\aducidsoap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\attrlist.c">
+    <ClCompile Include="..\..\..\src\attrlist.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\myxml.c">
+    <ClCompile Include="..\..\..\src\myxml.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\peig.c">
+    <ClCompile Include="..\..\..\src\peig.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\soap.c">
+    <ClCompile Include="..\..\..\src\soap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\utils.c">
+    <ClCompile Include="..\..\..\src\utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\exuse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\aim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\textconstants.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

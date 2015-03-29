@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libaducid", "libaducid\libaducid.vcxproj", "{75070C4B-D273-4C7F-99D7-0B243970BBC1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libaducidpp", "libaducidpp\libaducidpp.vcxproj", "{1B825404-DDCC-4F2D-96A8-A15BDD9FD98F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1} = {75070C4B-D273-4C7F-99D7-0B243970BBC1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest\unittest.vcxproj", "{18B052A0-13E0-4ADC-852E-3062A858613B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1B825404-DDCC-4F2D-96A8-A15BDD9FD98F} = {1B825404-DDCC-4F2D-96A8-A15BDD9FD98F}
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1} = {75070C4B-D273-4C7F-99D7-0B243970BBC1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Debug|Win32.Build.0 = Debug|Win32
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Release|Win32.ActiveCfg = Release|Win32
+		{75070C4B-D273-4C7F-99D7-0B243970BBC1}.Release|Win32.Build.0 = Release|Win32
+		{1B825404-DDCC-4F2D-96A8-A15BDD9FD98F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1B825404-DDCC-4F2D-96A8-A15BDD9FD98F}.Debug|Win32.Build.0 = Debug|Win32
+		{1B825404-DDCC-4F2D-96A8-A15BDD9FD98F}.Release|Win32.ActiveCfg = Release|Win32
+		{1B825404-DDCC-4F2D-96A8-A15BDD9FD98F}.Release|Win32.Build.0 = Release|Win32
+		{18B052A0-13E0-4ADC-852E-3062A858613B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18B052A0-13E0-4ADC-852E-3062A858613B}.Debug|Win32.Build.0 = Debug|Win32
+		{18B052A0-13E0-4ADC-852E-3062A858613B}.Release|Win32.ActiveCfg = Release|Win32
+		{18B052A0-13E0-4ADC-852E-3062A858613B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
