@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\tests\unittests.cc" />
     <ClCompile Include="..\..\..\src\myxml.c" />
+    <ClCompile Include="..\..\..\src\utils.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
