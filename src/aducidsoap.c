@@ -68,18 +68,19 @@ char *create_method_params_xml(const AducidAttributeList_t list)
     return xml;
 }
 
-char *create_personal_object_xml(const char *name, const char *typeName, const char *algorithm, AducidAttributeList_t *attributes) {
+char *create_personal_object_xml(const char *name, const char *typeName, const char *algorithm, AducidAttributeList_t attributes) {
     static const char *poaformat = "<personalObjectAttribute iface:attributeName=\"%s\">\n"
 	"<attributeValue xmlns:s115=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:s116=\"http://www.w3.org/2001/XMLSchema\" s115:type=\"s116:string\">%s</attributeValue>\n"
 	"</personalObjectAttribute>\n";
     int attrLength;
     char *buffer;
-    AducidAttributeListItem_t *attr;
+    AducidAttributeListItem_t *attr = NULL;
     char *XML = NULL;
     const char *N = name, *T = typeName, *A = algorithm;
 
-    attr = ((AducidAttributeListStruct_t *)attributes)->firstItem;
-    if( name == NULL && typeName == NULL && algorithm == NULL ) {
+    if( attributes )
+        attr = ((AducidAttributeListStruct_t *)attributes)->firstItem;
+    if( name == NULL && typeName == NULL && algorithm == NULL && attr != NULL ) {
         // attributes are in list if param is null
         if( strcmp( attr->name, "personalObjectName" ) == 0 ) {
             N = attr->value;
@@ -207,7 +208,7 @@ char *create_aim_execute_personal_object_xml(const char *authId,
 					     const char *methodName,
 					     const char *personalObjectName,
 					     const char *personalObjectAlgorithm,
-					     AducidAttributeList_t *personalObjectData,
+					     AducidAttributeList_t personalObjectData,
 					     const char *ILID,
 					     const char *AAIM2,
 					     const char *ilData) {
@@ -224,28 +225,28 @@ char *create_aim_execute_personal_object_xml(const char *authId,
        #<xs:element name="ilData" type="ildataType" minOccurs="0" maxOccurs="1"/>
     */
     if( authId != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("authId",authId),true );
+        XML = dyn_strcat(XML,create_xml_attribute("authId",authId),true );
     }
     if(AIMName != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("AIMname",AIMName),true );
+        XML = dyn_strcat(XML,create_xml_attribute("AIMname",AIMName),true );
     }
     if( authKey != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("authKey",authKey),true );
+        XML = dyn_strcat(XML,create_xml_attribute("authKey",authKey),true );
     }
     if( methodName != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("methodName",methodName),true );
+        XML = dyn_strcat(XML,create_xml_attribute("methodName",methodName),true );
     }
     if( personalObjectName ) {
         XML = dyn_strcat(XML,create_personal_object_xml( personalObjectName, NULL, personalObjectAlgorithm, personalObjectData),true );
     }
     if( ILID != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("ILID",ILID),true );
+        XML = dyn_strcat(XML,create_xml_attribute("ILID",ILID),true );
     }
     if( AAIM2 != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("AAIM2",AAIM2),true );
+        XML = dyn_strcat(XML,create_xml_attribute("AAIM2",AAIM2),true );
     }
     if( ilData != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("ilData",ilData),true );
+        XML = dyn_strcat(XML,create_xml_attribute("ilData",ilData),true );
     }
 
     XMLC = create_aducid_soap_xml("AIMexecutePersonalObject",XML);
@@ -253,7 +254,7 @@ char *create_aim_execute_personal_object_xml(const char *authId,
     return XMLC;
 }
 
-AducidAttributeList_t *parse_personal_object( char *doc ) {
+AducidAttributeList_t parse_personal_object( char *doc ) {
 
     /**
      //FIXME:Personal Object
@@ -275,7 +276,7 @@ AducidAttributeList_t *parse_personal_object( char *doc ) {
      </personalObjectAttribute>
      </personalObject>
     */
-    AducidAttributeList_t *list;
+    AducidAttributeList_t list;
     char *name, *value, *p, *q;
     char *txt, *valueAttr;
     
@@ -283,26 +284,25 @@ AducidAttributeList_t *parse_personal_object( char *doc ) {
     txt = myxml_get_node_text(myxml_find_xpath_first(doc,"//personalObject"));
     p = myxml_find_xpath_first(txt,"//personalObjectAttribute");
     while(p) {
-	name = NULL;
-	value = NULL;
-	valueAttr = myxml_get_node_text(p);
-	if(valueAttr) {
-	    name = myxml_get_node_attribute(p,"attributeName");
-	    if(name) {
-		q = myxml_find_xpath_first(valueAttr,"//attributeValue");
-		if(q) {
-		    value = myxml_get_node_text(q);
-		}
-	    }
-	    if( name && value ) {
-		aducid_attr_list_append(list,name,value);
-		printf("%s %s\n",name,value);
-	    }
-	    if(name) { free(name); }
-	    if(value) { free(value); }
-	    free(valueAttr);
-	}
-	p = myxml_find_xpath_first(&p[2],"//personalObjectAttribute");
+        name = NULL;
+        value = NULL;
+        valueAttr = myxml_get_node_text(p);
+        if(valueAttr) {
+            name = myxml_get_node_attribute(p,"attributeName");
+            if(name) {
+                q = myxml_find_xpath_first(valueAttr,"//attributeValue");
+                if(q) {
+                    value = myxml_get_node_text(q);
+                }
+            }
+            if( name && value ) {
+                aducid_attr_list_append(list,name,value);
+            }
+            if(name) { free(name); }
+            if(value) { free(value); }
+            free(valueAttr);
+        }
+        p = myxml_find_xpath_first(&p[2],"//personalObjectAttribute");
     }
     free(txt);
     return list;

@@ -341,6 +341,15 @@ AducidClient::EPOReadUserAttrSet( const string &attrSetName ) {
     return EPOReadUserAttrSet( attrSetName.c_str() );
 }
 
+void
+AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map<string,string>attributes)
+{
+    AducidAttributeList_t list = MapToAducidList(attributes);
+    aducid_epo_write_user_attr_set( _handle, attrSetName.c_str(), list);
+    aducid_attr_list_free(list);
+}
+
+
 string AducidClient::AIMProxyURL() const {
     string result;
     char *url = aducid_get_aimproxy_url( _handle );
@@ -358,6 +367,14 @@ map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t lis
     while( attr ) {
         result[attr->name] = attr->value;
         attr = attr->next;
+    }
+    return result;
+}
+
+AducidAttributeList_t AducidClient::MapToAducidList(const map<string,string> &attrs) const {
+    AducidAttributeList_t result = aducid_attr_list_new();
+    for( map<string,string>::const_iterator i = attrs.begin() ; i != attrs.end(); ++i ) {
+        aducid_attr_list_append( result, i->first.c_str(), i->second.c_str() );
     }
     return result;
 }

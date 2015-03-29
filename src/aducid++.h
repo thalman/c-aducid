@@ -80,12 +80,15 @@ namespace aducid
         map<string,string> EPOReadUserAttrSet(const char *attrSetName);
         map<string,string> EPOReadUserAttrSet(const string &attrSetName);
 
+        void EPOWriteUserAttrSet(const string &attrSetName, map<string,string>attributes);
+
         string getPSLAtribute( const std::string &attr );
         string userDatabaseIndex();
         string AIMProxyURL() const;
         ~AducidClient();
     protected:
         map<string,string> AducidListToMap(const AducidAttributeList_t list) const;
+        AducidAttributeList_t MapToAducidList(const map<string,string> &attrs) const;
     private:
         AducidHandle_t _handle;
         std::string _AIM;
