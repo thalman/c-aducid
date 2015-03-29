@@ -32,6 +32,7 @@ libaducidpp_la_CFLAGS   = -shared -I$(srcdir)/src
 
 check_PROGRAMS          = unittest
 unittest_SOURCES        = src/myxml.c \
+                          src/utils.c \
                           tests/unittests.cc
 unittest_CPPFLAGS       = $(AM_CPPFLAGS) \
                          -I$(abs_top_srcdir)/tests \

@@ -3,6 +3,7 @@
 
 #include "definitions.h"
 #include "myxml.h"
+#include "utils.h"
 
 char const *XMLExample = "<?xml version='1.0' encoding='UTF-8'?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
 "<soapenv:Body><ns1:AIMgetPSLAttributesResponse xmlns:ns1=\"http://iface.aducid.com\">\n"
@@ -86,4 +87,23 @@ TEST_CASE( "attr list", "[lists][operation]" ) {
     aducid_attr_list_delete_by_name(h,"b");
     REQUIRE( aducid_attr_list_count(h) == 2 );
     aducid_attr_list_free(h);
+}
+
+TEST_CASE("xml encode", "[utils][xmlencoding]")
+{
+    char *encoded, *decoded;
+    encoded = xml_encode("&lt;x<x>x\"x");
+    decoded = xml_decode(encoded);
+    assert( std::string(encoded) == "&amp;lt;x&lt;x&gt;x&quot;x" );
+    assert( std::string(decoded) == "&lt;x<x>x\"x" );
+    free(encoded);
+    free(decoded);
+
+    std::string longstring = "&&&&&&&&&&&&&&&&&&&&&&&&<><><>&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&<><><>"
+        "&&&&&&&&&&&&&&&&&&&\"&&\"&&&<><><>&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
+    encoded = xml_encode(longstring.c_str());
+    decoded = xml_decode(encoded);
+    assert( longstring == decoded );
+    free(encoded);
+    free(decoded);
 }
