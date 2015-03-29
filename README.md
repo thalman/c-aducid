@@ -1,21 +1,36 @@
 C/C++ SDK for ADUCID authentication
 ===================================
 
-Compile
--------
+Compile & install
+-----------------
+
 C/C++ ADUCID SDK uses autotools for compiling.
-************************************************************************
-./configure
-make
-make install
-************************************************************************
+
+    ./configure
+    make
+    make install
+
+Creating RPM package
+--------------------
+
+There is SPEC file in tools directory. Creating rpm from tar archive is easy.
+
+1. Download/clone ADUCID C SDK into c-aducid directory.
+2. Pack the directory into tar archive
+
+        tar -czf c-aducid.tgz c-aducid
+
+3. Build rpm package
+
+        rpmbuild -ta c-aducid.tgz
 
 Demo
 ----
 Demo application uses tntnet library therefore the demo works on POSIX systems.
-The code is pretty strightforward and shows ADUCID usage.
+The code is pretty straightforward and shows ADUCID usage.
 
 To start the demo, You need
+
 * Working AIM server.
 * POSIX machine with tntnet ( >= 2.2 ) and c compiler and libcurl.
 * Edit the doc/demos/login/defs.h, and fix the AIMSERVER  with propper hostname.
