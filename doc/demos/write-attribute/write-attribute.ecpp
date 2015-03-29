@@ -1,0 +1,89 @@
+<%pre>
+// put your includes here
+#include "defs.h"
+#include <aducid++.h>
+</%pre>
+<%args>
+std::string action;
+std::string mail;
+
+std::string authId;
+std::string authKey;
+std::string bindingId;
+std::string bindingKey;
+</%args>
+<%session>
+
+aducid::AducidClient aducid(AIMSERVER);
+std::string udi = "";
+
+</%session>
+<%cpp>
+    std::string error = "";
+    std::map<std::string,std::string> attrs;
+
+    if( action == "logout" ) {
+        udi = "";
+        aducid.close();
+    }
+    if( action == "login" ) {
+        if( aducid.open( std::string(DEMOSITE) + "?action=verify" ) ) {
+            reply.redirect( aducid.AIMProxyURL() );
+            return HTTP_MOVED_TEMPORARILY;
+        } else {
+            error = "Can't start ADUCID session";
+        }
+    }
+    if( action == "verify" ) {
+        aducid.authId(authId);
+        aducid.authKey(authKey);
+        aducid.bindingId(bindingId);
+        aducid.bindingKey(bindingKey);
+        if( aducid.verify() ) {
+            udi = aducid.userDatabaseIndex();
+        } else {
+            std::map<std::string,std::string> attrs = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR,true);
+            error = attrs["statusAIM"] + " " + attrs["statusAuth"];
+        }
+    }
+    if( action == "update" ) {
+        std::map<std::string,std::string> write;
+        write["mail"] = mail;
+        aducid.EPOWriteUserAttrSet("UIM", write );
+    }
+    if( udi != "" ) {
+       attrs = aducid.EPOReadUserAttrSet("UIM");
+    }
+</%cpp>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>ADUCID login demo</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+  </head>
+  <body>
+    <div id="content">
+%   if( udi == "" ) {
+      <!-- user is not logged in -->
+      <h1>ADUCID login demo</h1>
+      <p>This demo application shows how to login and logout with ADUCID.
+      Demo presumes, that You have PEIG and valid identity created on
+      <a href="http://<$ AIMSERVER $>/UIM/">AIM</a>.</p>
+%     if( error != "" ) {
+        <p>Login failed with error code <b><$ error $></b>!</p>
+%     }
+      <p>You are not logged in.</p>
+      <a href="?action=login">LOGIN</a>
+%   } else {
+      <!-- user is logged in -->
+      <h1>Welcome <$ udi $></h1>
+      <form action="/" method="GET">
+        <input type="text" name="mail" value="<$ attrs["mail"] $>" />
+        <input type="submit" value="Update" />
+        <input type="hidden" name="action" value="update" />
+      </form>
+      <br /><a href="?action=logout">LOGOUT</a>
+%   }
+    </div>
+  </body>
+</html>
