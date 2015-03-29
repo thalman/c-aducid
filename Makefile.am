@@ -38,3 +38,7 @@ unittest_CPPFLAGS       = $(AM_CPPFLAGS) \
                          -I$(abs_top_srcdir)/src
 
 unittest_LDFLAGS        = $(libaducidpp_la_LDFLAGS)
+
+
+check-local:
+	./unittest
