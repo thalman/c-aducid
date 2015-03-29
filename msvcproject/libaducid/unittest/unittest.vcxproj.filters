@@ -35,6 +35,9 @@
     <ClCompile Include="..\..\..\src\myxml.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\tests\unittests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
