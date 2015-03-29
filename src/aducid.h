@@ -361,11 +361,22 @@ aducid_verify( AducidHandle_t handle );
 ADUCID_PUBLIC_FUNC bool
 aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transaction );
 
-ADUCID_PUBLIC_FUNC AducidAttributeList_t *
-aducid_get_attributes( AducidHandle_t handle, char *attrSetName );
+ADUCID_PUBLIC_FUNC AducidAttributeList_t
+aducid_execute_personal_object(
+    AducidHandle_t handle,
+    AducidMethod_t method,
+    const char *personalObjectName,
+    AducidAlgorithm_t personalObjectAlgorithm,
+    const AducidAttributeList_t personalObjectData,
+    const char *ILID,
+    const char *AAIM2,
+    const char *ilData);
+
+ADUCID_PUBLIC_FUNC AducidAttributeList_t
+aducid_epo_read_user_attr_set(AducidHandle_t handle, const char *attrSetName);
 
 ADUCID_PUBLIC_FUNC bool
-aducid_set_attributes( AducidHandle_t handle, char *attrSetName, AducidAttributeList_t *attrs );
+aducid_epo_write_user_attr_set(AducidHandle_t handle, const char *attrSetName, const AducidAttributeList_t attrs);
 
 ADUCID_PUBLIC_FUNC const char *
 aducid_get_user_database_index( AducidHandle_t handle );

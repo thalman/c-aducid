@@ -260,7 +260,7 @@ aducid_confirm_text_transaction(AducidHandle_t handle, const char *textUTF8, boo
 
     if( ! textUTF8 ) return NULL;
 
-    textEscaped = url_encode(textUTF8);
+    textEscaped = xml_encode(textUTF8);
     params = aducid_attr_list_new();
     aducid_attr_list_append( params, "PaymentMessage", textEscaped );
     if( usePersonalFactor ) aducid_attr_list_append( params, "UsePersonalFactor", "1" );
@@ -321,10 +321,13 @@ aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transac
 {
     static const char *attributes[] = {
         "PaymentSignature",
-        "PaymentMessage",
         "PaymentAmount",
         "PaymentFromAccount",
         "PaymentToAccount",
+        NULL
+    };
+    static const char *encodedAttributes[] = {
+        "PaymentMessage",
         NULL
     };
     static const char *allways[] = {
@@ -347,11 +350,23 @@ aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transac
             result = true;
         }
         if( transaction ) {
-            a = 0;
             if( result ) {
+                a = 0;
                 while( attributes[a] ) {
                     p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, attributes[a] );
                     if( p ) aducid_attr_list_append( *transaction, attributes[a], p);
+                    a++;
+                }
+                a = 0;
+                while( encodedAttributes[a] ) {
+                    p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, encodedAttributes[a] );
+                    if( p ) {
+                        char *decoded = xml_decode(p);
+                        if( decoded ) {
+                            aducid_attr_list_append( *transaction, encodedAttributes[a], decoded);
+                            free(decoded);
+                        }
+                    }
                     a++;
                 }
             }

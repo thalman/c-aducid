@@ -237,3 +237,102 @@ char *url_encode(const char *decoded) {
     }
     return result;
 }
+
+//  return str_replace( array( "&", "\"", "<", ">" ), array( "&amp;", "&quot;", "&lt;", "&gt;"), $text );
+
+char *
+xml_encode( const char *text )
+{
+    const char *p;
+    char *newtext;
+    static int step = 100;
+    int index;
+    
+    if( ! text ) return NULL;
+    int size = strlen(text) + step;
+    newtext = malloc(size);
+    if( ! newtext ) return NULL;
+    p = text;
+    index = 0;
+    while( *p ) {
+        switch( *p ) {
+        case '&':
+            memcpy(&newtext[index],"&amp;",5);
+            index += 5;
+            ++p;
+            break;
+        case '"':
+            memcpy(&newtext[index],"&quot;",6);
+            index += 6;
+            ++p;
+            break;
+        case '<':
+            memcpy(&newtext[index],"&lt;",4);
+            index += 4;
+            ++p;
+            break;
+        case '>':
+            memcpy(&newtext[index],"&gt;",4);
+            index += 4;
+            ++p;
+            break;
+        default:
+            newtext[index] = *p;
+            ++index;
+            ++p;
+        }
+        if( index + 10 > size ) {
+            size += step;
+            char *newt = realloc( newtext, size );
+            if( !newt ) { free(newtext); return NULL; }
+            newtext = newt;
+        }
+    }
+    newtext[index] = 0;
+    return newtext;
+}
+
+char *
+xml_decode( const char *text )
+{
+    const char *src;
+    char *newtext, *dst;
+    int index;
+    
+    if( ! text ) return NULL;
+    newtext = malloc( strlen(text) + 1 );
+    if( ! newtext ) return NULL;
+
+    src = text;
+    dst = newtext;
+    index = 0;
+    while( *src ) {
+        if( *src == '&' ) {
+            if( strncmp( src, "&amp;", 5 ) == 0 ) {
+                *dst = '&';
+                src = &src[5];
+            } else if ( strncmp( src, "&quot;", 6) == 0 ) {
+                *dst = '"';
+                src = &src[6];
+            } else if ( strncmp( src, "&gt;", 4) == 0 ) {
+                *dst = '>';
+                src = &src[4];
+            } else if ( strncmp( src, "&lt;", 4) == 0 ) {
+                *dst = '<';
+                src = &src[4];
+            } else {
+                // unknown tag, copy it
+                *dst = *src;
+                ++src;
+                ++dst;
+            }
+            ++dst;
+        } else {
+            *dst = *src;
+            ++src;
+            ++dst;
+        }
+    }
+    *dst = 0;
+    return newtext;
+}

@@ -257,21 +257,29 @@ bool aducid_verify(AducidHandle_t handle) {
     return (status->statusAuth == ADUCID_AUTHSTATUS_OK) && (status->statusAIM == ADUCID_AIM_STATUS_ACTIVE);
 }
 
-ADUCID_PUBLIC_FUNC AducidAttributeList_t *
-aducid_get_attributes(AducidHandle_t handle, char *attrSetName) {
-    AducidAttributeList_t *list = NULL;
+ADUCID_PUBLIC_FUNC AducidAttributeList_t
+aducid_execute_personal_object(
+    AducidHandle_t handle,
+    AducidMethod_t method,
+    const char *personalObjectName,
+    AducidAlgorithm_t personalObjectAlgorithm,
+    const AducidAttributeList_t personalObjectData,
+    const char *ILID,
+    const char *AAIM2,
+    const char *ilData)
+{
+    AducidAttributeList_t list = NULL;
     AducidAIMExecutePersonalObjectResponse_t *dpo;
     
     if(!handle || !handle->authId || !handle->authKey ) return NULL;
-    if( attrSetName == NULL ) { attrSetName = "default"; }
     dpo = aducid_aim_execute_personal_object(handle->R4,
                                              handle->authId,
                                              NULL,
                                              handle->authKey,
-                                             ADUCID_METHOD_READ,
-                                             attrSetName,
-                                             ADUCID_ALGORITHM_USER_ATTR_SET,
-                                             NULL,NULL,NULL,NULL);
+                                             method,
+                                             personalObjectName,
+                                             personalObjectAlgorithm,
+                                             personalObjectData,ILID,AAIM2,ilData);
     if(dpo && dpo->personalObject ) {
         list = dpo->personalObject;
         dpo->personalObject = NULL;
@@ -280,22 +288,30 @@ aducid_get_attributes(AducidHandle_t handle, char *attrSetName) {
     return list;
 }
 
-ADUCID_PUBLIC_FUNC bool
-aducid_set_attributes(AducidHandle_t handle, char *attrSetName, AducidAttributeList_t *attrs) {
-    AducidAIMExecutePersonalObjectResponse_t *dpo;
+ADUCID_PUBLIC_FUNC AducidAttributeList_t
+aducid_epo_read_user_attr_set(AducidHandle_t handle, const char *attrSetName) {
+    AducidAttributeList_t list = NULL;
     
-    if(!handle || !handle->authId || !handle->authKey ) return false;
     if( attrSetName == NULL ) { attrSetName = "default"; }
-    dpo = aducid_aim_execute_personal_object(handle->R4,
-                                             handle->authId,
-                                             NULL,
-                                             handle->authKey,
-                                             ADUCID_METHOD_WRITE,
-                                             attrSetName,
-                                             ADUCID_ALGORITHM_USER_ATTR_SET,
-                                             attrs,NULL,NULL,NULL);
-    /* FIXME: check statusAIM/statusAuth */
-    aducid_free_aim_execute_personal_object_response(dpo);
+    list = aducid_execute_personal_object(handle,
+                                          ADUCID_METHOD_READ,
+                                          attrSetName,
+                                          ADUCID_ALGORITHM_USER_ATTR_SET,
+                                          NULL,NULL,NULL,NULL);
+    return list;
+}
+
+ADUCID_PUBLIC_FUNC bool
+aducid_epo_write_user_attr_set(AducidHandle_t handle, const char *attrSetName, const AducidAttributeList_t attrs) {
+    AducidAttributeList_t list;
+    
+    if( attrSetName == NULL ) { attrSetName = "default"; }
+    list = aducid_execute_personal_object(handle,
+                                          ADUCID_METHOD_WRITE,
+                                          attrSetName,
+                                          ADUCID_ALGORITHM_USER_ATTR_SET,
+                                          attrs,NULL,NULL,NULL);
+    aducid_attr_list_free(list);
     return true;
 }
 

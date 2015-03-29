@@ -77,12 +77,15 @@ namespace aducid
         bool verifyTransaction();
         bool verifyTransaction( map<string,string> &params );
         map<string,string> getPSLAtributes( AducidAttributeSet_t set, bool useCache );
+        map<string,string> EPOReadUserAttrSet(const char *attrSetName);
+        map<string,string> EPOReadUserAttrSet(const string &attrSetName);
+
         string getPSLAtribute( const std::string &attr );
         string userDatabaseIndex();
         string AIMProxyURL() const;
         ~AducidClient();
     protected:
-        map<string,string> AducidListToMap(const AducidAttributeList_t *list) const;
+        map<string,string> AducidListToMap(const AducidAttributeList_t list) const;
     private:
         AducidHandle_t _handle;
         std::string _AIM;

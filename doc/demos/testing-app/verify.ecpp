@@ -15,9 +15,7 @@ std::string bindingKey;
 
 </%args>
 <%session>
-// define your session scope variables here
-// std::string mySessionState;
-   // AducidHandle handle = NULL;
+
 aducid::AducidClient aducid(AIMSERVER);
 
 </%session>
@@ -39,8 +37,9 @@ aducid.authKey(authKey);
 aducid.bindingId(bindingId);
 aducid.bindingKey(bindingKey);
 all = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ALL, false);
-err = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR, false);
-
+if( ! aducid.verify() ) {
+    err = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR, false);
+}
 </%cpp>
 % if( aducid.verify() ) {
     <a href="/"><img src="ok.png"></a> udi: <$ aducid.userDatabaseIndex() $>
@@ -50,10 +49,11 @@ err = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR, false);
     <h2>Authentication process</h2>
     <table>
       <tr> <td><b>Action</b></td> <td><b>statusAIM</b></td> <td><b>statusAuth</b></td> </tr>
-      <tr> <td>getResult(ALL)</td> <td><$ all["statusAIM"] $></td>  <td><$ all["statusAuth"] $></td> </tr>
-      <tr> <td>getResult(ERR)</td> <td><$ err["statusAIM"] $></td>  <td><$ err["statusAuth"] $></td> </tr>
+      <tr> <td>getPSLAtributes(ALL)</td> <td><$ all["statusAIM"] $></td>  <td><$ all["statusAuth"] $></td> </tr>
+% if( ! aducid.verify() ) {
+      <tr> <td>getPSLAtributes(ERR)</td> <td><$ err["statusAIM"] $></td>  <td><$ err["statusAuth"] $></td> </tr>
+% }
     </table>
-
     <br/><a href="/">Back</a>
     </div>
   </body>

@@ -146,7 +146,7 @@ libaducidpp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(libaducidpp_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_unittest_OBJECTS = unittest-myxml.$(OBJEXT) \
-	unittest-unittests.$(OBJEXT)
+	unittest-utils.$(OBJEXT) unittest-unittests.$(OBJEXT)
 unittest_OBJECTS = $(am_unittest_OBJECTS)
 unittest_LDADD = $(LDADD)
 unittest_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -440,6 +440,7 @@ libaducidpp_la_LDFLAGS = -L$(builddir)/.libs -laducid -lcurl -version-info 3:0:0
 libaducidpp_la_CPPFLAGS = -shared -I$(srcdir)/src
 libaducidpp_la_CFLAGS = -shared -I$(srcdir)/src
 unittest_SOURCES = src/myxml.c \
+                          src/utils.c \
                           tests/unittests.cc
 
 unittest_CPPFLAGS = $(AM_CPPFLAGS) \
@@ -560,6 +561,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libaducidpp_la-aducid++.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unittest-myxml.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unittest-unittests.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unittest-utils.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -672,6 +674,20 @@ unittest-myxml.obj: src/myxml.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/myxml.c' object='unittest-myxml.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(unittest_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o unittest-myxml.obj `if test -f 'src/myxml.c'; then $(CYGPATH_W) 'src/myxml.c'; else $(CYGPATH_W) '$(srcdir)/src/myxml.c'; fi`
+
+unittest-utils.o: src/utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(unittest_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT unittest-utils.o -MD -MP -MF $(DEPDIR)/unittest-utils.Tpo -c -o unittest-utils.o `test -f 'src/utils.c' || echo '$(srcdir)/'`src/utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/unittest-utils.Tpo $(DEPDIR)/unittest-utils.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/utils.c' object='unittest-utils.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(unittest_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o unittest-utils.o `test -f 'src/utils.c' || echo '$(srcdir)/'`src/utils.c
+
+unittest-utils.obj: src/utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(unittest_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT unittest-utils.obj -MD -MP -MF $(DEPDIR)/unittest-utils.Tpo -c -o unittest-utils.obj `if test -f 'src/utils.c'; then $(CYGPATH_W) 'src/utils.c'; else $(CYGPATH_W) '$(srcdir)/src/utils.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/unittest-utils.Tpo $(DEPDIR)/unittest-utils.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/utils.c' object='unittest-utils.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(unittest_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o unittest-utils.obj `if test -f 'src/utils.c'; then $(CYGPATH_W) 'src/utils.c'; else $(CYGPATH_W) '$(srcdir)/src/utils.c'; fi`
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
