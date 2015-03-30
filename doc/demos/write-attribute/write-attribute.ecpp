@@ -14,6 +14,7 @@ std::string bindingKey;
 </%args>
 <%session>
 
+std::string ownAuthId;
 aducid::AducidClient aducid(AIMSERVER);
 std::string udi = "";
 
@@ -28,6 +29,7 @@ std::string udi = "";
     }
     if( action == "login" ) {
         if( aducid.open( std::string(DEMOSITE) + "?action=verify" ) ) {
+            ownAuthId = aducid.authId();
             reply.redirect( aducid.AIMProxyURL() );
             return HTTP_MOVED_TEMPORARILY;
         } else {
@@ -35,16 +37,20 @@ std::string udi = "";
         }
     }
     if( action == "verify" ) {
-        aducid.authId(authId);
-        aducid.authKey(authKey);
-        aducid.bindingId(bindingId);
-        aducid.bindingKey(bindingKey);
-        if( aducid.verify() ) {
-            udi = aducid.userDatabaseIndex();
+        if( authId == ownAuthId ) {
+            aducid.authId(authId);
+            aducid.authKey(authKey);
+            aducid.bindingId(bindingId);
+            aducid.bindingKey(bindingKey);
+            if( aducid.verify() ) {
+                udi = aducid.userDatabaseIndex();
+            } else {
+                std::map<std::string,std::string> attrs = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR,true);
+                error = attrs["statusAIM"] + " " + attrs["statusAuth"];
+            }
         } else {
-            std::map<std::string,std::string> attrs = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR,true);
-            error = attrs["statusAIM"] + " " + attrs["statusAuth"];
-        }
+            error = "Not mine authId!";
+        }        
     }
     if( action == "update" ) {
         std::map<std::string,std::string> write;
