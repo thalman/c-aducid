@@ -1,6 +1,21 @@
 #ifndef _DEFINITION_H_
 #define _DEFINITION_H_
 
+#ifdef _MSC_VER
+  // this is MS compiler, let's use winhttp
+  #define _HAVE_WINHTTP
+  #undef  _HAVE_LIBCURL
+#else
+  // when there are issues with winhttp library, we can use libcurl
+  // but it might come frou outside
+  #ifdef _HAVE_WINHTTP
+    #undef _HAVE_LIBCURL
+  #else
+    #define _HAVE_LIBCURL
+    #undef  _HAVE_WINHTTP
+  #endif
+#endif
+
 #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
   /* on windows */
   #ifdef __GNUC__

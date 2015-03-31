@@ -1,19 +1,16 @@
 #ifndef __SOAP_H__
 #define __SOAP_H__
 
-#if defined _WIN32 || defined _WIN64
-#include <windows.h>
+#include "definitions.h"
 
-#else
-#include <stddef.h>
+#ifdef _HAVE_LIBCURL
 
 typedef struct {
   char *memory;
   size_t size;
 } MemoryStruct;
-#endif
 
-/* size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp); */
+#endif
 
 char *soap_request(const char *URL, const char *action, const char *request);
 

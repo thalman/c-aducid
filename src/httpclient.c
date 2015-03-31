@@ -3,11 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 #if defined _WIN32 || defined _WIN64
-#include<Windows.h>
-#include<winhttp.h>
-#include "utils.h"
+  #include<Windows.h>
+  #ifdef _HAVE_WINHTTP
+    #include<winhttp.h>
+  #endif
+  #ifdef _HAVE_LIBCURL
+    #include <curl/curl.h>
+  #endif
+  #include "utils.h"
 #else
-#include <curl/curl.h>
+  #include <curl/curl.h>
 #endif
 
 void free_http_data_memory(HttpDataMemory *mem) {
@@ -61,7 +66,7 @@ size_t http_data_memory_callback(void *contents, size_t size, size_t nmemb, void
 }
 
 HttpDataMemory *http_get(char *url,bool useProxy) {
-#ifdef _WIN32
+#ifdef _HAVE_WINHTTP
     HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL;
     char *host,*location;
     LPWSTR hostw,locationw,buffer;

@@ -8,7 +8,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#if defined(_WIN32) || defined(_WIN64) || defined __CYGWIN__
+#ifdef _HAVE_WINHTTP
 /* windows soap request */
 #include <windows.h>
 #include <winhttp.h>
@@ -153,8 +153,7 @@ char *soap_request(const char *URL, const char *action, const char *request)
 }
 
 #else
-/* linux soap request */
-
+/* libcurl soap request */
 #include <curl/curl.h>
 
 size_t
