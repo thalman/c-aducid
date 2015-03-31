@@ -1,11 +1,19 @@
 C/C++ SDK for ADUCID authentication
 ===================================
 
+Getting source code
+-------------------
+Use git tool to download project
+
+    git clone https://github.com/thalman/c-aducid.git
+
 Compile & install
 -----------------
 
 C/C++ ADUCID SDK uses autotools for compiling.
 
+    git clone https://github.com/thalman/c-aducid.git
+    cd c-aducid
     ./configure
     make
     make install
@@ -15,7 +23,10 @@ Creating RPM package
 
 There is SPEC file in tools directory. Creating rpm from tar archive is easy.
 
-1. Download/clone ADUCID C SDK into c-aducid directory.
+1. Clone ADUCID C SDK into c-aducid directory.
+
+        git clone https://github.com/thalman/c-aducid.git
+
 2. Pack the directory into tar archive
 
         tar -czf c-aducid.tgz c-aducid
