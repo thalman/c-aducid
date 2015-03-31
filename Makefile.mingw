@@ -1,0 +1,105 @@
+#########################################
+# global compiler and linker options
+#########################################
+
+CFLAGS = -Isrc
+CPPFLAGS = $(CFLAGS)
+LDFLAGS = -L/opt/windows_32/libs
+
+#
+# consult your curl instalation for correct values
+#
+LIBCURL_CFLAGS = -I/opt/windows_32/include
+LIBCURL_LDFLAGS = -L/opt/windows_32/lib -lcurl -lssl -lcrypto -lgdi32 -lwldap32 -lz -lws2_32
+
+#
+# uncomment this, if You want use winhttp instead of libcurl
+#
+#LIBCURL_CFLAGS = -D_HAVE_WINHTTP
+#LIBCURL_LDFLAGS = 
+
+#########################################
+# libaducid.dll
+#########################################
+
+libaducid_SOURCES       = src/aducid.c \
+                          src/textconstants.c \
+                          src/aim.c \
+                          src/exuse.c \
+                          src/aducidsoap.c \
+                          src/attrlist.c \
+                          src/httpclient.c \
+                          src/myxml.c \
+                          src/peig.c \
+                          src/soap.c \
+                          src/utils.c
+
+libaducid_OBJS          = src/aducid.o \
+                          src/textconstants.o \
+                          src/aim.o \
+                          src/exuse.o \
+                          src/aducidsoap.o \
+                          src/attrlist.o \
+                          src/httpclient.o \
+                          src/myxml.o \
+                          src/peig.o \
+                          src/soap.o \
+                          src/utils.o
+
+libaducid_CFLAGS        = -shared $(CFLAGS) $(LIBCURL_CFLAGS)
+libaducid_LDFLAGS       = $(LDFLAGS) $(LIBCURL_LDFLAGS)
+
+#########################################
+# libaducidpp.dll
+#########################################
+
+libaducidpp_SOURCES     = src/aducid++.cc
+libaducidpp_OBJS        = src/aducid++.o
+libaducidpp_LDFLAGS     = -L. -laducid
+libaducidpp_CPPFLAGS    = -shared -I$src
+
+#########################################
+# unittest.exe
+#########################################
+
+unittest_SOURCES        = src/myxml.c \
+                          src/utils.c \
+                          tests/unittests.cc
+unittest_OBJS           = src/myxml.o \
+                          src/utils.o \
+                          tests/unittests.o
+unittest_CPPFLAGS       = $(CPPFLAGS) \
+                          -Itests \
+                          -Isrc
+unittest_LDFLAGS        = $(libaducidpp_LDFLAGS) -laducidpp
+
+#########################################
+# how to compile
+#########################################
+
+.c.o:
+	gcc -c $(CFLAGS) $(LIBCURL_CFLAGS) -o $@ '$<'
+
+.cc.o:
+	g++ -c $(CPPFLAGS) -o $@ '$<'
+
+#########################################
+# Makefile targets
+#########################################
+
+all: libaducid.dll libaducidpp.dll unittest.exe
+
+libaducid.dll: $(libaducid_OBJS)
+	gcc $(libaducid_CFLAGS) $(libaducid_OBJS) -o $@ $(libaducid_LDFLAGS)
+
+libaducidpp.dll: $(libaducidpp_OBJS)
+	g++ $(libaducidpp_CPPFLAGS) $(libaducidpp_OBJS) -o $@ $(libaducidpp_LDFLAGS)
+
+unittest.exe: $(unittest_OBJS) libaducid.dll libaducidpp.dll
+	g++ $(unittest_CPPFLAGS) $(unittest_OBJS) -o $@ $(unittest_LDFLAGS)
+
+clean:
+	/bin/rm -f src/*.o *.dll *.exe
+
+check: unittest.exe
+	./unittest.exe
