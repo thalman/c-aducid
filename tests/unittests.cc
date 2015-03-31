@@ -5,6 +5,9 @@
 #include "myxml.h"
 #include "utils.h"
 
+#include "aducid.h"
+#include "aducid++.h"
+
 char const *XMLExample = "<?xml version='1.0' encoding='UTF-8'?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
 "<soapenv:Body><ns1:AIMgetPSLAttributesResponse xmlns:ns1=\"http://iface.aducid.com\">\n"
 "<statusAIM>active</statusAIM>\n"
@@ -47,7 +50,7 @@ char const *XMLExample = "<?xml version='1.0' encoding='UTF-8'?><soapenv:Envelop
 "</ns1:AIMgetPSLAttributesResponse>\n"
 "</soapenv:Body></soapenv:Envelope>\n";
 
-TEST_CASE( "simplified xml parsed", "[xml][single node]") {
+TEST_CASE( "simplified xml parsed", "[xml]") {
     char *node = myxml_find_xpath_first( (const char *)XMLExample, "//singleAttributeExample");
     REQUIRE( node != NULL );
     REQUIRE( myxml_is_node_single( node ) ); 
@@ -56,7 +59,7 @@ TEST_CASE( "simplified xml parsed", "[xml][single node]") {
     REQUIRE( ! myxml_is_node_single( node ) ); 
 }
 
-TEST_CASE( "aducid enums", "[enums][operation]") {
+TEST_CASE( "aducid enums conversion", "[enums]") {
     REQUIRE( strcmp("open",aducid_operation_str(ADUCID_OPERATION_OPEN) ) == 0 );
     REQUIRE( aducid_operation_enum("open") == ADUCID_OPERATION_OPEN );
     REQUIRE( strcmp("exuse",aducid_operation_str(ADUCID_OPERATION_EXUSE) ) == 0 );
@@ -65,7 +68,7 @@ TEST_CASE( "aducid enums", "[enums][operation]") {
     REQUIRE( aducid_operation_enum("nonsense") == ADUCID_OPERATION_INVALID );
 }
 
-TEST_CASE( "attr list", "[lists][operation]" ) {
+TEST_CASE( "attribute list operations", "[lists]" ) {
     AducidAttributeList_t h;
 
     h = aducid_attr_list_new();
@@ -89,7 +92,7 @@ TEST_CASE( "attr list", "[lists][operation]" ) {
     aducid_attr_list_free(h);
 }
 
-TEST_CASE("xml encode", "[utils][xmlencoding]")
+TEST_CASE("xml encode", "[utils]")
 {
     char *encoded, *decoded;
     encoded = xml_encode("&lt;x<x>x\"x");
@@ -107,3 +110,19 @@ TEST_CASE("xml encode", "[utils][xmlencoding]")
     free(encoded);
     free(decoded);
 }
+
+TEST_CASE("CPP interface", "[aducidpp]")
+{
+    aducid::AducidClient A("http://myaim.example.com");
+
+    A.authId("myId1");
+    A.authKey("myId2");
+    A.bindingId("myId3");
+    A.bindingKey("myId4");
+    assert( A.authId() == "myId1" );
+    assert( A.authKey() == "myId2" ); 
+    assert( A.bindingId() == "myId3" ); 
+    assert( A.bindingKey() == "myId4" );
+    assert( A.AIMProxyURL() == "http://myaim.example.com/AIM-proxy/process?authId=myId1&bindingId=myId3&bindingKey=myId4" );
+}
+
