@@ -89,6 +89,7 @@ cp -r doc/demos $RPM_BUILD_ROOT/%{docdir}/
 
 %files
 %exclude %{_libdir}/*.la
+%exclude %{_libdir}/*.lai
 %{_libdir}/libaducid.so.%{version}
 %{_libdir}/libaducidpp.so.%{version}
 
