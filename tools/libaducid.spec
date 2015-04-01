@@ -11,6 +11,9 @@ BuildRoot: /var/tmp/%{name}-root
 %{?el7:Requires: curl}
 BuildRequires: make
 BuildRequires: gcc
+BuildRequires: gcc-c++
+BuildRequires: automake
+BuildRequires: libtool
 %{?el5:BuildRequires: curl-devel}
 %{?el6:BuildRequires: libcurl-devel}
 %{?el7:BuildRequires: libcurl-devel}
@@ -36,19 +39,13 @@ ADUCID client developement files
 %setup -n c-aducid
 
 %build
-# VER1 = 3.0
-# VER2 = 0
 VER1=`echo %{version} | cut -d . -f 1,2`
 VER2=`echo %{version} | cut -d . -f 3`
 VER3=%{version}
 
-#sed -r --in-place \
-#    -e "s/^MINORVERSION=.+$/MINORVERSION=$VER2/" \
-#    -e "s/MAJORVERSION=.+$/MAJORVERSION=$VER1/" \
-#    c/Makefile
+autoreconf -vfi
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make
-
 
 %install
 VER1=`echo %{version} | cut -d . -f 1,2`
