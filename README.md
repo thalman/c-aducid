@@ -10,13 +10,25 @@ Use git tool to download the project
 Compile & install
 -----------------
 
-C/C++ ADUCID SDK uses autotools for compiling.
+C/C++ ADUCID SDK uses autotools for compiling. Try autoreconf if You have
+different version of autotools.
 
     git clone https://github.com/thalman/c-aducid.git
     cd c-aducid
-    ./configure
+    # autoreconf -vfi
+    ./configure 
     make
     make install
+
+Building the documentation
+--------------------------
+
+Documentation is written in doxygen, build it with following commands:
+
+    cd c-aducid
+    doxygen Doxyfile
+
+Documentation is stored in doc/html directory.
 
 Creating RPM package
 --------------------
@@ -34,6 +46,8 @@ There is SPEC file in tools directory. Creating rpm from tar archive is easy.
 3. Build rpm package.
 
         rpmbuild -ta c-aducid.tgz
+
+Hint: install the doxygen first if You want documentation in devel rpm.
 
 Build on windows
 ----------------
