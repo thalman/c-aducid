@@ -250,13 +250,7 @@ bool AducidClient::confirmMoneyTransaction( const string &fromAccount,
 }
 
 bool AducidClient::close() {
-    return
-        aducid_aim_close_session(
-            _handle->R4,
-            _handle->authId,
-            _handle->AIMName,
-            _handle->authKey
-        );
+    return aducid_close( _handle );
 }
 
 bool AducidClient::verify() {
@@ -267,13 +261,13 @@ bool AducidClient::verifyTransaction() {
     return aducid_verify_transaction( _handle, NULL );
 }
 
-bool AducidClient::verifyTransaction( map<string,string> &params ) {
+bool AducidClient::verifyTransaction( map<string,string> &transactionOtput ) {
     AducidAttributeList_t list = NULL;
     bool result = aducid_verify_transaction( _handle, &list );
     if( list == NULL ) return result;
     AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
     while( attr ) {
-        params[attr->name] = attr->value;
+        transactionOtput[attr->name] = attr->value;
         attr = attr->next;
     }
     aducid_attr_list_free( list );
@@ -288,7 +282,7 @@ string AducidClient::userDatabaseIndex() {
 }
 
 map<string,string>
-AducidClient::getPSLAtributes( AducidAttributeSet_t set, bool useCache ) {
+AducidClient::getPSLAttributes( AducidAttributeSet_t set, bool useCache ) {
     map<string,string> result;
     const AducidAIMGetPSLAttributesResponse_t *response =
         aducid_get_psl_attributes( _handle, set, useCache );
@@ -316,8 +310,8 @@ AducidClient::getPSLAtributes( AducidAttributeSet_t set, bool useCache ) {
     return result;
 }
 
-string AducidClient::getPSLAtribute( const std::string &attr ) {
-    map<string,string> attrs = getPSLAtributes(ADUCID_ATTRIBUTE_SET_ALL,true);
+string AducidClient::getPSLAttribute( const std::string &attr ) {
+    map<string,string> attrs = getPSLAttributes(ADUCID_ATTRIBUTE_SET_ALL,true);
     map<string,string>::iterator search = attrs.find(attr);
     if( search != attrs.end() ) {
         return search->second;

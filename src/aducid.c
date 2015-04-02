@@ -127,7 +127,7 @@ aducid_request_operation(AducidHandle_t handle,
                          const AducidAttributeList_t personalObject,
                          const char *AAIM2,
                          const char *ilData,
-                         const char *peigReturnName) {
+                         const char *peigReturnURL) {
     AducidAIMRequestOperationResponse_t *response;
     
     if(!handle)return NULL;
@@ -157,7 +157,7 @@ aducid_request_operation(AducidHandle_t handle,
                                             handle->bindingKey,
                                             methodName, methodParameters,
                                             personalObject,AAIM2,ilData,
-                                            peigReturnName);
+                                            peigReturnURL);
     if( response && (response->authId) ) {
         if( handle->authId == NULL ) {
             handle->authId = response->authId;
@@ -173,40 +173,39 @@ aducid_request_operation(AducidHandle_t handle,
 }
 
 ADUCID_PUBLIC_FUNC
-const char *aducid_open(AducidHandle_t handle, const char *peigReturnName) {
-    return aducid_request_operation(handle,ADUCID_OPERATION_OPEN,NULL,NULL,NULL,NULL,NULL,peigReturnName);
+const char *aducid_open(AducidHandle_t handle, const char *peigReturnURL) {
+    return aducid_request_operation(handle,ADUCID_OPERATION_OPEN,NULL,NULL,NULL,NULL,NULL,peigReturnURL);
 }
 
 ADUCID_PUBLIC_FUNC
-const char *aducid_init(AducidHandle_t handle, const char *peigReturnName) {
-    return aducid_request_operation(handle,ADUCID_OPERATION_INIT,NULL,NULL,NULL,NULL,NULL,peigReturnName);
+const char *aducid_init(AducidHandle_t handle, const char *peigReturnURL) {
+    return aducid_request_operation(handle,ADUCID_OPERATION_INIT,NULL,NULL,NULL,NULL,NULL,peigReturnURL);
 }
 
 ADUCID_PUBLIC_FUNC
-const char *aducid_reinit(AducidHandle_t handle, const char *peigReturnName) {
-    return aducid_request_operation(handle,ADUCID_OPERATION_REINIT,NULL,NULL,NULL,NULL,NULL,peigReturnName);
+const char *aducid_reinit(AducidHandle_t handle, const char *peigReturnURL) {
+    return aducid_request_operation(handle,ADUCID_OPERATION_REINIT,NULL,NULL,NULL,NULL,NULL,peigReturnURL);
 }
 
 ADUCID_PUBLIC_FUNC
-const char *aducid_change(AducidHandle_t handle, const char *peigReturnName) {
-    return aducid_request_operation(handle,ADUCID_OPERATION_CHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
+const char *aducid_change(AducidHandle_t handle, const char *peigReturnURL) {
+    return aducid_request_operation(handle,ADUCID_OPERATION_CHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnURL);
 }
 
 ADUCID_PUBLIC_FUNC
-const char *aducid_rechange(AducidHandle_t handle, const char *peigReturnName) {
-    return aducid_request_operation(handle,ADUCID_OPERATION_RECHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
+const char *aducid_rechange(AducidHandle_t handle, const char *peigReturnURL) {
+    return aducid_request_operation(handle,ADUCID_OPERATION_RECHANGE,NULL,NULL,NULL,NULL,NULL,peigReturnURL);
 }
 
 ADUCID_PUBLIC_FUNC
-const char *aducid_delete(AducidHandle_t handle, const char *peigReturnName) {
-    return aducid_request_operation(handle,ADUCID_OPERATION_DELETE,NULL,NULL,NULL,NULL,NULL,peigReturnName);
+const char *aducid_delete(AducidHandle_t handle, const char *peigReturnURL) {
+    return aducid_request_operation(handle,ADUCID_OPERATION_DELETE,NULL,NULL,NULL,NULL,NULL,peigReturnURL);
 }
 
 ADUCID_PUBLIC_FUNC bool
 aducid_close(AducidHandle_t handle) {
     return aducid_aim_close_session(handle->R4,handle->authId,handle->AIMName,handle->authKey);
 }
-
 
 ADUCID_PUBLIC_FUNC AducidAIMGetPSLAttributesResponse_t *
 aducid_get_psl_attributes( AducidHandle_t handle, AducidAttributeSet_t attributeSet, bool useCache){
@@ -347,36 +346,6 @@ void aducid_free(AducidHandle_t handle) {
     }
     safe_free(handle);
 }
-
-/*
-  ADUCID_PUBLIC_FUNC AducidClient::AducidClient(char *aim) {
-  handle = aducid_new(aim);
-  }
-  ADUCID_PUBLIC_FUNC AducidClient::~AducidClient() {
-  aducid_free(handle);
-  }
-  ADUCID_PUBLIC_FUNC char *AducidClient::open() {
-  return aducid_open(handle);
-  }
-  ADUCID_PUBLIC_FUNC char *AducidClient::init() {
-  return aducid_init(handle);
-  }
-  ADUCID_PUBLIC_FUNC char *AducidClient::reinit() {
-  return aducid_reinit(handle);
-  }
-  ADUCID_PUBLIC_FUNC char *AducidClient::change() {
-  return aducid_change(handle);
-  }
-  ADUCID_PUBLIC_FUNC char *AducidClient::rechange() {
-  return aducid_rechange(handle);
-  }
-  ADUCID_PUBLIC_FUNC bool AducidClient::close() {
-  return aducid_close(handle);
-  }
-  ADUCID_PUBLIC_FUNC AIMGetPSLAttributesResponse *AducidClient::getPslAttributes(AducidAttributeSet attributeSet, bool useCache) {
-  return aducid_get_psl_attributes(handle,attributeSet,useCache);
-  }
-*/
 
 ADUCID_PUBLIC_FUNC
 int aducid_library_init() {
