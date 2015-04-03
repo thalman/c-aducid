@@ -31,7 +31,7 @@
   #endif
 #endif
 
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+#if defined _WIN32 || defined _WIN64
   /* on windows */
   #ifdef __GNUC__
     #define ADUCID_PUBLIC_FUNC __attribute__ ((dllexport))
@@ -51,7 +51,7 @@
 #endif
 
 
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+#if defined _WIN32 || defined _WIN64
 /* windows includes */
 #include<stdbool.h>
 #define _CRT_SECURE_NO_DEPRECATE  

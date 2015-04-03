@@ -18,7 +18,7 @@
 #include "utils.h"
 #include <string.h>
 
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+#if defined _WIN32 || defined _WIN64
 /* nothing for win */
 #else
 #include <curl/curl.h>

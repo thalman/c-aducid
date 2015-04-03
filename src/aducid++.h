@@ -39,7 +39,7 @@ namespace aducid
     public:
         /**
          * \brief Creates new AducidClient object
-         * \param AIM, AIM server address
+         * \param AIM AIM server address
          * \see aducid_new
          *
          * Constructor creates new AducidClient object. The parameter is
@@ -90,7 +90,7 @@ namespace aducid
         /**
          * \name open
          * \brief Starts "open" operation
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_open
          *@{
          */
@@ -101,7 +101,7 @@ namespace aducid
         /**
          * \name init
          * \brief Starts "init" operation
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_init
          *@{
          */
@@ -112,7 +112,7 @@ namespace aducid
         /**
          * \name change
          * \brief Starts "change" operation
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_change
          *@{
          */
@@ -121,9 +121,9 @@ namespace aducid
         /**@}*/
         
         /**
-         * \name change
+         * \name rechange
          * \brief Starts "change" operation
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_change
          *@{
          */
@@ -134,7 +134,7 @@ namespace aducid
         /**
          * \name reinit
          * \brief Starts "reinit" operation
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_reinit
          *@{
          */
@@ -143,9 +143,9 @@ namespace aducid
         /**@}*/
         
         /**
-         * \name change
+         * \name deleteIdentity
          * \brief Starts "delete" operation
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_delete
          *@{
          */
@@ -156,7 +156,7 @@ namespace aducid
         /**
          * \name initPersonalFactor
          * \brief Inititates personal factor
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_init_personal_factor
          *@{
          */
@@ -167,7 +167,7 @@ namespace aducid
         /**
          * \name changePersonalFactor
          * \brief Inititates personal factor change
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_change_personal_factor
          *@{
          */
@@ -178,7 +178,7 @@ namespace aducid
         /**
          * \name deletePersonalFactor
          * \brief Inititates operation for deleting personal factor
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_delete_personal_factor
          *@{
          */
@@ -189,7 +189,7 @@ namespace aducid
         /**
          * \name verifyPersonalFactor
          * \brief Inititates operation for personal factor verification.
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_verify_personal_factor
          *@{
          */
@@ -200,7 +200,7 @@ namespace aducid
         /**
          * \name createRoomByStory
          * \brief Creates room for pairing peigs.
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_create_room_by_story
          *@{
          */
@@ -211,7 +211,7 @@ namespace aducid
         /**
          * \name enterRoomByStory
          * \brief Enters room for pairing peigs previously created by createRoomByStory.
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_enter_room_by_story
          * \see createRoomByStory
          *@{
@@ -223,8 +223,8 @@ namespace aducid
         /**
          * \name createRoomByName
          * \brief Creates room for pairing peigs.
-         * \param name, room name to be created.
-         * \param peigReturnURL, URL for application return address.
+         * \param name room name to be created.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_create_room_by_story
          *@{
          */
@@ -235,8 +235,8 @@ namespace aducid
         /**
          * \name enterRoomByName
          * \brief Enters room for pairing peigs previously created by createRoomByName.
-         * \param name, room name to be created.
-         * \param peigReturnURL, URL for application return address.
+         * \param name room name to be created.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_enter_room_by_name
          * \see createRoomByName
          *@{
@@ -248,8 +248,8 @@ namespace aducid
         /**
          * \name linkLocal
          * \brief Starts the proces of creating indentity on backup PEIG.
-         * \param linkType, type of identity replication
-         * \param peigReturnURL, URL for application return address.
+         * \param linkType type of identity replication
+         * \param peigReturnURL URL for application return address.
          * \see AducidPeigLocalLink_t
          * \see aducid_peig_local_link
          *@{
@@ -261,9 +261,9 @@ namespace aducid
         /**
          * \name initPayment
          * \brief FIXME: what does it do?
-         * \param usePersonalFactor, choise whether operation must be confirmed with
+         * \param usePersonalFactor choise whether operation must be confirmed with
          *        personal factor or not
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_init_payment
          *@{
          */
@@ -274,10 +274,10 @@ namespace aducid
         /**
          * \name confirmTextTransaction
          * \brief Starts the transaction for text message confirmation.
-         * \param textUTF8, Message for confirmation (must be in UTF8, remember ASCII is ok).
-         * \param usePersonalFactor, Choise whether operation must be confirmed with
+         * \param textUTF8 Message for confirmation (must be in UTF8, remember ASCII is ok).
+         * \param usePersonalFactor Choise whether operation must be confirmed with
          *        personal factor or not.
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_confirm_text_transaction
          *@{
          */
@@ -288,12 +288,12 @@ namespace aducid
         /**
          * \name confirmMoneyTransaction
          * \brief Starts the transaction for money transfer.
-         * \param fromAccount, Account for money withdrawal.
-         * \param toAccount, Account for money deposit.
-         * \param amount, ammount of money to be sent.
-         * \param usePersonalFactor, Choise whether operation must be confirmed with
+         * \param fromAccount Account for money withdrawal.
+         * \param toAccount Account for money deposit.
+         * \param amount ammount of money to be sent.
+         * \param usePersonalFactor Choise whether operation must be confirmed with
          *        personal factor or not.
-         * \param peigReturnURL, URL for application return address.
+         * \param peigReturnURL URL for application return address.
          * \see aducid_confirm_money_transaction
          *@{
          */
@@ -321,21 +321,21 @@ namespace aducid
 
         /**
          * \name verifyTransaction
-         * \param transactionOtput, transaction results
+         * \param transactionOutput transaction results
          * \return true if the transaction is completely ok
          * \see aducid_verify_transaction
          *
-         * Parameter "transactionOtput" is output parametr. It is filled with transaction details
+         * Parameter "transactionOutput" is output parametr. It is filled with transaction details
          * like the message which has been seen by user, digital signature and more.
          *@{
          */
         bool verifyTransaction();
-        bool verifyTransaction( map<string,string> &transactionOtput );
+        bool verifyTransaction( map<string,string> &transactionOutput );
         /**@}*/
 
         /**
-         * \param set, PSL set
-         * \param useCache, if true, result is taken from cache (of course if it is in cache).
+         * \param set PSL set
+         * \param useCache if true, result is taken from cache (of course if it is in cache).
          * \return map of attributes
          * \see aducid_get_psl_attributes
          * \see AducidAttributeSet_t
@@ -346,7 +346,7 @@ namespace aducid
         map<string,string> getPSLAttributes( AducidAttributeSet_t set, bool useCache );
 
         /**
-         * \param attr, one atribute from PSL set ADUCID_ATTRIBUTE_SET_ALL
+         * \param attr one atribute from PSL set ADUCID_ATTRIBUTE_SET_ALL
          * \return string with attribute value (or "" if not found)
          * \see aducid_get_psl_attributes
          * \see getPSLAtributes
@@ -359,7 +359,7 @@ namespace aducid
 
         /**
          * \brief Read user attribute set from AIM.
-         * \param attrSetName, name of requested set like "default"
+         * \param attrSetName name of requested set like "default"
          * \return list of attributes in set
          * \see aducid_epo_read_user_attr_set
          *
@@ -371,7 +371,7 @@ namespace aducid
         
         /**
          * \brief Writes user attribute/s to AIM.
-         * \param attrSetName, name of requested set like "default"
+         * \param attrSetName name of requested set like "default"
          * \param attributes list of attributes to be written
          * \see aducid_epo_write_user_attr_set
          */
@@ -379,7 +379,7 @@ namespace aducid
 
         /**
          * \brief Method returns userDatabaseIndex.
-         * \param handle, aducid handle
+         * \param handle aducid handle
          * \return user identifier
          */
         string userDatabaseIndex();

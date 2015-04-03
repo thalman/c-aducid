@@ -276,13 +276,13 @@ bool AducidClient::verifyTransaction() {
     return aducid_verify_transaction( _handle, NULL );
 }
 
-bool AducidClient::verifyTransaction( map<string,string> &transactionOtput ) {
+bool AducidClient::verifyTransaction( map<string,string> &transactionOutput ) {
     AducidAttributeList_t list = NULL;
     bool result = aducid_verify_transaction( _handle, &list );
     if( list == NULL ) return result;
     AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
     while( attr ) {
-        transactionOtput[attr->name] = attr->value;
+        transactionOutput[attr->name] = attr->value;
         attr = attr->next;
     }
     aducid_attr_list_free( list );

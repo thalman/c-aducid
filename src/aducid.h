@@ -25,7 +25,7 @@ extern "C" {
 #include <string.h>
 
 #ifndef ADUCID_PUBLIC_FUNC
-  #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+  #if defined _WIN32 || defined _WIN64
     /* on windows */
     #ifdef __GNUC__
       #define ADUCID_PUBLIC_FUNC __attribute__ ((dllimport))
@@ -71,7 +71,7 @@ aducid_attr_list_new();
 
 /**
  * \brief Counts items in list.
- * \param handle, attribute list handle
+ * \param handle attribute list handle
  * \return int, number of items in list
  *
  *     if( aducid_attr_list_count(handle) ) {
@@ -83,8 +83,8 @@ aducid_attr_list_count( const AducidAttributeList_t handle );
 
 /**
  * \brief This function returns the name of the Nth item of the list, or NULL when the given index is invalid.
- * \param handle, attribute list handle
- * \param index, index of requested item
+ * \param handle attribute list handle
+ * \param index index of requested item
  * \return char *, name or NULL
  */
 ADUCID_PUBLIC_FUNC char *
@@ -92,28 +92,30 @@ aducid_attr_list_get_item_name( const AducidAttributeList_t handle, int idx );
 
 /**
  * \brief This function returns the value of the Nth item of the list, or NULL when the given index is invalid.
- * \param handle, attribute list handle
- * \param index, index of requested item
+ * \param handle attribute list handle
+ * \param index index of requested item
  * \return char *, value or NULL
  *
- *     int a;
- *     for(a=0; a<aducid_attr_list_count(handle), a++ ) {
- *         printf("name[%i] is %s\nvalue[%i] is %s\n",
- *                a,
- *                aducid_attr_list_get_item_name(handle,a),
- *                a,
- *                aducid_attr_list_get_item_value(handle,a)
- *         );
- *     }
+ \code{.c}
+ int a;
+ for(a=0; a<aducid_attr_list_count(handle), a++ ) {
+     printf("name[%i] is %s\nvalue[%i] is %s\n",
+            a,
+            aducid_attr_list_get_item_name(handle,a),
+            a,
+            aducid_attr_list_get_item_value(handle,a)
+     );
+ }
+ \endcode
  */
 ADUCID_PUBLIC_FUNC char *
 aducid_attr_list_get_item_value( const AducidAttributeList_t handle, int idx );
 
 /**
  * \brief Append new element to the list.
- * \param handle, attribute list handle
- * \param name, attribute name
- * \param value, atribute value
+ * \param handle attribute list handle
+ * \param name attribute name
+ * \param value atribute value
  *
  * This function adds a new attribute to the end of the list. Both its name and value
  * parameters must not be NULL. The function creates a copy of the transferred values
@@ -124,9 +126,9 @@ aducid_attr_list_append( AducidAttributeList_t handle, const char *name, const c
 
 /**
  * \brief Add new element to the beginning of the list.
- * \param handle, attribute list handle
- * \param name, attribute name
- * \param value, atribute value
+ * \param handle attribute list handle
+ * \param name attribute name
+ * \param value atribute value
  * \see aducid_attr_list_append
  *
  * This function has the same properties as aducid_attr_list_append, but adds
@@ -137,10 +139,10 @@ aducid_attr_list_prepend( AducidAttributeList_t handle, const char *name, const 
 
 /**
  * \brief Inserts an attribute to a given position in the list.
- * \param handle, attribute list handle
- * \param name, attribute name
- * \param value, atribute value
- * \param index, insert position
+ * \param handle attribute list handle
+ * \param name attribute name
+ * \param value atribute value
+ * \param index insert position
  * \see aducid_attr_list_append
  *
  * This function inserts an attribute to a given position in the list.
@@ -148,13 +150,15 @@ aducid_attr_list_prepend( AducidAttributeList_t handle, const char *name, const 
  * the function behaves as aducid_attr_list_append. When the index
  * is smaller than 1, the function behaves as aducid_attr_list_prepend.
  *
- *     AducidAttributeList handle;
- *     handle = aducid_attr_list_new();
- *     aducid_attr_list_append(handle, "item 3","good evening");
- *     aducid_attr_list_prepend(handle, "item 1","good moorning");
- *     aducid_attr_list_insert(handle, "item 2","good afternoon",1);
- *     // the list is now correctly sorted
- *     aducid_attr_list_free(handle);
+ \code{.c}
+ AducidAttributeList handle;
+ handle = aducid_attr_list_new();
+ aducid_attr_list_append(handle, "item 3","good evening");
+ aducid_attr_list_prepend(handle, "item 1","good moorning");
+ aducid_attr_list_insert(handle, "item 2","good afternoon",1);
+ // the list is now correctly sorted
+ aducid_attr_list_free(handle);
+ \endcode
  *
  * \see aducid_attr_list_append
  * \see aducid_attr_list_prepend
@@ -164,8 +168,8 @@ aducid_attr_list_insert( AducidAttributeList_t handle, const char *name, const c
 
 /**
  * \brief Returns first element with given name
- * \param handle, attribute list handle
- * \param name, attribute name
+ * \param handle attribute list handle
+ * \param name attribute name
  * \return attribute value
  *
  * This function finds the given attribute and returns a pointer with its value. The search is not case
@@ -183,43 +187,47 @@ aducid_attr_list_get_first_by_name( const AducidAttributeList_t handle, const ch
 
 /**
  * \brief The function searches for the next attribute of the given name.
- * \param handle, attribute list handle
- * \param name, attribute name
+ * \param handle attribute list handle
+ * \param name attribute name
  * \return found value or NULL
  *
- *     // prints all mails in the list
- *     char *mail;
- *     mail = aducid_attr_list_get_first_by_name(handle, "mail");
- *     while(mail) {
- *         printf("mail: %s\n", mail);
- *         mail = aducid_attr_list_get_next_by_name(handle, "mail");
- *     }
+ * \code{.c}
+ // prints all mails in the list
+ char *mail;
+ mail = aducid_attr_list_get_first_by_name(handle, "mail");
+ while(mail) {
+     printf("mail: %s\n", mail);
+     mail = aducid_attr_list_get_next_by_name(handle, "mail");
+ }
+ \endcode
  */
 ADUCID_PUBLIC_FUNC char *
 aducid_attr_list_get_next_by_name( const AducidAttributeList_t handle, const char *name );
 
 /**
  * \brief The function counts the attributes of the given name and it is not case sensitive.
- * \param handle, attribute list handle
- * \param name, attribute name
+ * \param handle attribute list handle
+ * \param name attribute name
  * \return number of attributes with given name
  *
- *     AducidAttributeList handle;
- *     int cnt;
- *     handle = aducid_attr_list_new();
- *     aducid_attr_list_append(handle, "item","good evening");
- *     aducid_attr_list_append(handle, "ITEM","good moorning");
- *     cnt = aducid_attr_list_get_count_by_name(handle, "iTEm");
- *     // cnt == 2
- *     aducid_attr_list_free(handle);
+ * \code{.c}
+ AducidAttributeList handle;
+ int cnt;
+ handle = aducid_attr_list_new();
+ aducid_attr_list_append(handle, "item","good evening");
+ aducid_attr_list_append(handle, "ITEM","good moorning");
+ cnt = aducid_attr_list_get_count_by_name(handle, "iTEm");
+ // cnt == 2
+ aducid_attr_list_free(handle);
+ \endcode
  */
 ADUCID_PUBLIC_FUNC int
 aducid_attr_list_get_count_by_name( const AducidAttributeList_t handle, const char *name );
 
 /**
  * \brief The function deletes the item at position idx from list.
- * \param handle, attribute list handle
- * \param idx, index of deleted item
+ * \param handle attribute list handle
+ * \param idx index of deleted item
  * \return bool deleted or not
  *
  * This function deletes the item at position idx from the list of attributes. When the operation is successful,
@@ -231,8 +239,8 @@ aducid_attr_list_delete( AducidAttributeList_t handle, int idx );
 
 /**
  * \brief The function deletes the all items with given name from list.
- * \param handle, attribute list handle
- * \param name, attribute name
+ * \param handle attribute list handle
+ * \param name attribute name
  * \return true if at least one item deleted
  *
  * This function deletes all attributes of the given name from the list.
@@ -243,7 +251,7 @@ aducid_attr_list_delete_by_name( AducidAttributeList_t handle, const char *name 
 
 /**
  * \brief This function clears a list of attributes from the memory.
- * \param handle, attribute list handle
+ * \param handle attribute list handle
  */
 ADUCID_PUBLIC_FUNC void
 aducid_attr_list_free( AducidAttributeList_t handle );
@@ -479,7 +487,7 @@ typedef AducidHandleStruct *AducidHandle_t;
 
 /**
  * \brief Free memory structure returned by aducid_aim_request_operation.
- * \param AducidAIMRequestOperationResponse_t *response
+ * \param response response to free
  * \see aducid_aim_request_operation
  *
  * Function clears memory structures obtained with aducid_aim_request_operation.
@@ -490,7 +498,7 @@ aducid_free_aim_request_operation_response(AducidAIMRequestOperationResponse_t *
 
 /**
  * \brief Free memory structure returned by aducid_aim_get_psl_attributes.
- * \param AducidAIMGetPSLAttributesResponse_t *response
+ * \param response response to free
  * \see aducid_aim_get_psl_attributes
  *
  * Functions clears memory structures obtained with aducid_aim_get_psl_attributes.
@@ -501,7 +509,7 @@ aducid_free_aim_get_psl_attributes_response(AducidAIMGetPSLAttributesResponse_t 
 
 /**
  * \brief Free memory structure returned by aducid_aim_execute_personal_object.
- * \param AducidAIMExecutePersonalObjectResponse_t *response
+ * \param response response to free
  * \see aducid_aim_execute_personal_object
  *
  * Functions clears memory structures obtained with aducid_aim_execute_personal_object.
@@ -512,15 +520,15 @@ aducid_free_aim_execute_personal_object_response(AducidAIMExecutePersonalObjectR
 
 /**
  * \brief This function initiates an operation on the AIM server.
- * \param const char * R4, address of the SOAP R4 AIM interface (for example, "http://aim.example.com/AIM/services/R4")
- * \param AducidOperation_t operation, required operation
- * \param const char * authId, ADUCID session identifier (when the value is NULL, it is assigned to AIM)
- * \param const char * methodName, name of requested method
- * \param AducidAttributeList_t methodParametr, parameters for methodName method.
- * \param AducidAttributeList_t personalObject, ADUCID personal object
- * \param const char * AAIM2, secondary AIM address for identity link
- * \param const char *ilData, data for identity link
- * \param const char *peigReturnURL, URL for application return address
+ * \param R4 address of the SOAP R4 AIM interface (for example, "http://aim.example.com/AIM/services/R4")
+ * \param operation requested operation
+ * \param authId ADUCID session identifier (when the value is NULL, it is assigned to AIM)
+ * \param methodName name of requested method
+ * \param methodParametr parameters for methodName method.
+ * \param personalObject ADUCID personal object
+ * \param AAIM2 secondary AIM address for identity link
+ * \param ilData data for identity link
+ * \param peigReturnURL URL for application return address
  * \return pointer AducidAIMRequestOperationResponse data structure.
  *
  * The returned response must be cleared by using aducid_free_aim_request_operation_response().
@@ -541,12 +549,12 @@ aducid_aim_request_operation(
     
 /**
  * \brief Returns ADUCID PSL set of attributes
- * \param const char * R4, address of the SOAP R4 AIM interface (for example, "http://aim.example.com/AIM/services/R4")
- * \param const char * authId, ADUCID session identifier.
- * \param const char * bindingId, ADUCID binding identifier.
- * \param const char * AIMName, name of virtual AIM
- * \param const char * authKey, ADUCID session key.
- * \param AducidAttributeSet_t attributeSet, requested set of attributes.
+ * \param R4 address of the SOAP R4 AIM interface (for example, "http://aim.example.com/AIM/services/R4")
+ * \param authId ADUCID session identifier.
+ * \param bindingId ADUCID binding identifier.
+ * \param AIMName name of virtual AIM
+ * \param authKey ADUCID session key.
+ * \param attributeSet requested set of attributes.
  * \return pointer AducidAIMGetPSLAttributesResponse_t data structure.
  *
  * The function returns a pointer to the AducidAIMGetPSLAttributesResponse, or NULL when
@@ -573,17 +581,17 @@ aducid_aim_get_psl_attributes(
 
 /**
  * \brief Function requests aim for operation with personal object
- * \param const char *R4, address of the SOAP R4 AIM interface (e.g. "http://aim.example.com/AIM/services/R4")
- * \param const char *authId , ADUCID session identifier
- * \param const char *AIMName, name of virual AIM
- * \param const char *authKey, ADUCID authentication key
- * \param AducidMethod_t methodName, name of the method called (for example, ADUCID_METHOD_WRITE)
- * \param const char *personalObjectName, object name (for example, name of set being written)
- * \param AducidAlgorithm_t personalObjectAlgorithm, algorithm used (for example, ADUCID_ALGORITHM_USER_ATTR_SET)
- * \param AducidAttributeList_t personalObjectData, list of attributes and their values (for example, name of set being written)
- * \param const char *ILID, information for identity link
- * \param const char *AAIM2, secondary AIM for identity link
- * \param const char *ilData, data for identity link
+ * \param R4 address of the SOAP R4 AIM interface (e.g. "http://aim.example.com/AIM/services/R4")
+ * \param authId ADUCID session identifier
+ * \param AIMName name of virual AIM
+ * \param authKey ADUCID authentication key
+ * \param methodName name of the method called (for example, ADUCID_METHOD_WRITE)
+ * \param personalObjectName object name (for example, name of set being written)
+ * \param personalObjectAlgorithm algorithm used (for example, ADUCID_ALGORITHM_USER_ATTR_SET)
+ * \param personalObjectData list of attributes and their values (for example, name of set being written)
+ * \param ILID information for identity link
+ * \param AAIM2 secondary AIM for identity link
+ * \param ilData data for identity link
  * \return pointer to AducidAIMExecutePersonalObjectResponse, or NULL when unsuccessful.
  *
  * The returned structure must be cleared by using aducid_free_aim_execute_personal_object_response().
@@ -604,10 +612,10 @@ aducid_aim_execute_personal_object(
 
 /**
  * \brief function closes ADUCID session on AIM
- * \param const char *R4, address of the SOAP R4 AIM interface (e.g. "http://aim.example.com/AIM/services/R4")
- * \param const char *authId , ADUCID session identifier
- * \param const char *AIMName, name of virual AIM
- * \param const char *authKey, ADUCID authentication key
+ * \param R4 address of the SOAP R4 AIM interface (e.g. "http://aim.example.com/AIM/services/R4")
+ * \param authId ADUCID session identifier
+ * \param AIMName name of virual AIM
+ * \param authKey ADUCID authentication key
  *
  * This function closes the authentication session on the AIM server. For security reasons, this function
  * should be called when the authentication session is not needed. If the session is not closed explicitly, it
@@ -631,7 +639,7 @@ aducid_aim_close_session(
 
 /**
  * \brief Function converts AducidOperation_t into string.
- * \param AducidOperation_t operation
+ * \param operation operation enum
  * \return const char * operation name
  *
  * When invalid value is converted to text (for example (AducidOperation_t)-1), the function returns NULL.
@@ -641,7 +649,7 @@ aducid_operation_str( AducidOperation_t operation );
 
 /**
  * \brief Function converts string representing AducidOperation into enum.
- * \param const char * operation name
+ * \param operation name
  * \return AducidOperation_t operation
  *
  * When invalid name is provided (for example "some random text"), the function returns 0 (ADUCID_OPERATION_INVALID).
@@ -651,7 +659,7 @@ aducid_operation_enum( const char *operation );
 
 /**
  * \brief Function converts AducidAttributeList_t into string.
- * \param AducidAttributeSet_t set
+ * \param set AducidAttributeSet
  * \return const char * set name
  *
  * When invalid value is converted to text (for example (AducidAttributeSet_t)-1), the function returns NULL.
@@ -661,7 +669,7 @@ aducid_attribute_set_str(AducidAttributeSet_t set);
 
 /**
  * \brief Function converts string representing AducidAttributeSet into enum.
- * \param const char * set name
+ * \param name set name
  * \return AducidAttributeSet_t set
  *
  * When invalid name is provided (for example "some random text"), the function returns 0 (ADUCID_ATTRIBUTE_SET_INVALID).
@@ -671,7 +679,7 @@ aducid_attribute_set_enum(const char *set);
 
 /**
  * \brief Function converts AducidAIMStatus_t into string.
- * \param AducidAIMStatus_t status
+ * \param status ADUCID AIM status
  * \return const char * status name
  *
  * When invalid value is converted to text (for example (AducidAIMStatus_t)-1), the function returns NULL.
@@ -681,7 +689,7 @@ aducid_aim_status_str(AducidAIMStatus_t status);
 
 /**
  * \brief Function converts string representing AducidAttributeSet into enum.
- * \param const char * set name
+ * \param status status name
  * \return AducidAttributeSet_t set
  *
  * When invalid name is provided (for example "some random text"), the function returns 0 (ADUCID_AIM_STATUS_INVALID).
@@ -691,7 +699,7 @@ aducid_aim_status_enum(const char *status);
 
 /**
  * \brief Function converts AducidMethod_t into string.
- * \param AducidMethod_t method
+ * \param method ADUCID method enum 
  * \return const char * method name
  *
  * When invalid value is converted to text (for example (AducidMethod_t)-1), the function returns NULL.
@@ -701,8 +709,8 @@ aducid_method_str(AducidMethod_t method);
 
 /**
  * \brief Function converts string representing AducidMethod into enum.
- * \param const char * method name
- * \return AducidMethod_t set
+ * \param method method name
+ * \return AducidMethod_t method enum
  *
  * When invalid name is provided (for example "some random text"), the function returns 0 (ADUCID_METHOD_INVALID).
  */
@@ -711,7 +719,7 @@ aducid_method_enum(const char *method);
 
 /**
  * \brief Function converts AducidAlgorithm_t into string.
- * \param AducidAlgorithm_t algorithm
+ * \param alg ADUCID algorithm enum
  * \return const char * algorithm name
  *
  * When invalid value is converted to text (for example (AducidAlgorithm_t)-1), the function returns NULL.
@@ -721,7 +729,7 @@ aducid_algorithm_str(AducidAlgorithm_t alg);
 
 /**
  * \brief Function converts string representing AducidAlgorithm into enum.
- * \param const char * algorithm name
+ * \param alg algorithm name
  * \return AducidAlgorithm_t algorithm
  *
  * When invalid name is provided (for example "some random text"), the function returns 0 (ADUCID_ALGORITHM_INVALID).
@@ -731,7 +739,7 @@ aducid_algorithm_enum(const char *alg);
 
 /**
  * \brief Function converts AducidAuthStatus_t into string.
- * \param AducidAuthStatus_t status
+ * \param status ADUCID auth status enum
  * \return const char * status name
  *
  * When invalid value is converted to text (for example (AducidAuthStatus_t)-1), the function returns NULL.
@@ -741,7 +749,7 @@ aducid_auth_status_str(AducidAuthStatus_t status);
 
 /**
  * \brief Function converts string representing AducidAuthStatus into enum.
- * \param const char * status name
+ * \param status status name
  * \return AducidAuthStatus_t status
  *
  * When invalid name is provided (for example "some random text"), the function returns 0 (ADUCID_AUTHSTATUS_INVALID).
@@ -758,11 +766,11 @@ aducid_auth_status_enum(const char *status);
 
 /**
  * \brief Function creates new ADUCID handle
- * \param AIM, AIM server address/URL
- * \param authId, ADUCID session id
- * \param authKey, ADUCID session key
- * \param bindingId, ADUCID binding id
- * \param bindingKey, ADUCID binding key
+ * \param AIM AIM server address/URL
+ * \param authId ADUCID session id
+ * \param authKey ADUCID session key
+ * \param bindingId ADUCID binding id
+ * \param bindingKey ADUCID binding key
  * \see aducid_free
  *
  * The first input parameter is the AIM interface address. It may be provided as DNS name, IP address or
@@ -816,8 +824,8 @@ aducid_new( const char *AIM, const char *authId, const char *authKey, const char
 
 /**
  * \brief Starts open operation
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the open operation on the AIM server. The open call is used to use an identity for
  * authentication. The result is the authId identifier. The authId value is saved in the internal structure and
@@ -830,29 +838,31 @@ aducid_new( const char *AIM, const char *authId, const char *authKey, const char
  * server is unavailable).
  *
  * Example:
- *     #include <aducid.h>;
- *     int main(int argc,char *argv[]) {
- *         AducidHandle handle;
- *         handle = aducid_new("aim.example.com",NULL,NULL,NULL,NULL);
- *         if( aducid_open(handle, NULL) ) {
- *             // operation has been started
- *         }
- *         aducid_free(handle);
- *     }
+ * \code{.c}
+ #include <aducid.h>;
+ int main(int argc,char *argv[]) {
+     AducidHandle handle;
+     handle = aducid_new("aim.example.com",NULL,NULL,NULL,NULL);
+     if( aducid_open(handle, NULL) ) {
+         // operation has been started
+     }
+     aducid_free(handle);
+ }
+ \endcode
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_open( AducidHandle_t handle, const char *peigReturnURL );
 
 /**
  * \brief Starts init operation
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the init operation on the AIM server. The init operation is used to create an
  * identity. After authId is handed over at PEIG, PEIG starts to communicate with the AIM server and after
  * the user confirms, an identity is created (both at AIM and PEIG).
  *
- *The function returns a pointer to authId, or, when unsuccessful, NULL.
+ * The function returns a pointer to authId, or, when unsuccessful, NULL.
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_init( AducidHandle_t handle, const char *peigReturnURL );
@@ -860,8 +870,8 @@ aducid_init( AducidHandle_t handle, const char *peigReturnURL );
 
 /**
  * \brief Starts reinit operation
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the reinit operation on the AIM server. The reinit operation is used to renew an
  * identity and recover from an error condition when an identity exists in PEIG, but not on the AIM server (for
@@ -874,8 +884,8 @@ aducid_reinit( AducidHandle_t handle, const char *peigReturnURL );
 
 /**
  * \brief Starts change operation
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the change operation on the AIM server. The change operation is used to change
  * an identity (create new pseudo random identifiers) during its validity. If the identity's validity has expired,
@@ -888,8 +898,8 @@ aducid_change( AducidHandle_t handle, const char *peigReturnURL );
 
 /**
  * \brief Starts change operation
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the rechange operation on the AIM server. The rechange operation is used to
  * change an identity (create new pseudo random identifiers) after its validity has expired. An identity's
@@ -903,8 +913,8 @@ aducid_rechange( AducidHandle_t handle, const char *peigReturnURL );
 
 /**
  * \brief Starts delete operation
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the delete operation on the AIM server. The delete operation is used to remove
  * an identity both from AIM and PEIG.
@@ -916,11 +926,11 @@ aducid_delete( AducidHandle_t handle, const char *peigReturnURL );
 
 /**
  * \brief Starts exuse operation
- * \param handle, aducid handle
- * \param methodName, requested method
- * \param methodParametr, parameters for methodName method.
- * \param personalObject, ADUCID personal object
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param methodName requested method
+ * \param methodParametr parameters for methodName method.
+ * \param personalObject ADUCID personal object
+ * \param peigReturnURL URL for application return address
  *
  * This function initiates the exuse operation on the AIM server. This function
  * allows use advanced ADUCID features like transaction. Because direct usage of
@@ -939,7 +949,7 @@ aducid_exuse(
 
 /**
  * \brief Function closes ADUCID session on AIM
- * \param handle, aducid handle
+ * \param handle aducid handle
  * \return true if closed successfuly
  *
  * This function closes the ADUCID session on the AIM server. This function should be called when the
@@ -954,9 +964,9 @@ aducid_close( AducidHandle_t handle );
 
 /**
  * \brief Get PSL attributes
- * \param handle, aducid handle
- * \param attributeSet, PSL attribute set
- * \param useCache, allows reading requested data from cache
+ * \param handle aducid handle
+ * \param attributeSet PSL attribute set
+ * \param useCache allows reading requested data from cache
  * \return PSL response response
  *
  * ADUCID offers several attributes directly related to ADUCID identification of the user and their PEIG. This
@@ -977,7 +987,7 @@ aducid_get_psl_attributes( AducidHandle_t handle, AducidAttributeSet_t attribute
 
 /**
  * \brief Waits until pending operation is finished
- * \param handle, aducid handle
+ * \param handle aducid handle
  * \return true if opertion is finished
  *
  * This function waits for an operation to close. The function returns true when the operation is closed;
@@ -988,11 +998,7 @@ aducid_get_psl_attributes( AducidHandle_t handle, AducidAttributeSet_t attribute
  * Internally, the function repeatedly calls aducid_get_psl_attributes to determine the authentication
  * status.
  *
- *     aducid_get_psl_attributes(
- *         handle,
- *         ADUCID_ATTRIBUTE_SET_STATUS,
- *         false
- *     );
+ *     aducid_get_psl_attributes( handle, ADUCID_ATTRIBUTE_SET_STATUS, false );
  *
  * This call is repeated as long as the return value statusAIM is ADUCID_AIM_STATUS_START or
  * ADUCID_AIM_STATUS_WORKING.
@@ -1002,19 +1008,21 @@ aducid_wait_for_operation( AducidHandle_t handle );
 
 /**
  * \brief Verify current ADUCID operation.
- * \param handle, aducid handle
+ * \param handle aducid handle
  * \return overall status of the operation.
  *
  * This function determines whether the operation was successful and the user was authenticated. At the
  * time of calling this function, the other parameters should be known (depend of the binding type).
  *
- *     h = aducid_new( "aim.example.com", authId, authKey, bindingId, bindingKey );
- *     if( aducid_verify(h) ) {
- *         // ok
- *     } else {
- *         // failed
- *     }
- *     aducid_free(h);
+ * \code{.c}
+ h = aducid_new( "aim.example.com", authId, authKey, bindingId, bindingKey );
+ if( aducid_verify(h) ) {
+     // ok
+ } else {
+     // failed
+ }
+ aducid_free(h);
+ \endcode
  */
 ADUCID_PUBLIC_FUNC bool
 aducid_verify( AducidHandle_t handle );
@@ -1031,15 +1039,17 @@ aducid_verify( AducidHandle_t handle );
  * If the transaction parameter is given, all relevant transaction information are stored in that list (Like
  * usage of personal factor or digital signature).
  *
- *     h = aducid_new( "aim.example.com", authId, authKey, bindingId, bindingKey );
- *     AducidAttributeList_t transaction = aducid_attr_list_new();
- *     if( aducid_verify_transaction( h, &transaction ) ) {
- *           printf("ok: %s\n", aducid_attr_list_get_first_by_name( transaction, "PaymentSignature" ) );
- *     } else {
- *           printf("failed: %s\n", aducid_attr_list_get_first_by_name( transaction, "Return_Status" ) );
- *     }
- *     aducid_attr_list_free(transaction);
- *     aducid_free(h);
+ * \code{.c}
+ h = aducid_new( "aim.example.com", authId, authKey, bindingId, bindingKey );
+ AducidAttributeList_t transaction = aducid_attr_list_new();
+ if( aducid_verify_transaction( h, &transaction ) ) {
+     printf("ok: %s\n", aducid_attr_list_get_first_by_name( transaction, "PaymentSignature" ) );
+ } else {
+     printf("failed: %s\n", aducid_attr_list_get_first_by_name( transaction, "Return_Status" ) );
+ }
+ aducid_attr_list_free(transaction);
+ aducid_free(h);
+ \endcode
  */
 ADUCID_PUBLIC_FUNC bool
 aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transaction );
@@ -1071,31 +1081,33 @@ aducid_execute_personal_object(
 
 /**
  * \brief Read user attributes from AIM.
- * \param handle, aducid handle
- * \param attrSetName, attribute set name
+ * \param handle aducid handle
+ * \param attrSetName attribute set name
  * \return list of attributes
  * \see aducid_execute_personal_object
  *
  * Method reads set of user attributes in attrSetName. Free the result with aducid_attr_list_free().
  *
  * Example:
- *     h = aducid_new( "aim.example.com", authId, authKey, bindingId, bindingKey );
- *     if( aducid_verify( h ) ) {
- *         AducidAttributeList_t list = aducid_epo_read_user_attr_set( h, "default" );
- *         const char *mail = aducid_attr_list_get_first_by_name( list, "mail" );
- *         printf( "user mail is %s\n", ( mail ? mail : "not set" ) );
- *         aducid_attr_list_free(list);
- *     }
- *     aducid_free( h );
+ * \code{.c}
+ h = aducid_new( "aim.example.com", authId, authKey, bindingId, bindingKey );
+ if( aducid_verify( h ) ) {
+     AducidAttributeList_t list = aducid_epo_read_user_attr_set( h, "default" );
+     const char *mail = aducid_attr_list_get_first_by_name( list, "mail" );
+     printf( "user mail is %s\n", ( mail ? mail : "not set" ) );
+     aducid_attr_list_free(list);
+ }
+ aducid_free( h );
+ \endcode
  */
 ADUCID_PUBLIC_FUNC AducidAttributeList_t
 aducid_epo_read_user_attr_set( AducidHandle_t handle, const char *attrSetName );
 
 /**
  * \brief Read user attributes from AIM.
- * \param handle, aducid handle
- * \param attrSetName, attribute set name
- * \param attrs, attributes to store
+ * \param handle aducid handle
+ * \param attrSetName attribute set name
+ * \param attrs attributes to store
  * \return true
  * \see aducid_execute_personal_object
  * \see aducid_epo_read_user_attr_set
@@ -1107,7 +1119,7 @@ aducid_epo_write_user_attr_set( AducidHandle_t handle, const char *attrSetName, 
 
 /**
  * \brief Method returns userDatabaseIndex.
- * \param handle, aducid handle
+ * \param handle aducid handle
  * \return user identifier
  */
 ADUCID_PUBLIC_FUNC const char *
@@ -1115,7 +1127,7 @@ aducid_get_user_database_index( AducidHandle_t handle );
 
 /**
  * \brief Clear PSL cache
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * Function clears internal cache of PSL responses.
  */
@@ -1124,7 +1136,7 @@ aducid_clear_psl_cache( AducidHandle_t handle );
 
 /**
  * \brief Returns current authId.
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * Function returns authId from ADUCID handle.
  */
@@ -1133,8 +1145,8 @@ aducid_get_authid( AducidHandle_t handle );
 
 /**
  * \brief Sets authId.
- * \param handle, aducid handle
- * \param authId, authId value
+ * \param handle aducid handle
+ * \param authId authId value
  *
  * Function sets authId in ADUCID handle.
  */
@@ -1143,7 +1155,7 @@ aducid_set_authid( AducidHandle_t handle, const char *authId );
 
 /**
  * \brief Returns current authKey.
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * Function returns authKey from ADUCID handle.
  */
@@ -1152,8 +1164,8 @@ aducid_get_authkey( AducidHandle_t handle );
 
 /**
  * \brief Sets authKey.
- * \param handle, aducid handle
- * \param authKey, authKey value
+ * \param handle aducid handle
+ * \param authKey authKey value
  *
  * Function sets authKey in ADUCID handle.
  */
@@ -1162,7 +1174,7 @@ aducid_set_authkey( AducidHandle_t handle, const char *authKey );
 
 /**
  * \brief Returns current bindingKey.
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * Function returns bindingKey from ADUCID handle.
  */
@@ -1171,8 +1183,8 @@ aducid_get_bindingkey( AducidHandle_t handle );
 
 /**
  * \brief Sets bindingKey.
- * \param handle, aducid handle
- * \param bindingKey, new bindingKey value
+ * \param handle aducid handle
+ * \param bindingKey new bindingKey value
  *
  * Function sets bindingKey in ADUCID handle.
  */
@@ -1181,7 +1193,7 @@ aducid_set_bindingkey( AducidHandle_t handle, const char *bindingKey );
 
 /**
  * \brief Returns current bindingId.
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * Function returns bindingId from ADUCID handle.
  */
@@ -1190,8 +1202,8 @@ aducid_get_bindingid( AducidHandle_t handle );
 
 /**
  * \brief Sets bindingId.
- * \param handle, aducid handle
- * \param bindingId, new bindingId value
+ * \param handle aducid handle
+ * \param bindingId new bindingId value
  *
  * Function sets bindingId in ADUCID handle.
  */
@@ -1200,41 +1212,41 @@ aducid_set_bindingid( AducidHandle_t handle, const char *bindingId );
 
 /**
  * \brief Starts exuse operation for personal factor initialization.
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_init_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 /**
  * \brief Starts exuse operation for personal factor change.
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_change_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 /**
  * \brief Starts exuse operation for personal factor deleting.
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_delete_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 /**
  * \brief Starts exuse operation for personal factor verification.
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_verify_personal_factor( AducidHandle_t handle, const char * peigReturnURL );
 
 /**
  * \brief Starts exuse operation for creating room.
- * \param handle, aducid handle
- * \param roomName, room name
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param roomName room name
+ * \param peigReturnURL URL for application return address
  *
  * Room opertions is way, how to pair two PEIGs together,
  * that they belong to the same person. After creating room
@@ -1246,9 +1258,9 @@ aducid_create_room_by_name( AducidHandle_t handle, const char *roomName, const c
 
 /**
  * \brief Starts exuse operation for entering room.
- * \param handle, aducid handle
- * \param roomName, room name
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param roomName room name
+ * \param peigReturnURL URL for application return address
  * \see aducid_create_room_by_name
  */
 ADUCID_PUBLIC_FUNC const char *
@@ -1256,8 +1268,8 @@ aducid_enter_room_by_name( AducidHandle_t handle, const char *roomName, const ch
 
 /**
  * \brief Starts exuse operation for creating room.
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  * \see aducid_create_room_by_name
  *
  * Instead specifying room name, user creates the room as a sequence of pictograms.
@@ -1267,8 +1279,8 @@ aducid_create_room_by_story( AducidHandle_t handle, const char * peigReturnURL )
 
 /**
  * \brief Starts exuse operation for entering room.
- * \param handle, aducid handle
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param peigReturnURL URL for application return address
  * \see aducid_create_room_by_name
  * \see aducid_create_room_by_story
  */
@@ -1280,19 +1292,19 @@ aducid_peig_local_link( AducidHandle_t handle, AducidPeigLocalLink_t linkType, c
 
 /**
  * \brief Starts exuse operation for payment initialization.
- * \param handle, aducid handle
- * \param usePersonalFactor, use personal factor for confirmation
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param usePersonalFactor use personal factor for confirmation
+ * \param peigReturnURL URL for application return address
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_init_payment( AducidHandle_t handle, bool usePersonalFactor, const char *peigReturnURL );
 
 /**
  * \brief Starts the text transaction.
- * \param handle, aducid handle
- * \param textUTF8, text in UTF8 for confirmation
- * \param usePersonalFactor, use personal factor for confirmation
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param textUTF8 text in UTF8 for confirmation
+ * \param usePersonalFactor use personal factor for confirmation
+ * \param peigReturnURL URL for application return address
  * \see aducid_verify_transaction
  */
 ADUCID_PUBLIC_FUNC const char *
@@ -1304,12 +1316,12 @@ aducid_confirm_text_transaction(
 
 /**
  * \brief Starts the money transfer transaction.
- * \param handle, aducid handle
- * \param fromAccout, transfer money from this account 
- * \param toAccout, transfer money to this account 
- * \param amount, transfer this amount
- * \param usePersonalFactor, use personal factor for confirmation
- * \param peigReturnURL, URL for application return address
+ * \param handle aducid handle
+ * \param fromAccount transfer money from this account 
+ * \param toAccount transfer money to this account 
+ * \param amount transfer this amount
+ * \param usePersonalFactor use personal factor for confirmation
+ * \param peigReturnURL URL for application return address
  * \see aducid_verify_transaction
  */
 ADUCID_PUBLIC_FUNC const char *
@@ -1350,10 +1362,12 @@ aducid_free( AducidHandle_t handle );
  *
  * The function returns true when the information transfer is successful.
  *
- *     AducidHandle h;
- *     h = aducid_new("aim.example.com",authId,NULL,bindingId,bindingKey);
- *     aducid_peig_invoke(h);
- *     aducid_free(h);
+ * \code{.c}
+ AducidHandle h;
+ h = aducid_new("aim.example.com",authId,NULL,bindingId,bindingKey);
+ aducid_peig_invoke(h);
+ aducid_free(h);
+ \endcode
  */
 ADUCID_PUBLIC_FUNC bool
 aducid_peig_invoke( AducidHandle_t handle );
@@ -1364,37 +1378,39 @@ aducid_peig_invoke( AducidHandle_t handle );
  * This function is also intended for use with a thick client and is supplementary to aducid_peig_invoke. It
  * is used to obtain the authKey—the resulting secret that the client may use to authenticate themselves.
  *
- *     AducidHandle handle;
- *     char *URL;
- *     // we received authId, bindingId, bindingKey from server
- *     handle = aducid_new( TESTINGAIM, authId, NULL, bindingId, bindingKey );
- *     // let the peig know
- *     if( aducid_peig_invoke(handle) ) {
- *         // peig started (or maybe QR code has been displayed)
- *         if( aducid_wait_for_operation(handle) ) {
- *             // operation finished
- *             aducid_peig_get_authkey(handle);
- *             if( aducid_verify(handle) ) {
- *                 // user authenicated
- *                 printf("ok\n");
- *             } else {
- *                 printf("verification failed\n");
- *             }
- *         } else {
- *             printf("wait failed (network issue?)\n");
- *         }
- *     }
- *     if( ! aducid_close(handle) ) {
- *         printf("close ADUCID failed\n");
- *     };
- *     aducid_free(handle);
+ * \code{.c}
+ AducidHandle handle;
+ char *URL;
+ // we received authId, bindingId, bindingKey from server
+ handle = aducid_new( TESTINGAIM, authId, NULL, bindingId, bindingKey );
+ // let the peig know
+ if( aducid_peig_invoke(handle) ) {
+     // peig started (or maybe QR code has been displayed)
+     if( aducid_wait_for_operation(handle) ) {
+         // operation finished
+         aducid_peig_get_authkey(handle);
+         if( aducid_verify(handle) ) {
+             // user authenicated
+             printf("ok\n");
+         } else {
+             printf("verification failed\n");
+         }
+     } else {
+         printf("wait failed (network issue?)\n");
+     }
+ }
+ if( ! aducid_close(handle) ) {
+     printf("close ADUCID failed\n");
+ };
+ aducid_free(handle);
+ \endcode
  */
 ADUCID_PUBLIC_FUNC const char *
 aducid_peig_get_authkey( AducidHandle_t handle );
 
 /**
  * \brief Returns URL for redirecting into AIMProxy.
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * This function generates a URL which may be used to redirect the user to the AIM-proxy. The resulting
  * string must be cleared by using free().
@@ -1407,7 +1423,7 @@ aducid_get_aimproxy_url( AducidHandle_t handle );
 
 /**
  * \brief Returns URL for URI schema aducid
- * \param handle, aducid handle
+ * \param handle aducid handle
  *
  * This function generates a URL for an ADUCID URI schema. This URL may be used to generate a QR code
  * for use in mobile PEIG authentication. The resulting string must be cleared by using free().
