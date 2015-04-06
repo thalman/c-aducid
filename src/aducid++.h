@@ -19,6 +19,7 @@
 #include <aducid.h>
 #include <string>
 #include <map>
+#include <vector>
 
 /**
  * \defgroup AducidClient ADUCID C++ SDK
@@ -358,24 +359,38 @@ namespace aducid
         string getPSLAttribute( const std::string &attr );
 
         /**
+         * \name EPOReadUserAttrSet
          * \brief Read user attribute set from AIM.
          * \param attrSetName, name of requested set like "default"
          * \return list of attributes in set
          * \see aducid_epo_read_user_attr_set
          *
+         * Attribute set can contain multivalue attribute (for example user can have more
+         * email addresses). If it is your case, use Multivalue variant. If you use
+         * single value method on multivalue attribute, you will just get one selected
+         * value instead of all.
+         *
+         * Remember that writting single value into multivalue attribute will destroy
+         * other values.
          *@{
          */
         map<string,string> EPOReadUserAttrSet(const char *attrSetName);
         map<string,string> EPOReadUserAttrSet(const string &attrSetName);
+        map< string, vector<string> > EPOReadUserMultivalueAttrSet( const char *attrSetName );
+        map< string, vector<string> > EPOReadUserMultivalueAttrSet( const string &attrSetName );
         /**@}*/
         
         /**
+         * \name EPOReadUserAttrSet
          * \brief Writes user attribute/s to AIM.
          * \param attrSetName, name of requested set like "default"
          * \param attributes list of attributes to be written
          * \see aducid_epo_write_user_attr_set
+         *@{
          */
         void EPOWriteUserAttrSet(const string &attrSetName, map<string,string>attributes);
+        void EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes);
+        /**@}*/
 
         /**
          * \brief Method returns userDatabaseIndex.
@@ -393,8 +408,10 @@ namespace aducid
         string AIMProxyURL() const;
         ~AducidClient();
     protected:
-        map<string,string> AducidListToMap(const AducidAttributeList_t list) const;
-        AducidAttributeList_t MapToAducidList(const map<string,string> &attrs) const;
+        map< string, string > AducidListToMap(const AducidAttributeList_t list) const;
+        map< string, vector<string> > AducidListToMultivalueMap(const AducidAttributeList_t list) const;
+        AducidAttributeList_t MapToAducidList(const map< string, string > &attrs) const;
+        AducidAttributeList_t MapToAducidList(const map< string, vector<string> > &attrs) const;
     private:
         AducidHandle_t _handle;
         std::string _AIM;

@@ -325,7 +325,8 @@ AducidClient::getPSLAttributes( AducidAttributeSet_t set, bool useCache ) {
     return result;
 }
 
-string AducidClient::getPSLAttribute( const std::string &attr ) {
+string AducidClient::getPSLAttribute( const std::string &attr )
+{
     map<string,string> attrs = getPSLAttributes(ADUCID_ATTRIBUTE_SET_ALL,true);
     map<string,string>::iterator search = attrs.find(attr);
     if( search != attrs.end() ) {
@@ -346,8 +347,27 @@ AducidClient::EPOReadUserAttrSet( const char *attrSetName ) {
 }
 
 map<string,string>
-AducidClient::EPOReadUserAttrSet( const string &attrSetName ) {
+AducidClient::EPOReadUserAttrSet( const string &attrSetName )
+{
     return EPOReadUserAttrSet( attrSetName.c_str() );
+}
+
+map< string, vector<string> >
+AducidClient::EPOReadUserMultivalueAttrSet( const char *attrSetName )
+{
+    AducidAttributeList_t list;
+    map< string, vector<string> > result;
+
+    list = aducid_epo_read_user_attr_set( _handle, attrSetName );
+    result = AducidListToMultivalueMap( list );
+    aducid_attr_list_free( list );
+    return result;
+}
+
+map< string, vector<string> >
+AducidClient::EPOReadUserMultivalueAttrSet( const string &attrSetName )
+{
+    return EPOReadUserMultivalueAttrSet( attrSetName.c_str() );
 }
 
 void
@@ -358,8 +378,17 @@ AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map<string,string>a
     aducid_attr_list_free(list);
 }
 
+void
+AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes)
+{
+    AducidAttributeList_t list = MapToAducidList(attributes);
+    aducid_epo_write_user_attr_set( _handle, attrSetName.c_str(), list);
+    aducid_attr_list_free(list);
+}
 
-string AducidClient::AIMProxyURL() const {
+
+string AducidClient::AIMProxyURL() const
+{
     string result;
     char *url = aducid_get_aimproxy_url( _handle );
     if(url) {
@@ -369,7 +398,8 @@ string AducidClient::AIMProxyURL() const {
     return result;
 }
 
-map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const {
+map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const
+{
     map<string,string> result;
     if( list == NULL ) return result;
     AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
@@ -380,10 +410,43 @@ map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t lis
     return result;
 }
 
+map< string, vector<string> > AducidClient::AducidListToMultivalueMap(const AducidAttributeList_t list) const
+{
+    map< string, vector<string> > result;
+    map< string, vector<string> >::iterator it;
+    
+    if( list == NULL ) return result;
+    AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
+    while( attr ) {
+        it = result.find( attr->name );
+        if( it != result.end() ) {
+            it->second.push_back( attr->value );
+        } else {
+            vector<string> v;
+            v.push_back( attr->value );
+            result[attr->name] = v;
+        }
+        attr = attr->next;
+    }
+    return result;
+}
+
 AducidAttributeList_t AducidClient::MapToAducidList(const map<string,string> &attrs) const {
     AducidAttributeList_t result = aducid_attr_list_new();
     for( map<string,string>::const_iterator i = attrs.begin() ; i != attrs.end(); ++i ) {
         aducid_attr_list_append( result, i->first.c_str(), i->second.c_str() );
+    }
+    return result;
+}
+
+AducidAttributeList_t AducidClient::MapToAducidList(const map< string, vector<string> > &attrs) const
+{
+    AducidAttributeList_t result = aducid_attr_list_new();
+    for( map< string, vector<string> >::const_iterator namei = attrs.begin() ; namei != attrs.end(); ++namei ) {
+        vector<string> v = namei->second;
+        for( vector<string>::const_iterator valuei = v.begin() ; valuei != v.end(); ++valuei ) {
+            aducid_attr_list_append( result, namei->first.c_str(), (*valuei).c_str() );
+        }
     }
     return result;
 }
