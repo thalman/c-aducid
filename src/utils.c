@@ -20,7 +20,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#if defined(_WIN32) || defined(_WIN32) || defined(__CYGWIN__)
+#if defined _WIN32 || defined _WIN32
 #include<Windows.h>
 #else
 #include <curl/curl.h>
@@ -137,7 +137,7 @@ int url_to_port(const char *URL) {
     }
     return port;
 }
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+#if defined _WIN32 || defined _WIN64
 LPWSTR char_to_wchar(char *ch) {
     LPWSTR result;
     int size;

@@ -18,7 +18,7 @@
 
 #include "definitions.h"
 #include "myxml.h"
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+#if defined _WIN32 || defined _WIN64
 #include<Windows.h>
 #endif
 
@@ -39,7 +39,7 @@ int url_to_port(const char *URL);
 char *xml_decode( const char *text );
 char *xml_encode( const char *text );
 
-#if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
+#if defined _WIN32 || defined _WIN64
 LPWSTR char_to_wchar(char *ch);
 char *wchar_to_char(LPWSTR wch);
 #endif
