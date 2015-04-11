@@ -90,15 +90,17 @@ aducid_aim_request_operation( const char *R4,
     result = NULL;
     if(dom != NULL) {
         result = (AducidAIMRequestOperationResponse_t *)malloc( sizeof(AducidAIMRequestOperationResponse_t) );
-        result->authId = xml_get_single_node_text(dom, "//authId");
-        result->bindingId = xml_get_single_node_text(dom, "//bindingId");
-        result->bindingKey = xml_get_single_node_text(dom, "//bindingKey");
-        p = xml_get_single_node_text(dom, "//statusAIM");
-        result->statusAIM = aducid_aim_status_enum( p );
-        safe_free(p);
-        p = xml_get_single_node_text(dom, "//statusAuth");
-        result->statusAuth = aducid_auth_status_enum( p );
-        safe_free(p);
+                if (result) {
+                        result->authId = xml_get_single_node_text(dom, "//authId");
+                        result->bindingId = xml_get_single_node_text(dom, "//bindingId");
+                        result->bindingKey = xml_get_single_node_text(dom, "//bindingKey");
+                        p = xml_get_single_node_text(dom, "//statusAIM");
+                        result->statusAIM = aducid_aim_status_enum(p);
+                        safe_free(p);
+                        p = xml_get_single_node_text(dom, "//statusAuth");
+                        result->statusAuth = aducid_auth_status_enum(p);
+                        safe_free(p);
+                }
     }
     safe_free(XML);
     safe_free(dom);
@@ -130,47 +132,49 @@ aducid_aim_get_psl_attributes( const char *R4,
     result = NULL;
     if( dom ) {
         result = (AducidAIMGetPSLAttributesResponse_t *)malloc( sizeof(AducidAIMGetPSLAttributesResponse_t) );
-        memset(result,0,sizeof(AducidAIMGetPSLAttributesResponse_t));
+        if (result) {
+            memset(result, 0, sizeof(AducidAIMGetPSLAttributesResponse_t));
 
-        p = xml_get_single_node_text(dom,"//statusAIM");
-        result->statusAIM = aducid_aim_status_enum( p );
-        safe_free(p);
-        
-        p =  xml_get_single_node_text(dom,"//statusAuth");
-        result->statusAuth = aducid_auth_status_enum( p );
-        safe_free(p);
+            p = xml_get_single_node_text(dom, "//statusAIM");
+            result->statusAIM = aducid_aim_status_enum(p);
+            safe_free(p);
 
-        p = xml_get_single_node_text(dom,"//operationName");
-        result->operationName = aducid_operation_enum( p );
-        safe_free(p);
-        
-        result->userDatabaseIndex = xml_get_single_node_text(dom, "//userDatabaseIndex");
-        result->userId = xml_get_single_node_text(dom,"//userId");
-        
-        result->validityCount = xml_get_single_node_text(dom,"//validityCount");
-        result->validityTime = xml_get_single_node_text(dom,"//validityTime");
-        result->expirationCountdownUses = xml_get_single_node_text(dom,"//expirationCountdownUses");
-        result->expirationCountdownTime = xml_get_single_node_text(dom,"//expirationCountdownTime");
-        
-        result->securityProfileName = xml_get_single_node_text(dom,"//securityProfileName");
-        result->authenticationProtocolName = xml_get_single_node_text(dom,"//authenticationProtocolName");
-        result->securityLevel = xml_get_single_node_text(dom,"//securityLevel");
-        
-        result->ILID = xml_get_single_node_text(dom,"//ilid");
-        result->ilTypeName = xml_get_single_node_text(dom,"//ilTypeName");
-        result->ilAlgorithmName = xml_get_single_node_text(dom,"//ilAlgorithmName");
-        result->ilValidityTime = xml_get_single_node_text(dom,"//ilValidityTime");
-        result->ilValidityCount = xml_get_single_node_text(dom,"//ilValidityCount");
+            p = xml_get_single_node_text(dom, "//statusAuth");
+            result->statusAuth = aducid_auth_status_enum(p);
+            safe_free(p);
 
-        result->personalObjectName = xml_get_single_node_text(dom,"//personalObjectName");
-        result->personalObjectTypeName = xml_get_single_node_text(dom,"//personalObjectTypeName");
-        result->personalObjectAlgorithmName = xml_get_single_node_text(dom,"//personalObjectAlgorithmName");
-        result->personalObjectAttributes = parse_personal_object(dom);
+            p = xml_get_single_node_text(dom, "//operationName");
+            result->operationName = aducid_operation_enum(p);
+            safe_free(p);
 
-        result->authKey2 = xml_get_single_node_text(dom,"//authKey2");
-        result->sessionKey = xml_get_single_node_text(dom,"//sessionKey");
-        
-        result->bindingType = xml_get_single_node_text(dom,"//bindingType");
+            result->userDatabaseIndex = xml_get_single_node_text(dom, "//userDatabaseIndex");
+            result->userId = xml_get_single_node_text(dom, "//userId");
+
+            result->validityCount = xml_get_single_node_text(dom, "//validityCount");
+            result->validityTime = xml_get_single_node_text(dom, "//validityTime");
+            result->expirationCountdownUses = xml_get_single_node_text(dom, "//expirationCountdownUses");
+            result->expirationCountdownTime = xml_get_single_node_text(dom, "//expirationCountdownTime");
+
+            result->securityProfileName = xml_get_single_node_text(dom, "//securityProfileName");
+            result->authenticationProtocolName = xml_get_single_node_text(dom, "//authenticationProtocolName");
+            result->securityLevel = xml_get_single_node_text(dom, "//securityLevel");
+
+            result->ILID = xml_get_single_node_text(dom, "//ilid");
+            result->ilTypeName = xml_get_single_node_text(dom, "//ilTypeName");
+            result->ilAlgorithmName = xml_get_single_node_text(dom, "//ilAlgorithmName");
+            result->ilValidityTime = xml_get_single_node_text(dom, "//ilValidityTime");
+            result->ilValidityCount = xml_get_single_node_text(dom, "//ilValidityCount");
+
+            result->personalObjectName = xml_get_single_node_text(dom, "//personalObjectName");
+            result->personalObjectTypeName = xml_get_single_node_text(dom, "//personalObjectTypeName");
+            result->personalObjectAlgorithmName = xml_get_single_node_text(dom, "//personalObjectAlgorithmName");
+            result->personalObjectAttributes = parse_personal_object(dom);
+
+            result->authKey2 = xml_get_single_node_text(dom, "//authKey2");
+            result->sessionKey = xml_get_single_node_text(dom, "//sessionKey");
+
+            result->bindingType = xml_get_single_node_text(dom, "//bindingType");
+        }
     }
     safe_free(XML);
     safe_free(dom);
@@ -213,17 +217,19 @@ aducid_aim_execute_personal_object( const char *R4,
                                                  personalObjectData,ILID,AAIM2,ilData);
     dom = soap_request(R4,"AIMexecutePersonalObject",XML);
     result = (AducidAIMExecutePersonalObjectResponse_t *)malloc( sizeof(AducidAIMExecutePersonalObjectResponse_t) );
-    memset(result,0,sizeof(AducidAIMExecutePersonalObjectResponse_t) );
+    if (result) {
+        memset(result, 0, sizeof(AducidAIMExecutePersonalObjectResponse_t));
 
-    p = xml_get_single_node_text(dom,"//statusAIM");
-    result->statusAIM = aducid_aim_status_enum( p );
-    safe_free(p);
-    
-    p = xml_get_single_node_text(dom,"//statusAuth");
-    result->statusAuth = aducid_auth_status_enum( p );
-    safe_free(p);
-    
-    result->personalObject = parse_personal_object(dom);
+        p = xml_get_single_node_text(dom, "//statusAIM");
+        result->statusAIM = aducid_aim_status_enum(p);
+        safe_free(p);
+
+        p = xml_get_single_node_text(dom, "//statusAuth");
+        result->statusAuth = aducid_auth_status_enum(p);
+        safe_free(p);
+
+        result->personalObject = parse_personal_object(dom);
+    }
     free(XML);
     free(dom);
     return result;

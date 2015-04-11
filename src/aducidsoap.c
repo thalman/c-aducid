@@ -33,12 +33,12 @@
 
 char *create_aducid_soap_xml(const char *operation, const char *xml) {
     static char *xmlHead = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-	"<SOAP-ENV:Envelope SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" "
-	"xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" "
-	"xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\" "
-	"xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-	"xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\">\n"
-	"<SOAP-ENV:Body>\n";
+        "<SOAP-ENV:Envelope SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" "
+        "xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" "
+        "xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\" "
+        "xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+        "xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\">\n"
+        "<SOAP-ENV:Body>\n";
     static char *xmlFoot = "</SOAP-ENV:Body>\n</SOAP-ENV:Envelope>\n";
     
     char *result = NULL;
@@ -62,9 +62,9 @@ char *create_xml_attribute(const char *name, const char *value) {
     
     len = strlen(format) + strlen(name)*2 + strlen(value) - 5; /* - 3 x strlen("%s") + trailing \00 */
     attr = (char *)malloc(len);
-    memset(attr,0,len);
     if(attr == NULL) { return NULL; }
-    snprintf(attr,len,format,name,value,name);
+        memset(attr, 0, len);
+        snprintf(attr, len, format, name, value, name);
     return attr;
 }
 
@@ -85,8 +85,8 @@ char *create_method_params_xml(const AducidAttributeList_t list)
 
 char *create_personal_object_xml(const char *name, const char *typeName, const char *algorithm, AducidAttributeList_t attributes) {
     static const char *poaformat = "<personalObjectAttribute iface:attributeName=\"%s\">\n"
-	"<attributeValue xmlns:s115=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:s116=\"http://www.w3.org/2001/XMLSchema\" s115:type=\"s116:string\">%s</attributeValue>\n"
-	"</personalObjectAttribute>\n";
+        "<attributeValue xmlns:s115=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:s116=\"http://www.w3.org/2001/XMLSchema\" s115:type=\"s116:string\">%s</attributeValue>\n"
+        "</personalObjectAttribute>\n";
     int attrLength;
     char *buffer;
     AducidAttributeListItem_t *attr = NULL;
@@ -144,8 +144,8 @@ char *create_aim_request_operation_xml(
 {
     char *XML = NULL;
     char *XMLC;
-    /**	
-	# wsdl request
+    /** 
+        # wsdl request
         #
         #<xs:element name="operationName" type="nameType" minOccurs="0" maxOccurs="1"/>
         #<xs:element name="AIMname" type="nameType" minOccurs="0" maxOccurs="1"/>
@@ -181,35 +181,35 @@ char *create_aim_request_operation_xml(
 
 
 char *create_aim_get_psl_attributes_xml(const char *authId,
-					const char *bindingId,
-					const char *AIMName,
-					const char *authKey,
-					const char *attributeSetName)
+                                        const char *bindingId,
+                                        const char *AIMName,
+                                        const char *authKey,
+                                        const char *attributeSetName)
 {
     char *XML = NULL;
     char *XMLC;
-    /**	
-	# wsdl request
+    /** 
+        # wsdl request
         #
-	#<xs:element name="authId" type="authidType" minOccurs="0" maxOccurs="1"/>
+        #<xs:element name="authId" type="authidType" minOccurs="0" maxOccurs="1"/>
         #<xs:element name="AIMname" type="nameType" minOccurs="0" maxOccurs="1"/>
         #<xs:element name="authKey" type="authkeyType" minOccurs="0" maxOccurs="1"/>
         #<xs:element name="attributeSetName" type="nameType" minOccurs="0" maxOccurs="1"/>
     */
     if( authId != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("authId",authId),true );
+        XML = dyn_strcat(XML,create_xml_attribute("authId",authId),true );
     }
     if( bindingId != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("bindingId",bindingId),true );
+        XML = dyn_strcat(XML,create_xml_attribute("bindingId",bindingId),true );
     }
     if(AIMName != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("AIMName",AIMName),true);
+        XML = dyn_strcat(XML,create_xml_attribute("AIMName",AIMName),true);
     }
     if( authKey != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("authKey",authKey),true );
+        XML = dyn_strcat(XML,create_xml_attribute("authKey",authKey),true );
     }
     if( attributeSetName != NULL ) {
-	XML = dyn_strcat(XML,create_xml_attribute("attributeSetName",attributeSetName),true );
+        XML = dyn_strcat(XML,create_xml_attribute("attributeSetName",attributeSetName),true );
     }
     XMLC = create_aducid_soap_xml("AIMgetPSLAttributes",XML);
     if( XML ){ free(XML); };
@@ -218,15 +218,15 @@ char *create_aim_get_psl_attributes_xml(const char *authId,
 
 
 char *create_aim_execute_personal_object_xml(const char *authId,
-					     const char *AIMName,
-					     const char *authKey,
-					     const char *methodName,
-					     const char *personalObjectName,
-					     const char *personalObjectAlgorithm,
-					     AducidAttributeList_t personalObjectData,
-					     const char *ILID,
-					     const char *AAIM2,
-					     const char *ilData) {
+                                             const char *AIMName,
+                                             const char *authKey,
+                                             const char *methodName,
+                                             const char *personalObjectName,
+                                             const char *personalObjectAlgorithm,
+                                             AducidAttributeList_t personalObjectData,
+                                             const char *ILID,
+                                             const char *AAIM2,
+                                             const char *ilData) {
     char *XML = NULL;
     char *XMLC;
     /**

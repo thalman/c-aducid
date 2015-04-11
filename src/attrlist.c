@@ -27,7 +27,7 @@ AducidAttributeList_t aducid_attr_list_new() {
 
     list = malloc(sizeof(AducidAttributeListStruct_t));
     if(list) {
-	memset(list,0,sizeof(AducidAttributeListStruct_t));
+        memset(list,0,sizeof(AducidAttributeListStruct_t));
     }
     return list;
 }
@@ -42,8 +42,8 @@ int aducid_attr_list_count( const AducidAttributeList_t handle )
     if(!h) return 0;
     node = h->firstItem;
     while(node) {
-	i++;
-	node = node->next;
+        i++;
+        node = node->next;
     }
     return i;
 }
@@ -57,8 +57,8 @@ AducidAttributeListItem_t *aducid_attr_list_get_item( const AducidAttributeList_
     if(!handle) return NULL;
     node = h->firstItem;
     while( (i != idx) && (node != NULL) ) {
-	i++;
-	node = node->next;
+        i++;
+        node = node->next;
     }
     return node;
 }
@@ -99,13 +99,13 @@ void aducid_attr_list_insert(AducidAttributeList_t handle, const char *name, con
     
     if(!handle) return;
     if(idx == 0) {
-	aducid_attr_list_prepend(handle,name,value);
-	return;
+        aducid_attr_list_prepend(handle,name,value);
+        return;
     }
     node = aducid_attr_list_get_item(handle,idx-1);
     if(!node) {
-	aducid_attr_list_append(handle,name,value);
-	return;
+        aducid_attr_list_append(handle,name,value);
+        return;
     }
     newNode = ll_append_attribute(NULL,name,value);
     newNode->next = node->next;
@@ -132,11 +132,11 @@ char *aducid_attr_list_get_first_by_name( const AducidAttributeList_t handle, co
     node = h->firstItem;
     h->index = 0;
     while(node) {
-	if( strcasecmp(node->name,name) == 0 ) {
-	    return node->value;
-	}
-	h->index++;
-	node = node->next;
+        if( strcasecmp(node->name,name) == 0 ) {
+            return node->value;
+        }
+        h->index++;
+        node = node->next;
     }
     return NULL;
 }
@@ -153,11 +153,11 @@ char *aducid_attr_list_get_next_by_name( const AducidAttributeList_t handle, con
     node = node->next;
     h->index++;
     while(node) {
-	if( strcasecmp(node->name,name) == 0 ) {
-	    return node->value;
-	}
-	h->index++;
-	node = node->next;
+        if( strcasecmp(node->name,name) == 0 ) {
+            return node->value;
+        }
+        h->index++;
+        node = node->next;
     }
     return NULL;
 }
@@ -173,10 +173,10 @@ int aducid_attr_list_get_count_by_name( const AducidAttributeList_t handle, cons
     node = h->firstItem;
 
     while(node) {
-	if( strcasecmp(node->name,name) == 0 ) {
-	    cnt++;
-	}
-	node = node->next;
+        if( strcasecmp(node->name,name) == 0 ) {
+            cnt++;
+        }
+        node = node->next;
     }
     return cnt;
 }
@@ -211,11 +211,11 @@ bool aducid_attr_list_delete_by_name(AducidAttributeList_t handle, const char *n
     if(!handle) return 0;
     cnt = aducid_attr_list_count(handle);
     for(i=cnt-1; i>=0; i--) {
-	node = aducid_attr_list_get_item(handle,i);
-	if(node && (strcasecmp(node->name,name) == 0) ) {
-	    result = true;
-	    aducid_attr_list_delete(handle,i);
-	}
+        node = aducid_attr_list_get_item(handle,i);
+        if(node && (strcasecmp(node->name,name) == 0) ) {
+            result = true;
+            aducid_attr_list_delete(handle,i);
+        }
     }
     return result;
 }
@@ -235,8 +235,8 @@ AducidAttributeListItem_t *ll_append_attribute( AducidAttributeListItem_t *list,
     if( (name == NULL) || (value == NULL) ) { return list; }
     newNode = (AducidAttributeListItem_t *)malloc(sizeof(AducidAttributeListItem_t));
     if(newNode == NULL) {
-	ll_free_attribute_list(list);
-	return NULL;
+        ll_free_attribute_list(list);
+        return NULL;
     }
     memset(newNode,0,sizeof(AducidAttributeListItem_t));
     newNode->name = strdup(name);
@@ -254,8 +254,8 @@ AducidAttributeListItem_t *ll_prepend_attribute(AducidAttributeListItem_t *list,
     if( (name == NULL) || (value == NULL) ) { return list; }
     newNode = (AducidAttributeListItem_t *)malloc(sizeof(AducidAttributeListItem_t));
     if(newNode == NULL) {
-	ll_free_attribute_list(list);
-	return NULL;
+        ll_free_attribute_list(list);
+        return NULL;
     }
     memset(newNode,0,sizeof(AducidAttributeListItem_t));
     newNode->name = strdup(name);
@@ -276,22 +276,22 @@ AducidAttributeListItem_t *ll_free_attribute_node(AducidAttributeListItem_t *lis
     if(!list) { return NULL; }
     node = list;
     if(node == tofree) {
-	/* deleting first item */
-	list = list->next;
-	safe_free(node->name);
-	safe_free(node->value);
-	safe_free(node);
-	return list;
+        /* deleting first item */
+        list = list->next;
+        safe_free(node->name);
+        safe_free(node->value);
+        safe_free(node);
+        return list;
     }
     while( node->next ) {
-	if(node->next == tofree ) {
-	    node->next = tofree->next;
-	    safe_free(tofree->name);
-	    safe_free(tofree->value);
-	    safe_free(tofree);
-	    return list;
-	}
-	node = node->next;
+        if(node->next == tofree ) {
+            node->next = tofree->next;
+            safe_free(tofree->name);
+            safe_free(tofree->value);
+            safe_free(tofree);
+            return list;
+        }
+        node = node->next;
     }
     return list;
 }
@@ -299,11 +299,11 @@ AducidAttributeListItem_t *ll_free_attribute_node(AducidAttributeListItem_t *lis
 void ll_free_attribute_list(AducidAttributeListItem_t *list){
     AducidAttributeListItem_t *node;
     while(list) {
-	node = list;
-	list = list->next;
-	safe_free(node->name);
-	safe_free(node->value);
-	free(node);
+        node = list;
+        list = list->next;
+        safe_free(node->name);
+        safe_free(node->value);
+        free(node);
     }
 }
 
@@ -311,10 +311,10 @@ AducidAttributeListItem_t *ll_get_attribute(AducidAttributeListItem_t *list, con
     AducidAttributeListItem_t *node = list;
 
     while(node) {
-	if( strcmp(node->name,name) == 0 ) {
-	    return node;
-	}
-	node = node->next;
+        if( strcmp(node->name,name) == 0 ) {
+            return node;
+        }
+        node = node->next;
     }
     return NULL;
 }

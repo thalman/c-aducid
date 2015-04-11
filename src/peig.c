@@ -118,10 +118,10 @@ aducid_peig_get_authkey(AducidHandle_t handle)
         }
         if(j) {
             j = &j[9];
-	    /* remove following parameter */
+            /* remove following parameter */
             i = strstr(j,"&");
             if(i) { *i = 0; }
-	    /* remove trailing whitespace */
+            /* remove trailing whitespace */
             i = strstr(j," ");
             if(i) { *i = 0; }
             i = strstr(j,"\r");

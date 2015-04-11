@@ -31,7 +31,7 @@
 char *soap_request_raw(const char *URL, const char *action, const char *request)
 {
     HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL;
-    char *host,*location,*result;
+    char *host,*location,*result,*newmem;
     LPWSTR hostw,locationw;
     int port;
     BOOL  bResults = FALSE;
@@ -87,12 +87,12 @@ char *soap_request_raw(const char *URL, const char *action, const char *request)
                                       headerw,
                                       (ULONG)-1L,
                                       WINHTTP_ADDREQ_FLAG_ADD );
-			char *rq = strdup(request);
+                        char *rq = strdup(request);
             bResults = WinHttpSendRequest( hRequest,
                                            WINHTTP_NO_ADDITIONAL_HEADERS,
                                            0, rq, strlen(rq),
                                            strlen(rq), 0);
-			safe_free(rq);
+                        safe_free(rq);
         }
         /* End the request. */
         if (bResults) {
@@ -109,7 +109,9 @@ char *soap_request_raw(const char *URL, const char *action, const char *request)
                         /* Allocate space for the buffer. */
                         newSize = dwSize + mem->length ;
                         if(mem->data) {
-                            mem->data = (char *)realloc(mem->data, newSize);
+                            newmem = (char *)realloc(mem->data, newSize);
+                                                        if (newmem) { mem->data = newmem; }
+                                                        else { safe_free(mem->data); mem->data = NULL; }
                         } else {
                             mem->data = (char *)malloc(newSize);
                         }

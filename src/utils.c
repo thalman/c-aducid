@@ -73,8 +73,10 @@ char *url_to_host_and_port(const char *URL) {
         if(e) {
             len = e - b;
             result = (char *)malloc(len+1);
-            memset(result,0,len+1);
-            strncpy(result,b,len);
+                        if (result) {
+                                memset(result, 0, len + 1);
+                                strncpy(result, b, len);
+                        }
             return result;
         } else {
             /* whole string */
@@ -229,6 +231,7 @@ char *url_encode(const char *decoded) {
     unsigned int i,j;
 
     result = (char *)malloc( strlen(decoded) * 3 + 1 ); /* max size if every character escaped */
+        if (!result) return NULL;
     memset(result,0, strlen(decoded) * 3 + 1 );
     if(result) {
         i = 0;
