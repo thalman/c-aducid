@@ -12,68 +12,67 @@ namespace aducid
     
     class AducidClient {
     public:
-        AducidClient( const string &AIM );
-        AducidClient( const char *AIM );
+		ADUCID_PUBLIC_FUNC AducidClient(const string &AIM);
+		ADUCID_PUBLIC_FUNC AducidClient(const char *AIM);
 
-        string authId() const;
-        void authId( const string &authId );
-        void authId( const char *authId );
+		ADUCID_PUBLIC_FUNC string authId() const;
+		ADUCID_PUBLIC_FUNC void authId(const string &authId);
+		ADUCID_PUBLIC_FUNC void authId(const char *authId);
 
-        string authKey() const;
-        void authKey( const string &authKey );
-        void authKey( const char *authKey );
+		ADUCID_PUBLIC_FUNC string authKey() const;
+		ADUCID_PUBLIC_FUNC void authKey(const string &authKey);
+		ADUCID_PUBLIC_FUNC void authKey(const char *authKey);
         
-        string bindingId() const;
-        void bindingId( const string &authId );
-        void bindingId( const char *authId );
+		ADUCID_PUBLIC_FUNC string bindingId() const;
+		ADUCID_PUBLIC_FUNC void bindingId(const string &authId);
+		ADUCID_PUBLIC_FUNC void bindingId(const char *authId);
 
-        string bindingKey() const;
-        void bindingKey( const string &authKey );
-        void bindingKey( const char *authKey );
+		ADUCID_PUBLIC_FUNC string bindingKey() const;
+		ADUCID_PUBLIC_FUNC void bindingKey(const string &authKey);
+		ADUCID_PUBLIC_FUNC void bindingKey(const char *authKey);
         
-        bool open( const char *peigReturnURL );
-        bool open( const string &peigReturnURL );
-        bool init( const char *peigReturnURL );
-        bool init( const string &peigReturnURL );
-        bool change( const char *peigReturnURL );
-        bool change( const string &peigReturnURL );
-        bool rechange( const char *peigReturnURL );
-        bool rechange( const string &peigReturnURL );
-        bool reinit( const char *peigReturnURL );
-        bool reinit( const string &peigReturnURL );
-        bool deleteIdentity( const char *peigReturnURL );
-        bool deleteIdentity( const string &peigReturnURL );
+		ADUCID_PUBLIC_FUNC bool open(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool open(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool init(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool init(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool change(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool change(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool rechange(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool rechange(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool reinit(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool reinit(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool deleteIdentity(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool deleteIdentity(const string &peigReturnURL);
 
-        bool initPersonalFactor( const char *peigReturnURL );
-        bool initPersonalFactor( const string &peigReturnURL );
-        bool changePersonalFactor( const char *peigReturnURL );
-        bool changePersonalFactor( const string &peigReturnURL );
-        bool deletePersonalFactor( const char *peigReturnURL );
-        bool deletePersonalFactor( const string &peigReturnURL );
-        bool verifyPersonalFactor( const char *peigReturnURL );
-        bool verifyPersonalFactor( const string &peigReturnURL );
+		ADUCID_PUBLIC_FUNC bool initPersonalFactor(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool initPersonalFactor(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool changePersonalFactor(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool changePersonalFactor(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool deletePersonalFactor(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool deletePersonalFactor(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool verifyPersonalFactor(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool verifyPersonalFactor(const string &peigReturnURL);
 
-        bool createRoomByStory( const char *peigReturnURL );
-        bool createRoomByStory( const string &peigReturnURL );
-        bool enterRoomByStory( const char *peigReturnURL );
-        bool enterRoomByStory( const string &peigReturnURL );
-        bool createRoomByName( const char *name, const char *peigReturnURL );
-        bool createRoomByName( const string &name, const string &peigReturnURL );
-        bool enterRoomByName( const char *name, const char *peigReturnURL );
-        bool enterRoomByName( const string &name, const string &peigReturnURL );
+		ADUCID_PUBLIC_FUNC bool createRoomByStory(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool createRoomByStory(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool enterRoomByStory(const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool enterRoomByStory(const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool createRoomByName(const char *name, const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool createRoomByName(const string &name, const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool enterRoomByName(const char *name, const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool enterRoomByName(const string &name, const string &peigReturnURL);
 
-        bool linkLocal( AducidPeigLocalLink_t linkType, const char *peigReturnURL );
-        bool linkLocal( AducidPeigLocalLink_t linkType, const string &peigReturnURL );
-        bool initPayment( bool usePersonalFactor, const char *peigReturnURL );
-        bool initPayment( bool usePersonalFactor, const string &peigReturnURL );
-        bool confirmTextTransaction( const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL );
-        bool confirmTextTransaction( const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL );
-        bool confirmMoneyTransaction( const char *fromAccount, const char *toAccount, const char *amount, bool usePersonalFactor, const char *peigReturnURL );
-        bool confirmMoneyTransaction( const string &fromAccount, const string &toAccount, const string &amount, bool usePersonalFactor, const string &peigReturnURL );
+		ADUCID_PUBLIC_FUNC bool linkLocal(AducidPeigLocalLink_t linkType, const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool linkLocal(AducidPeigLocalLink_t linkType, const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool initPayment(bool usePersonalFactor, const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool initPayment(bool usePersonalFactor, const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool confirmTextTransaction(const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool confirmTextTransaction(const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool confirmMoneyTransaction(const char *fromAccount, const char *toAccount, const char *amount, bool usePersonalFactor, const char *peigReturnURL);
+		ADUCID_PUBLIC_FUNC bool confirmMoneyTransaction(const string &fromAccount, const string &toAccount, const string &amount, bool usePersonalFactor, const string &peigReturnURL);
         
-        bool close();
+		ADUCID_PUBLIC_FUNC bool close();
 
-        bool verify();
         bool verifyTransaction();
         bool verifyTransaction( map<string,string> &params );
         map<string,string> getPSLAtributes( AducidAttributeSet_t set, bool useCache );
