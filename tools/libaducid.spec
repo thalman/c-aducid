@@ -89,11 +89,15 @@ for dir in doc/demos/* ; do
 done
 cp -r doc/demos ${RPM_BUILD_ROOT}%{docdir}/
 
+# remove unwanted files
+find ${RPM_BUILD_ROOT}%{_libdir} -name '*.a' -exec /bin/rm {} \;
+find ${RPM_BUILD_ROOT}%{_libdir} -name '*.la' -exec /bin/rm {} \;
+find ${RPM_BUILD_ROOT}%{_libdir} -name '*.la?' -exec /bin/rm {} \;
+
 %clean
 /bin/rm -rf $RPM_BUILD_ROOT
 
 %files
-%exclude %{_libdir}/*.la*
 %{_libdir}/libaducid.so.%{version}
 %{_libdir}/libaducidpp.so.%{version}
 
