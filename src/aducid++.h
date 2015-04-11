@@ -46,16 +46,16 @@ namespace aducid
          * Constructor creates new AducidClient object. The parameter is
          * address of AIM server. See \see aducid_new for possible formats.
          */
-		ADUCID_PUBLIC_FUNC AducidClient(const string &AIM);
-		ADUCID_PUBLIC_FUNC AducidClient(const char *AIM);
+        ADUCID_PUBLIC_FUNC AducidClient(const string &AIM);
+        ADUCID_PUBLIC_FUNC AducidClient(const char *AIM);
 
         /**
          * \brief Get or set authId.
          *@{
          */
-		ADUCID_PUBLIC_FUNC string authId() const;
-		ADUCID_PUBLIC_FUNC void authId(const string &authId);
-		ADUCID_PUBLIC_FUNC void authId(const char *authId);
+        ADUCID_PUBLIC_FUNC string authId() const;
+        ADUCID_PUBLIC_FUNC void authId(const string &authId);
+        ADUCID_PUBLIC_FUNC void authId(const char *authId);
         /**@}*/
         
         /**
@@ -63,9 +63,9 @@ namespace aducid
          * \brief Get or set authKey.
          *@{
          */
-		ADUCID_PUBLIC_FUNC string authKey() const;
-		ADUCID_PUBLIC_FUNC void authKey(const string &authKey);
-		ADUCID_PUBLIC_FUNC void authKey(const char *authKey);
+        ADUCID_PUBLIC_FUNC string authKey() const;
+        ADUCID_PUBLIC_FUNC void authKey(const string &authKey);
+        ADUCID_PUBLIC_FUNC void authKey(const char *authKey);
         /**@}*/
         
         /**
@@ -73,9 +73,9 @@ namespace aducid
          * \brief Get or set bindingId.
          *@{
          */
-		ADUCID_PUBLIC_FUNC string bindingId() const;
-		ADUCID_PUBLIC_FUNC void bindingId(const string &bindingId);
-		ADUCID_PUBLIC_FUNC void bindingId(const char *bindingId);
+        ADUCID_PUBLIC_FUNC string bindingId() const;
+        ADUCID_PUBLIC_FUNC void bindingId(const string &bindingId);
+        ADUCID_PUBLIC_FUNC void bindingId(const char *bindingId);
         /**@}*/
         
         /**
@@ -83,9 +83,9 @@ namespace aducid
          * \brief Get or set bindingKey.
          *@{
          */
-		ADUCID_PUBLIC_FUNC string bindingKey() const;
-		ADUCID_PUBLIC_FUNC void bindingKey(const string &authKey);
-		ADUCID_PUBLIC_FUNC void bindingKey(const char *authKey);
+        ADUCID_PUBLIC_FUNC string bindingKey() const;
+        ADUCID_PUBLIC_FUNC void bindingKey(const string &authKey);
+        ADUCID_PUBLIC_FUNC void bindingKey(const char *authKey);
         /**@}*/
         
         /**
@@ -95,8 +95,8 @@ namespace aducid
          * \see aducid_open
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool open(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool open(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool open(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool open(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -106,8 +106,8 @@ namespace aducid
          * \see aducid_init
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool init(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool init(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool init(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool init(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -117,8 +117,8 @@ namespace aducid
          * \see aducid_change
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool change(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool change(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool change(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool change(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -128,8 +128,8 @@ namespace aducid
          * \see aducid_change
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool rechange(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool rechange(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool rechange(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool rechange(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -139,8 +139,8 @@ namespace aducid
          * \see aducid_reinit
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool reinit(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool reinit(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool reinit(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool reinit(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -150,8 +150,8 @@ namespace aducid
          * \see aducid_delete
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool deleteIdentity(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool deleteIdentity(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool deleteIdentity(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool deleteIdentity(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -161,8 +161,8 @@ namespace aducid
          * \see aducid_init_personal_factor
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool initPersonalFactor(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool initPersonalFactor(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool initPersonalFactor(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool initPersonalFactor(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -172,8 +172,8 @@ namespace aducid
          * \see aducid_change_personal_factor
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool changePersonalFactor(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool changePersonalFactor(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool changePersonalFactor(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool changePersonalFactor(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -183,8 +183,8 @@ namespace aducid
          * \see aducid_delete_personal_factor
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool deletePersonalFactor(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool deletePersonalFactor(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool deletePersonalFactor(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool deletePersonalFactor(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -194,8 +194,8 @@ namespace aducid
          * \see aducid_verify_personal_factor
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool verifyPersonalFactor(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool verifyPersonalFactor(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool verifyPersonalFactor(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool verifyPersonalFactor(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -205,8 +205,8 @@ namespace aducid
          * \see aducid_create_room_by_story
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool createRoomByStory(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool createRoomByStory(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool createRoomByStory(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool createRoomByStory(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -217,8 +217,8 @@ namespace aducid
          * \see createRoomByStory
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool enterRoomByStory(const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool enterRoomByStory(const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool enterRoomByStory(const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool enterRoomByStory(const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -229,8 +229,8 @@ namespace aducid
          * \see aducid_create_room_by_story
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool createRoomByName(const char *name, const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool createRoomByName(const string &name, const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool createRoomByName(const char *name, const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool createRoomByName(const string &name, const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -242,8 +242,8 @@ namespace aducid
          * \see createRoomByName
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool enterRoomByName(const char *name, const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool enterRoomByName(const string &name, const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool enterRoomByName(const char *name, const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool enterRoomByName(const string &name, const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -255,8 +255,8 @@ namespace aducid
          * \see aducid_peig_local_link
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool linkLocal(AducidPeigLocalLink_t linkType, const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool linkLocal(AducidPeigLocalLink_t linkType, const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool linkLocal(AducidPeigLocalLink_t linkType, const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool linkLocal(AducidPeigLocalLink_t linkType, const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -268,8 +268,8 @@ namespace aducid
          * \see aducid_init_payment
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool initPayment(bool usePersonalFactor, const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool initPayment(bool usePersonalFactor, const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool initPayment(bool usePersonalFactor, const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool initPayment(bool usePersonalFactor, const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -282,8 +282,8 @@ namespace aducid
          * \see aducid_confirm_text_transaction
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool confirmTextTransaction(const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool confirmTextTransaction(const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool confirmTextTransaction(const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool confirmTextTransaction(const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -298,8 +298,8 @@ namespace aducid
          * \see aducid_confirm_money_transaction
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool confirmMoneyTransaction(const char *fromAccount, const char *toAccount, const char *amount, bool usePersonalFactor, const char *peigReturnURL);
-		ADUCID_PUBLIC_FUNC bool confirmMoneyTransaction(const string &fromAccount, const string &toAccount, const string &amount, bool usePersonalFactor, const string &peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool confirmMoneyTransaction(const char *fromAccount, const char *toAccount, const char *amount, bool usePersonalFactor, const char *peigReturnURL);
+        ADUCID_PUBLIC_FUNC bool confirmMoneyTransaction(const string &fromAccount, const string &toAccount, const string &amount, bool usePersonalFactor, const string &peigReturnURL);
         /**@}*/
         
         /**
@@ -308,7 +308,7 @@ namespace aducid
          *
          * Closes aducid session. You can freely use AducidClient object for another operation.
          */        
-		ADUCID_PUBLIC_FUNC bool close();
+        ADUCID_PUBLIC_FUNC bool close();
         
         /**
          * \brief Verifies result of ADUCID operation.
@@ -318,7 +318,7 @@ namespace aducid
          * authKey, bindingId and bindingKey must be set before calling this method
          * (at least some of them, depends on binding type).
          */        
-		ADUCID_PUBLIC_FUNC bool verify();
+        ADUCID_PUBLIC_FUNC bool verify();
 
         /**
          * \name verifyTransaction
@@ -330,8 +330,8 @@ namespace aducid
          * like the message which has been seen by user, digital signature and more.
          *@{
          */
-		ADUCID_PUBLIC_FUNC bool verifyTransaction();
-		ADUCID_PUBLIC_FUNC bool verifyTransaction(map<string, string> &transactionOutput);
+        ADUCID_PUBLIC_FUNC bool verifyTransaction();
+        ADUCID_PUBLIC_FUNC bool verifyTransaction(map<string, string> &transactionOutput);
         /**@}*/
 
         /**
@@ -344,7 +344,7 @@ namespace aducid
          * Parameter params is output parametr. It is filled with transaction details
          * like the message which has been seen by user, digital signature and more.
          */
-		ADUCID_PUBLIC_FUNC map<string, string> getPSLAttributes(AducidAttributeSet_t set, bool useCache);
+        ADUCID_PUBLIC_FUNC map<string, string> getPSLAttributes(AducidAttributeSet_t set, bool useCache);
 
         /**
          * \param attr one atribute from PSL set ADUCID_ATTRIBUTE_SET_ALL
@@ -356,7 +356,7 @@ namespace aducid
          * efective if You need more attributes from PSL set. In such case
          * consider use of getPSLAttributes(ADUCID_ATTRIBUTE_SET_ALL).
          */
-		ADUCID_PUBLIC_FUNC string getPSLAttribute(const std::string &attr);
+        ADUCID_PUBLIC_FUNC string getPSLAttribute(const std::string &attr);
 
         /**
          * \name EPOReadUserAttrSet
@@ -374,10 +374,10 @@ namespace aducid
          * other values.
          *@{
          */
-		ADUCID_PUBLIC_FUNC map<string, string> EPOReadUserAttrSet(const char *attrSetName);
-		ADUCID_PUBLIC_FUNC map<string, string> EPOReadUserAttrSet(const string &attrSetName);
-		ADUCID_PUBLIC_FUNC map< string, vector<string> > EPOReadUserMultivalueAttrSet(const char *attrSetName);
-		ADUCID_PUBLIC_FUNC map< string, vector<string> > EPOReadUserMultivalueAttrSet(const string &attrSetName);
+        ADUCID_PUBLIC_FUNC map<string, string> EPOReadUserAttrSet(const char *attrSetName);
+        ADUCID_PUBLIC_FUNC map<string, string> EPOReadUserAttrSet(const string &attrSetName);
+        ADUCID_PUBLIC_FUNC map< string, vector<string> > EPOReadUserMultivalueAttrSet(const char *attrSetName);
+        ADUCID_PUBLIC_FUNC map< string, vector<string> > EPOReadUserMultivalueAttrSet(const string &attrSetName);
         /**@}*/
         
         /**
@@ -388,8 +388,8 @@ namespace aducid
          * \see aducid_epo_write_user_attr_set
          *@{
          */
-		ADUCID_PUBLIC_FUNC void EPOWriteUserAttrSet(const string &attrSetName, map<string, string>attributes);
-		ADUCID_PUBLIC_FUNC void EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes);
+        ADUCID_PUBLIC_FUNC void EPOWriteUserAttrSet(const string &attrSetName, map<string, string>attributes);
+        ADUCID_PUBLIC_FUNC void EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes);
         /**@}*/
 
         /**
@@ -397,7 +397,7 @@ namespace aducid
          * \param handle aducid handle
          * \return user identifier
          */
-		ADUCID_PUBLIC_FUNC string userDatabaseIndex();
+        ADUCID_PUBLIC_FUNC string userDatabaseIndex();
 
         /**
          * \brief Returns URL for redirecting into AIMProxy.
@@ -405,13 +405,13 @@ namespace aducid
          * This function generates a URL which may be used to redirect the user
          * to the AIM-proxy.
          */
-		ADUCID_PUBLIC_FUNC string AIMProxyURL() const;
-		ADUCID_PUBLIC_FUNC ~AducidClient();
+        ADUCID_PUBLIC_FUNC string AIMProxyURL() const;
+        ADUCID_PUBLIC_FUNC ~AducidClient();
     protected:
-		ADUCID_PUBLIC_FUNC map< string, string > AducidListToMap(const AducidAttributeList_t list) const;
-		ADUCID_PUBLIC_FUNC map< string, vector<string> > AducidListToMultivalueMap(const AducidAttributeList_t list) const;
-		ADUCID_PUBLIC_FUNC AducidAttributeList_t MapToAducidList(const map< string, string > &attrs) const;
-		ADUCID_PUBLIC_FUNC AducidAttributeList_t MapToAducidList(const map< string, vector<string> > &attrs) const;
+        ADUCID_PUBLIC_FUNC map< string, string > AducidListToMap(const AducidAttributeList_t list) const;
+        ADUCID_PUBLIC_FUNC map< string, vector<string> > AducidListToMultivalueMap(const AducidAttributeList_t list) const;
+        ADUCID_PUBLIC_FUNC AducidAttributeList_t MapToAducidList(const map< string, string > &attrs) const;
+        ADUCID_PUBLIC_FUNC AducidAttributeList_t MapToAducidList(const map< string, vector<string> > &attrs) const;
     private:
         AducidHandle_t _handle;
         std::string _AIM;

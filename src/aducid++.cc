@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#include "definitions.h"
 #include "aducid++.h"
 #include "attrlist.h"
 
@@ -183,60 +184,66 @@ bool AducidClient::createRoomByStory( const string &peigReturnURL )
     return createRoomByStory( peigReturnURL.c_str() );
 }
 
-bool AducidClient::enterRoomByStory( const char *peigReturnURL )
+bool AducidClient::enterRoomByStory(const char *peigReturnURL)
 {
     return aducid_enter_room_by_story( _handle, peigReturnURL ) != NULL;
 }
-bool AducidClient::enterRoomByStory( const string &peigReturnURL )
+
+bool AducidClient::enterRoomByStory(const string &peigReturnURL)
 {
     return enterRoomByStory( peigReturnURL.c_str() );
 }
 
-bool AducidClient::createRoomByName( const char *name, const char *peigReturnURL )
+bool AducidClient::createRoomByName(const char *name, const char *peigReturnURL)
 {
     return aducid_create_room_by_name( _handle, name, peigReturnURL ) != NULL;
 }
-bool AducidClient::createRoomByName( const string &name, const string &peigReturnURL )
+
+bool AducidClient::createRoomByName(const string &name, const string &peigReturnURL)
 {
     return createRoomByName( name.c_str(), peigReturnURL.c_str() );
 }
 
-bool AducidClient::enterRoomByName( const char *name, const char *peigReturnURL )
+bool AducidClient::enterRoomByName(const char *name, const char *peigReturnURL)
 {
     return ( aducid_enter_room_by_name( _handle, name, peigReturnURL ) != NULL );
 }
-bool AducidClient::enterRoomByName( const string &name, const string &peigReturnURL )
+
+bool AducidClient::enterRoomByName(const string &name, const string &peigReturnURL)
 {
     return enterRoomByName( name.c_str(), peigReturnURL.c_str() );
 }
 
-bool AducidClient::linkLocal( AducidPeigLocalLink_t linkType, const char *peigReturnURL )
+bool AducidClient::linkLocal(AducidPeigLocalLink_t linkType, const char *peigReturnURL)
 {
     return ( aducid_peig_local_link( _handle, linkType, peigReturnURL ) != NULL );
 }
-bool AducidClient::linkLocal( AducidPeigLocalLink_t linkType, const string &peigReturnURL )
+
+bool AducidClient::linkLocal(AducidPeigLocalLink_t linkType, const string &peigReturnURL)
 {
     return linkLocal( linkType, peigReturnURL.c_str() );
 }
 
-bool AducidClient::initPayment( bool usePersonalFactor, const char *peigReturnURL )
+bool AducidClient::initPayment(bool usePersonalFactor, const char *peigReturnURL)
 {
     return ( aducid_init_payment( _handle, usePersonalFactor, peigReturnURL ) != NULL );
 }
-bool AducidClient::initPayment( bool usePersonalFactor, const string &peigReturnURL ) {
+
+bool AducidClient::initPayment(bool usePersonalFactor, const string &peigReturnURL) {
     return initPayment( usePersonalFactor, peigReturnURL.c_str() );
 }
 
-bool AducidClient::confirmTextTransaction( const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL )
+bool AducidClient::confirmTextTransaction(const char *textUTF8, bool usePersonalFactor, const char *peigReturnURL)
 {
     return aducid_confirm_text_transaction( _handle, textUTF8, usePersonalFactor, peigReturnURL ) != NULL;
 }
-bool AducidClient::confirmTextTransaction( const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL )
+
+bool AducidClient::confirmTextTransaction(const string &textUTF8, bool usePersonalFactor, const string &peigReturnURL)
 {
     return confirmTextTransaction( textUTF8.c_str(), usePersonalFactor, peigReturnURL.c_str() );
 }
 
-bool AducidClient::confirmMoneyTransaction( const char *fromAccount,
+bool AducidClient::confirmMoneyTransaction(const char *fromAccount,
                                             const char *toAccount,
                                             const char *amount,
                                             bool usePersonalFactor,
@@ -250,7 +257,8 @@ bool AducidClient::confirmMoneyTransaction( const char *fromAccount,
         usePersonalFactor,
         peigReturnURL ) != NULL ;
 }
-bool AducidClient::confirmMoneyTransaction( const string &fromAccount,
+
+bool AducidClient::confirmMoneyTransaction(const string &fromAccount,
                                             const string &toAccount,
                                             const string &amount,
                                             bool usePersonalFactor,
@@ -276,7 +284,7 @@ bool AducidClient::verifyTransaction() {
     return aducid_verify_transaction( _handle, NULL );
 }
 
-bool AducidClient::verifyTransaction( map<string,string> &transactionOutput ) {
+bool AducidClient::verifyTransaction(map<string, string> &transactionOutput) {
     AducidAttributeList_t list = NULL;
     bool result = aducid_verify_transaction( _handle, &list );
     if( list == NULL ) return result;
@@ -296,8 +304,7 @@ string AducidClient::userDatabaseIndex() {
     return result;
 }
 
-map<string,string>
-AducidClient::getPSLAttributes( AducidAttributeSet_t set, bool useCache ) {
+map<string, string> AducidClient::getPSLAttributes( AducidAttributeSet_t set, bool useCache ) {
     map<string,string> result;
     const AducidAIMGetPSLAttributesResponse_t *response =
         aducid_get_psl_attributes( _handle, set, useCache );
@@ -325,7 +332,7 @@ AducidClient::getPSLAttributes( AducidAttributeSet_t set, bool useCache ) {
     return result;
 }
 
-string AducidClient::getPSLAttribute( const std::string &attr )
+string AducidClient::getPSLAttribute(const std::string &attr)
 {
     map<string,string> attrs = getPSLAttributes(ADUCID_ATTRIBUTE_SET_ALL,true);
     map<string,string>::iterator search = attrs.find(attr);
@@ -335,8 +342,8 @@ string AducidClient::getPSLAttribute( const std::string &attr )
     return "";
 }
 
-map<string,string>
-AducidClient::EPOReadUserAttrSet( const char *attrSetName ) {
+map<string, string> AducidClient::EPOReadUserAttrSet( const char *attrSetName )
+{
     AducidAttributeList_t list;
     map<string,string> result;
 
@@ -346,14 +353,12 @@ AducidClient::EPOReadUserAttrSet( const char *attrSetName ) {
     return result;
 }
 
-map<string,string>
-AducidClient::EPOReadUserAttrSet( const string &attrSetName )
+map<string, string> AducidClient::EPOReadUserAttrSet( const string &attrSetName )
 {
     return EPOReadUserAttrSet( attrSetName.c_str() );
 }
 
-map< string, vector<string> >
-AducidClient::EPOReadUserMultivalueAttrSet( const char *attrSetName )
+map< string, vector<string> > AducidClient::EPOReadUserMultivalueAttrSet( const char *attrSetName )
 {
     AducidAttributeList_t list;
     map< string, vector<string> > result;
@@ -364,22 +369,19 @@ AducidClient::EPOReadUserMultivalueAttrSet( const char *attrSetName )
     return result;
 }
 
-map< string, vector<string> >
-AducidClient::EPOReadUserMultivalueAttrSet( const string &attrSetName )
+map< string, vector<string> > AducidClient::EPOReadUserMultivalueAttrSet( const string &attrSetName )
 {
     return EPOReadUserMultivalueAttrSet( attrSetName.c_str() );
 }
 
-void
-AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map<string,string>attributes)
+void AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map<string,string>attributes)
 {
     AducidAttributeList_t list = MapToAducidList(attributes);
     aducid_epo_write_user_attr_set( _handle, attrSetName.c_str(), list);
     aducid_attr_list_free(list);
 }
 
-void
-AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes)
+void AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes)
 {
     AducidAttributeList_t list = MapToAducidList(attributes);
     aducid_epo_write_user_attr_set( _handle, attrSetName.c_str(), list);
@@ -398,7 +400,7 @@ string AducidClient::AIMProxyURL() const
     return result;
 }
 
-map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const
+map<string, string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const
 {
     map<string,string> result;
     if( list == NULL ) return result;
@@ -431,7 +433,7 @@ map< string, vector<string> > AducidClient::AducidListToMultivalueMap(const Aduc
     return result;
 }
 
-AducidAttributeList_t AducidClient::MapToAducidList(const map<string,string> &attrs) const {
+AducidAttributeList_t AducidClient::MapToAducidList(const map<string, string> &attrs) const {
     AducidAttributeList_t result = aducid_attr_list_new();
     for( map<string,string>::const_iterator i = attrs.begin() ; i != attrs.end(); ++i ) {
         aducid_attr_list_append( result, i->first.c_str(), i->second.c_str() );
