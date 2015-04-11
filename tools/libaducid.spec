@@ -11,6 +11,9 @@ BuildRoot: /var/tmp/%{name}-root
 %{?el7:Requires: curl}
 BuildRequires: make
 BuildRequires: gcc
+BuildRequires: gcc-c++
+BuildRequires: automake
+BuildRequires: libtool
 %{?el5:BuildRequires: curl-devel}
 %{?el6:BuildRequires: libcurl-devel}
 %{?el7:BuildRequires: libcurl-devel}
@@ -36,19 +39,13 @@ ADUCID client developement files
 %setup -n c-aducid
 
 %build
-# VER1 = 3.0
-# VER2 = 0
 VER1=`echo %{version} | cut -d . -f 1,2`
 VER2=`echo %{version} | cut -d . -f 3`
 VER3=%{version}
 
-#sed -r --in-place \
-#    -e "s/^MINORVERSION=.+$/MINORVERSION=$VER2/" \
-#    -e "s/MAJORVERSION=.+$/MAJORVERSION=$VER1/" \
-#    c/Makefile
+autoreconf -vfi
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make
-
 
 %install
 VER1=`echo %{version} | cut -d . -f 1,2`
@@ -60,35 +57,43 @@ install -d $RPM_BUILD_ROOT
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # header files
-install -d ${RPM_BUILD_ROOT}/%{_includedir}
+install -d ${RPM_BUILD_ROOT}%{_includedir}
 install -m 644 src/aducid.h ${RPM_BUILD_ROOT}/%{_includedir}
 install -m 644 src/aducid++.h ${RPM_BUILD_ROOT}/%{_includedir}
 
 # pkg-config
-install -d ${RPM_BUILD_ROOT}/%{pkgconfigdir}
+install -d ${RPM_BUILD_ROOT}%{pkgconfigdir}
 sed -r < tools/libaducid.pc \
     -e "s#^libdir=.+\$#libdir=%{_libdir}#" \
     -e "s#^includedir=.+\$#includedir=%{_includedir}#" \
-    > $RPM_BUILD_ROOT/%{pkgconfigdir}/libaducid.pc
+    > ${RPM_BUILD_ROOT}%{pkgconfigdir}/libaducid.pc
 
 sed -r < tools/libaducid.pc \
     -e "s#^libdir=.+\$#libdir=%{_libdir}#" \
     -e "s#^includedir=.+\$#includedir=%{_includedir}#" \
     -e "s#-laducid#-laducidpp#" \
-    > $RPM_BUILD_ROOT/%{pkgconfigdir}/libaducidpp.pc
+    > ${RPM_BUILD_ROOT}%{pkgconfigdir}/libaducidpp.pc
+
+# documentation
+install -d ${RPM_BUILD_ROOT}%{docdir}
+
+DOXYGEN=$(which doxygen 2>/dev/null || true)
+if [ "$DOXYGEN" != "" ] ; then
+    $DOXYGEN Doxyfile
+    cp -r doc/html ${RPM_BUILD_ROOT}%{docdir}/
+fi
 
 # examples
-install -d $RPM_BUILD_ROOT/%{docdir}
 for dir in doc/demos/* ; do
     make -C $dir clean
 done
-cp -r doc/demos $RPM_BUILD_ROOT/%{docdir}/
+cp -r doc/demos ${RPM_BUILD_ROOT}%{docdir}/
 
 %clean
 /bin/rm -rf $RPM_BUILD_ROOT
 
 %files
-%exclude %{_libdir}/*.la
+%exclude %{_libdir}/*.la*
 %{_libdir}/libaducid.so.%{version}
 %{_libdir}/libaducidpp.so.%{version}
 

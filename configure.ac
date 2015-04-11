@@ -1,5 +1,6 @@
 AC_INIT([libaducid], [3.0.0])
 AM_INIT_AUTOMAKE([foreign])
+LT_INIT
 
 AC_ENABLE_SHARED
 AC_DISABLE_STATIC

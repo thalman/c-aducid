@@ -1,3 +1,18 @@
+/* Copyright(c) 2015 ANECT a.s.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "aducid++.h"
 #include "attrlist.h"
 
@@ -250,13 +265,7 @@ bool AducidClient::confirmMoneyTransaction( const string &fromAccount,
 }
 
 bool AducidClient::close() {
-    return
-        aducid_aim_close_session(
-            _handle->R4,
-            _handle->authId,
-            _handle->AIMName,
-            _handle->authKey
-        );
+    return aducid_close( _handle );
 }
 
 bool AducidClient::verify() {
@@ -267,13 +276,13 @@ bool AducidClient::verifyTransaction() {
     return aducid_verify_transaction( _handle, NULL );
 }
 
-bool AducidClient::verifyTransaction( map<string,string> &params ) {
+bool AducidClient::verifyTransaction( map<string,string> &transactionOutput ) {
     AducidAttributeList_t list = NULL;
     bool result = aducid_verify_transaction( _handle, &list );
     if( list == NULL ) return result;
     AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
     while( attr ) {
-        params[attr->name] = attr->value;
+        transactionOutput[attr->name] = attr->value;
         attr = attr->next;
     }
     aducid_attr_list_free( list );
@@ -288,7 +297,7 @@ string AducidClient::userDatabaseIndex() {
 }
 
 map<string,string>
-AducidClient::getPSLAtributes( AducidAttributeSet_t set, bool useCache ) {
+AducidClient::getPSLAttributes( AducidAttributeSet_t set, bool useCache ) {
     map<string,string> result;
     const AducidAIMGetPSLAttributesResponse_t *response =
         aducid_get_psl_attributes( _handle, set, useCache );
@@ -316,8 +325,9 @@ AducidClient::getPSLAtributes( AducidAttributeSet_t set, bool useCache ) {
     return result;
 }
 
-string AducidClient::getPSLAtribute( const std::string &attr ) {
-    map<string,string> attrs = getPSLAtributes(ADUCID_ATTRIBUTE_SET_ALL,true);
+string AducidClient::getPSLAttribute( const std::string &attr )
+{
+    map<string,string> attrs = getPSLAttributes(ADUCID_ATTRIBUTE_SET_ALL,true);
     map<string,string>::iterator search = attrs.find(attr);
     if( search != attrs.end() ) {
         return search->second;
@@ -337,8 +347,27 @@ AducidClient::EPOReadUserAttrSet( const char *attrSetName ) {
 }
 
 map<string,string>
-AducidClient::EPOReadUserAttrSet( const string &attrSetName ) {
+AducidClient::EPOReadUserAttrSet( const string &attrSetName )
+{
     return EPOReadUserAttrSet( attrSetName.c_str() );
+}
+
+map< string, vector<string> >
+AducidClient::EPOReadUserMultivalueAttrSet( const char *attrSetName )
+{
+    AducidAttributeList_t list;
+    map< string, vector<string> > result;
+
+    list = aducid_epo_read_user_attr_set( _handle, attrSetName );
+    result = AducidListToMultivalueMap( list );
+    aducid_attr_list_free( list );
+    return result;
+}
+
+map< string, vector<string> >
+AducidClient::EPOReadUserMultivalueAttrSet( const string &attrSetName )
+{
+    return EPOReadUserMultivalueAttrSet( attrSetName.c_str() );
 }
 
 void
@@ -349,8 +378,17 @@ AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map<string,string>a
     aducid_attr_list_free(list);
 }
 
+void
+AducidClient::EPOWriteUserAttrSet(const string &attrSetName, map< string, vector<string> >attributes)
+{
+    AducidAttributeList_t list = MapToAducidList(attributes);
+    aducid_epo_write_user_attr_set( _handle, attrSetName.c_str(), list);
+    aducid_attr_list_free(list);
+}
 
-string AducidClient::AIMProxyURL() const {
+
+string AducidClient::AIMProxyURL() const
+{
     string result;
     char *url = aducid_get_aimproxy_url( _handle );
     if(url) {
@@ -360,7 +398,8 @@ string AducidClient::AIMProxyURL() const {
     return result;
 }
 
-map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const {
+map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t list) const
+{
     map<string,string> result;
     if( list == NULL ) return result;
     AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
@@ -371,10 +410,43 @@ map<string,string> AducidClient::AducidListToMap(const AducidAttributeList_t lis
     return result;
 }
 
+map< string, vector<string> > AducidClient::AducidListToMultivalueMap(const AducidAttributeList_t list) const
+{
+    map< string, vector<string> > result;
+    map< string, vector<string> >::iterator it;
+    
+    if( list == NULL ) return result;
+    AducidAttributeListItem_t *attr = ((AducidAttributeListStruct_t *)list)->firstItem;
+    while( attr ) {
+        it = result.find( attr->name );
+        if( it != result.end() ) {
+            it->second.push_back( attr->value );
+        } else {
+            vector<string> v;
+            v.push_back( attr->value );
+            result[attr->name] = v;
+        }
+        attr = attr->next;
+    }
+    return result;
+}
+
 AducidAttributeList_t AducidClient::MapToAducidList(const map<string,string> &attrs) const {
     AducidAttributeList_t result = aducid_attr_list_new();
     for( map<string,string>::const_iterator i = attrs.begin() ; i != attrs.end(); ++i ) {
         aducid_attr_list_append( result, i->first.c_str(), i->second.c_str() );
+    }
+    return result;
+}
+
+AducidAttributeList_t AducidClient::MapToAducidList(const map< string, vector<string> > &attrs) const
+{
+    AducidAttributeList_t result = aducid_attr_list_new();
+    for( map< string, vector<string> >::const_iterator namei = attrs.begin() ; namei != attrs.end(); ++namei ) {
+        vector<string> v = namei->second;
+        for( vector<string>::const_iterator valuei = v.begin() ; valuei != v.end(); ++valuei ) {
+            aducid_attr_list_append( result, namei->first.c_str(), (*valuei).c_str() );
+        }
     }
     return result;
 }
