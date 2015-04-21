@@ -48,6 +48,42 @@ int aducid_attr_list_count( const AducidAttributeList_t handle )
     return i;
 }
 
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_first( const AducidAttributeList_t handle ) {
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
+    
+    if(!handle) return;
+    h->cursor = h->firstItem;
+    h->index = 0;
+}
+
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_next( const AducidAttributeList_t handle ) {
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
+    
+    if(!handle) return;
+    if(!h->cursor) return;
+    h->cursor = h->cursor->next;
+}
+    
+ADUCID_PUBLIC_FUNC
+const char *aducid_attr_list_get_name( const AducidAttributeList_t handle ) {
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
+
+    if(!handle) return NULL;
+    if(!h->cursor) return NULL;
+    return h->cursor->name;
+}
+
+ADUCID_PUBLIC_FUNC
+const char *aducid_attr_list_get_value( const AducidAttributeList_t handle ) {
+    AducidAttributeListStruct_t *h = (AducidAttributeListStruct_t *)handle;
+
+    if(!handle) return NULL;
+    if(!h->cursor) return NULL;
+    return h->cursor->value;
+}
+
 AducidAttributeListItem_t *aducid_attr_list_get_item( const AducidAttributeList_t handle, int idx)
 {
     int i = 0;

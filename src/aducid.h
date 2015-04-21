@@ -74,12 +74,58 @@ aducid_attr_list_new();
  * \param handle attribute list handle
  * \return int, number of items in list
  *
- *     if( aducid_attr_list_count(handle) ) {
- *         printf("list is not empty\n");
- *     }
+ \code{.c}
+ if( aducid_attr_list_count(handle) ) {
+     printf("list is not empty\n");
+ }
+ \endcode
  */
 ADUCID_PUBLIC_FUNC int
 aducid_attr_list_count( const AducidAttributeList_t handle );
+
+/**
+ * \brief Moves cursor at the beginning of list.
+ * \param handle attribute list handle
+ *
+ \code{.c}
+ aducid_attr_list_first(handle);
+ name = aducid_attr_list_get_name(handle);
+ value = aducid_attr_list_get_name(handle);
+ while(name) {
+     printf("%s  %s\n", name, value );
+     aducid_attr_list_next(handle);
+     name = aducid_attr_list_get_name(handle);
+     value = aducid_attr_list_get_name(handle);
+ }
+ \endcode
+ */
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_first( AducidAttributeList_t handle );
+
+/**
+ * \brief Moves cursor to the next item of list.
+ * \param handle attribute list handle
+ */
+ADUCID_PUBLIC_FUNC
+void aducid_attr_list_next( AducidAttributeList_t handle );
+    
+/**
+ * \brief Get list item name.
+ * \param handle attribute list handle
+ * \return name of current item in the list
+ * \see aducid_attr_list_first
+ */
+ADUCID_PUBLIC_FUNC
+const char *aducid_attr_list_get_name( const AducidAttributeList_t handle );
+
+/**
+ * \brief Get list item value.
+ * \param handle attribute list handle
+ * \return value of current item in the list
+ * \see aducid_attr_list_first
+ */
+ADUCID_PUBLIC_FUNC
+const char *aducid_attr_list_get_value( const AducidAttributeList_t handle );
 
 /**
  * \brief This function returns the name of the Nth item of the list, or NULL when the given index is invalid.

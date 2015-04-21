@@ -25,6 +25,7 @@ typedef struct StructAducidAttributeListItem {
 typedef struct {
     int index;
     AducidAttributeListItem_t *firstItem;
+    AducidAttributeListItem_t *cursor;
 } AducidAttributeListStruct_t;
 
 AducidAttributeListItem_t *ll_append_attribute(AducidAttributeListItem_t *list, const char *name, const char *value);
