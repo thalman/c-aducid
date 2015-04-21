@@ -89,7 +89,7 @@ if( action == "createroombystory" ) {
 }
 
 if( action == "enterroombystory" ) {
-    if( aducid.createRoomByStory( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.enterRoomByStory( std::string(DEMOSITE) + "verify" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -176,7 +176,7 @@ if( action == "confirmmoneylf" ) {
  * personal factor -------------------------------------------------------------
  */
 if( action == "initlf" ) {
-    if( aducid.initPersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.initPersonalFactor( std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -185,7 +185,7 @@ if( action == "initlf" ) {
 }
 
 if( action == "changelf" ) {
-    if( aducid.changePersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.changePersonalFactor( std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -194,7 +194,7 @@ if( action == "changelf" ) {
 }
 
 if( action == "deletelf" ) {
-    if( aducid.deletePersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.deletePersonalFactor( std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -203,7 +203,7 @@ if( action == "deletelf" ) {
 }
 
 if( action == "verifylf" ) {
-    if( aducid.verifyPersonalFactor( std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.verifyPersonalFactor( std::string(DEMOSITE) + "verifytransaction" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
@@ -233,7 +233,7 @@ if( action == "secondaryreplica" ) {
 }
 
 if( action == "connectionusb" ) {
-    if( aducid.linkLocal( ADUCID_PEIG_LOCAL_LINK_SECONDARY_REPLICA, std::string(DEMOSITE) + "verify" ) ) {
+    if( aducid.linkLocal( ADUCID_PEIG_LOCAL_LINK_CONNECTION_USB, std::string(DEMOSITE) + "verify" ) ) {
         reply.redirect( aducid.AIMProxyURL() );
         return HTTP_MOVED_TEMPORARILY;
     } else {
