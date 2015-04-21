@@ -80,6 +80,19 @@ TEST_CASE( "attribute list operations", "[lists]" ) {
     REQUIRE( std::string(aducid_attr_list_get_item_name(h,0)) == "a" );
     REQUIRE( std::string(aducid_attr_list_get_item_name(h,1)) == "b" );
     REQUIRE( std::string(aducid_attr_list_get_item_name(h,2)) == "c" );
+    aducid_attr_list_first( h );
+    REQUIRE( std::string(aducid_attr_list_get_name(h)) == "a" );
+    REQUIRE( std::string(aducid_attr_list_get_value(h)) == "a" );
+    aducid_attr_list_next( h );
+    REQUIRE( std::string(aducid_attr_list_get_name(h)) == "b" );
+    REQUIRE( std::string(aducid_attr_list_get_value(h)) == "b" );
+    aducid_attr_list_next( h );
+    REQUIRE( std::string(aducid_attr_list_get_name(h)) == "c" );
+    REQUIRE( std::string(aducid_attr_list_get_value(h)) == "c" );
+    aducid_attr_list_next( h );
+    REQUIRE( aducid_attr_list_get_name(h) == NULL );
+    REQUIRE( aducid_attr_list_get_value(h) == NULL );
+    
     aducid_attr_list_delete(h,1);
     REQUIRE( aducid_attr_list_count(h) == 2 );
     REQUIRE( std::string(aducid_attr_list_get_item_name(h,1)) == "c");
