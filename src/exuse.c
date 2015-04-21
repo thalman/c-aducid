@@ -331,67 +331,61 @@ aducid_confirm_money_transaction(AducidHandle_t handle, const char *fromAccount,
     return result;
 }
 
+// This function returns true if parameter should be filtered
+// from transaction result in case of failure.
+bool _filter_attribute(const char *name) {
+    static const char *attributesToFilter[] = {
+        "PaymentSignature",
+        NULL
+    };
+    int i = 0;
+    while(attributesToFilter[i] != NULL ) {
+        if( strcmp( name, attributesToFilter[i] ) == 0 ) return true;
+        ++i;
+    }
+    return false;
+}
+
 ADUCID_PUBLIC_FUNC bool
 aducid_verify_transaction( AducidHandle_t handle, AducidAttributeList_t *transaction )
 {
-    static const char *attributes[] = {
-        "PaymentSignature",
-        "PaymentAmount",
-        "PaymentFromAccount",
-        "PaymentToAccount",
-        NULL
-    };
-    static const char *encodedAttributes[] = {
-        "PaymentMessage",
-        NULL
-    };
-    static const char *allways[] = {
-        "Return_Status",
-        "UsePersonalFactor",
-        NULL
-    };
     bool result = false;
     int a;
+    char *p;
     
     if( ! aducid_verify( handle ) ) { *transaction = NULL; return false; }
     if( transaction ) *transaction = aducid_attr_list_new();
     AducidAIMGetPSLAttributesResponse_t *
         all = aducid_get_psl_attributes( handle, ADUCID_ATTRIBUTE_SET_ALL, true );
-    char *p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "Return_Status" );
-    if( p && ( strcmp( p, "ConfirmedByUser" ) == 0 ) ) {
-        p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "UsePersonalFactor" );
-        if( ! p ) result = true;
-        if( p && ( strcmp( p, "OK" ) == 0 ) ) {
-            result = true;
-        }
-        if( transaction ) {
-            if( result ) {
-                a = 0;
-                while( attributes[a] ) {
-                    p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, attributes[a] );
-                    if( p ) aducid_attr_list_append( *transaction, attributes[a], p);
-                    a++;
-                }
-                a = 0;
-                while( encodedAttributes[a] ) {
-                    p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, encodedAttributes[a] );
-                    if( p ) {
-                        char *decoded = xml_decode(p);
-                        if( decoded ) {
-                            aducid_attr_list_append( *transaction, encodedAttributes[a], decoded);
-                            free(decoded);
-                        }
-                    }
-                    a++;
+    result = true;
+    // personal factor
+    p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "UsePersonalFactor" );
+    if( p && ( strcmp( p, "OK" ) != 0 ) ) { result = false; }
+    p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, "Return_Status" );
+    if( p && ( strcmp( p, "ConfirmedByUser" ) != 0 ) ) { result = false; }
+    
+    if( transaction ) {
+        a = 0;
+        aducid_attr_list_first( all->personalObjectAttributes );
+        const char *name, *value;
+
+        name = aducid_attr_list_get_name( all->personalObjectAttributes );
+        value = aducid_attr_list_get_value( all->personalObjectAttributes );
+        while( name ) {
+            printf("1%s\t%s\n",name,value);
+            if( result || ! _filter_attribute(name) ) {
+                printf("2%s\t%s\n",name,value);
+                char *decoded = xml_decode(value);
+                if( decoded ) {
+                    printf("3%s\t%s\n",name,value);
+                    aducid_attr_list_append( *transaction, name, decoded);
+                    free(decoded);
                 }
             }
+            aducid_attr_list_next( all->personalObjectAttributes );
+            name = aducid_attr_list_get_name( all->personalObjectAttributes);
+            value = aducid_attr_list_get_value( all->personalObjectAttributes);
         }
-    }
-    a = 0;
-    while( allways[a] ) {
-        p = aducid_attr_list_get_first_by_name( all->personalObjectAttributes, allways[a] );
-        if( p ) aducid_attr_list_append( *transaction, allways[a], p );
-        a++;
     }
     return result;
 }
