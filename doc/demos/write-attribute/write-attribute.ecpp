@@ -45,7 +45,7 @@ std::string udi = "";
             if( aducid.verify() ) {
                 udi = aducid.userDatabaseIndex();
             } else {
-                std::map<std::string,std::string> attrs = aducid.getPSLAtributes(ADUCID_ATTRIBUTE_SET_ERROR,true);
+                std::map<std::string,std::string> attrs = aducid.getPSLAttributes(ADUCID_ATTRIBUTE_SET_ERROR,true);
                 error = attrs["statusAIM"] + " " + attrs["statusAuth"];
             }
         } else {
